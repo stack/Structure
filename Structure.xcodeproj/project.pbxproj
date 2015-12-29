@@ -8,10 +8,14 @@
 
 /* Begin PBXBuildFile section */
 		D1F822E61C27A4DF00B54B04 /* Structure.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D1F822DB1C27A4DF00B54B04 /* Structure.framework */; };
-		D1F822EB1C27A4DF00B54B04 /* StructureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F822EA1C27A4DF00B54B04 /* StructureTests.swift */; };
-		D1F822F61C27A50500B54B04 /* Temp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F822F51C27A50500B54B04 /* Temp.swift */; };
-		D1F822F71C27A50500B54B04 /* Temp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F822F51C27A50500B54B04 /* Temp.swift */; };
 		D1F822FA1C27AAD200B54B04 /* Structure.h in Headers */ = {isa = PBXBuildFile; fileRef = D1F822F91C27AAD200B54B04 /* Structure.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D1F822FC1C27AB7100B54B04 /* Structure.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F822FB1C27AB7100B54B04 /* Structure.swift */; };
+		D1F822FD1C27AB7100B54B04 /* Structure.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F822FB1C27AB7100B54B04 /* Structure.swift */; };
+		D1F822FF1C27AD2700B54B04 /* SQLiteHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F822FE1C27AD2700B54B04 /* SQLiteHelpers.swift */; };
+		D1F823001C27AD2700B54B04 /* SQLiteHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F822FE1C27AD2700B54B04 /* SQLiteHelpers.swift */; };
+		D1F823021C27AE9200B54B04 /* StructureError.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F823011C27AE9200B54B04 /* StructureError.swift */; };
+		D1F823031C27AE9200B54B04 /* StructureError.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F823011C27AE9200B54B04 /* StructureError.swift */; };
+		D1F823061C27B01200B54B04 /* StructureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F823051C27B01200B54B04 /* StructureTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -28,10 +32,12 @@
 		D1F822DB1C27A4DF00B54B04 /* Structure.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Structure.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D1F822E01C27A4DF00B54B04 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D1F822E51C27A4DF00B54B04 /* Structure_iOS_Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Structure_iOS_Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		D1F822EA1C27A4DF00B54B04 /* StructureTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StructureTests.swift; sourceTree = "<group>"; };
 		D1F822EC1C27A4DF00B54B04 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		D1F822F51C27A50500B54B04 /* Temp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Temp.swift; sourceTree = "<group>"; };
 		D1F822F91C27AAD200B54B04 /* Structure.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Structure.h; sourceTree = "<group>"; };
+		D1F822FB1C27AB7100B54B04 /* Structure.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Structure.swift; sourceTree = "<group>"; };
+		D1F822FE1C27AD2700B54B04 /* SQLiteHelpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SQLiteHelpers.swift; sourceTree = "<group>"; };
+		D1F823011C27AE9200B54B04 /* StructureError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StructureError.swift; sourceTree = "<group>"; };
+		D1F823051C27B01200B54B04 /* StructureTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StructureTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +64,7 @@
 			children = (
 				D1F822F81C27A9EB00B54B04 /* Structure */,
 				D1F822DD1C27A4DF00B54B04 /* Structure iOS */,
+				D1F823041C27AFE100B54B04 /* Structure Tests */,
 				D1F822E91C27A4DF00B54B04 /* Structure iOS Tests */,
 				D1F822DC1C27A4DF00B54B04 /* Products */,
 			);
@@ -76,7 +83,6 @@
 			isa = PBXGroup;
 			children = (
 				D1F822E01C27A4DF00B54B04 /* Info.plist */,
-				D1F822F51C27A50500B54B04 /* Temp.swift */,
 			);
 			path = "Structure iOS";
 			sourceTree = "<group>";
@@ -84,7 +90,6 @@
 		D1F822E91C27A4DF00B54B04 /* Structure iOS Tests */ = {
 			isa = PBXGroup;
 			children = (
-				D1F822EA1C27A4DF00B54B04 /* StructureTests.swift */,
 				D1F822EC1C27A4DF00B54B04 /* Info.plist */,
 			);
 			path = "Structure iOS Tests";
@@ -94,8 +99,19 @@
 			isa = PBXGroup;
 			children = (
 				D1F822F91C27AAD200B54B04 /* Structure.h */,
+				D1F822FB1C27AB7100B54B04 /* Structure.swift */,
+				D1F822FE1C27AD2700B54B04 /* SQLiteHelpers.swift */,
+				D1F823011C27AE9200B54B04 /* StructureError.swift */,
 			);
 			path = Structure;
+			sourceTree = "<group>";
+		};
+		D1F823041C27AFE100B54B04 /* Structure Tests */ = {
+			isa = PBXGroup;
+			children = (
+				D1F823051C27B01200B54B04 /* StructureTests.swift */,
+			);
+			path = "Structure Tests";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -206,7 +222,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D1F822F61C27A50500B54B04 /* Temp.swift in Sources */,
+				D1F822FF1C27AD2700B54B04 /* SQLiteHelpers.swift in Sources */,
+				D1F823021C27AE9200B54B04 /* StructureError.swift in Sources */,
+				D1F822FC1C27AB7100B54B04 /* Structure.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -214,8 +232,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D1F822EB1C27A4DF00B54B04 /* StructureTests.swift in Sources */,
-				D1F822F71C27A50500B54B04 /* Temp.swift in Sources */,
+				D1F823031C27AE9200B54B04 /* StructureError.swift in Sources */,
+				D1F823001C27AD2700B54B04 /* SQLiteHelpers.swift in Sources */,
+				D1F823061C27B01200B54B04 /* StructureTests.swift in Sources */,
+				D1F822FD1C27AB7100B54B04 /* Structure.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
