@@ -10,6 +10,7 @@ import Foundation
 import sqlite3
 
 public enum StructureError: ErrorType {
+    case Error(String)
     case InternalError(Int, String)
     
     public static func fromSqliteResult(result: Int32) -> StructureError {

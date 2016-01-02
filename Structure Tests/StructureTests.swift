@@ -10,50 +10,28 @@ import XCTest
 
 class StructureTests: XCTestCase {
     
-    // MARK:  Set Up & Tear Down
+    // MARK: - Set Up & Tear Down
+    
+    var structure: Structure!
     
     override func setUp() {
         super.setUp()
+        structure = try! Structure()
     }
     
     override func tearDown() {
         super.tearDown()
     }
-    
-    
-    // MARK: - Initialization Tests
-
-    func testCreationInMemory() {
-        do {
-            let _ = try Structure()
-            XCTAssertTrue(true, "Structure should be created successully")
-        } catch let e {
-            XCTFail("Structure creation should succeed: \(e)")
-        }
-    }
-    
-    func testCreationInFile() {
-        let tempPath = "\(NSTemporaryDirectory())/test.db"
-        
-        do {
-            let _ = try Structure(path: tempPath)
-            try NSFileManager.defaultManager().removeItemAtPath(tempPath)
-        } catch let e {
-            XCTFail("Structure creation should succeed: \(e)")
-        }
-    }
 
     // MARK: - User Version Tests
     
     func testDefaultUserVersionIsZero() {
-        let structure = try! Structure()
         let userVersion = structure.userVersion
         
         XCTAssertEqual(0, userVersion)
     }
     
     func testSettingUserVersionWorks() {
-        let structure = try! Structure()
         let userVersion = Int(arc4random_uniform(255) + 1)
         
         structure.userVersion = userVersion
@@ -61,5 +39,25 @@ class StructureTests: XCTestCase {
         let storedUserVersion = structure.userVersion
         
         XCTAssertEqual(userVersion, storedUserVersion)
+    }
+    
+    // MARK: - Execution Tests
+    
+    func testExecutingInvalidQuery() {
+        do {
+            try structure.execute("FOO!")
+            XCTFail("Execution was successful for an invalid query")
+        } catch let e {
+            XCTSuccess("Exection of an invalid query failed properly: \(e)")
+        }
+    }
+    
+    func testExecutingValidQuery() {
+        do {
+            try structure.execute("CREATE TABLE foo (a INT)")
+            XCTSuccess("Execution was successful for a valid query")
+        } catch let e {
+            XCTFail("Failed to execute a valid query: \(e)")
+        }
     }
 }
