@@ -12,6 +12,7 @@ public class Statement {
     
     // MARK: - Properties
     
+    internal let structure: Structure
     internal var statement: SQLiteStatement = nil
     
     internal var bindParameters: [String:Int32] = [String:Int32]()
@@ -20,9 +21,12 @@ public class Statement {
     
     // MARK: - Initialization
     
-    internal init(database: SQLiteDatabase, query: String) throws {
+    internal init(structure: Structure, query: String) throws {
+        // Store the structure
+        self.structure = structure
+        
         // Attempt to build the statement
-        let result = sqlite3_prepare_v2(database, query, -1, &statement, nil)
+        let result = sqlite3_prepare_v2(structure.database, query, -1, &statement, nil)
         if result != SQLITE_OK {
             throw StructureError.fromSqliteResult(result)
         }
@@ -35,6 +39,13 @@ public class Statement {
     deinit {
         if statement != nil {
             sqlite3_finalize(statement)
+        }
+    }
+    
+    public func finalize() {
+        let result = sqlite3_finalize(statement)
+        if result != SQLITE_OK {
+            fatalError("Failed to finalize the statement: \(result)")
         }
     }
     
@@ -83,5 +94,60 @@ public class Statement {
             // Valid, store the name
             columns[name] = idx
         }
+    }
+    
+    public func reset() {
+        let result = sqlite3_reset(statement)
+        if result != SQLITE_OK {
+            fatalError("Failed to reset the statement: \(result)")
+        }
+    }
+    
+    
+    // MARK: - Execution
+    
+    internal func step() -> SQLiteResult {
+        let result = sqlite3_step(statement)
+        return SQLiteResult.fromResultCode(result)
+    }
+    
+    // MARK: - Data Binding
+    
+    public func bind(index: Int, value: Bindable?) {
+        bind(Int32(index), value: value)
+    }
+    
+    public func bind(index: Int32, value: Bindable?) {
+        let idx = Int32(index)
+        
+        // If we don't have a value, bind NULL
+        guard let bindable = value else {
+            sqlite3_bind_null(statement , idx)
+            return
+        }
+        
+        // Bind the appropriate type
+        switch bindable {
+        case let x as Double:
+            sqlite3_bind_double(statement, idx, x)
+        case let x as Int:
+            sqlite3_bind_int(statement, idx, Int32(x))
+        case let x as Int64:
+            sqlite3_bind_int64(statement, idx, x)
+        case let x as String:
+            sqlite3_bind_text(statement, idx, x, Int32(x.characters.count), SQLITE_TRANSIENT)
+        default:
+            fatalError("Unhndled bindable type")
+        }
+    }
+    
+    public func bind(key: String, value: Bindable?) {
+        // Ensure we can map a parameter to an index
+        guard let index = bindParameters[key] else {
+            return
+        }
+        
+        // Pass the index to the proper function
+        bind(index, value: value)
     }
 }

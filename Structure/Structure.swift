@@ -24,6 +24,10 @@ public class Structure {
         }
     }
     
+    public var lastInsertedId: Int64 {
+        return sqlite3_last_insert_rowid(database)
+    }
+    
     public internal(set) var userVersion: Int {
         get {
             // Prepare the statement
@@ -96,7 +100,7 @@ public class Structure {
     // MARK: - Statement Creation
     
     public func prepare(query: String) throws -> Statement {
-        return try Statement(database: database, query: query)
+        return try Statement(structure: self, query: query)
     }
     
     
@@ -123,6 +127,63 @@ public class Structure {
                 self.rollbackTransaction()
             } else {
                 self.commitTransaction()
+            }
+        }
+        
+        if let error = potentialError {
+            throw error
+        }
+    }
+    
+    public func perform(statement: Statement) throws {
+        try perform(statement, rowCallback: nil)
+    }
+    
+    public func perform(statement: Statement, rowCallback: ((Row) -> ())?) throws {
+        var potentialError: StructureError? = nil
+        
+        dispatch_sync(queue) {
+            // Step until there is an error or complete
+            var keepGoing = true
+            while keepGoing {
+                let result = statement.step()
+                
+                switch result {
+                case .Done:
+                    keepGoing = false
+                case .Error(let code):
+                    potentialError = StructureError.fromSqliteResult(code)
+                    keepGoing = false
+                case .OK:
+                    keepGoing = false
+                case .Row:
+                    if let callback = rowCallback {
+                        callback(Row(statement: statement))
+                    }
+                case.Unhandled(let code):
+                    fatalError("Unhandled result code from stepping a statement: \(code)")
+                }
+            }
+        }
+        
+        if let error = potentialError {
+            throw error
+        }
+    }
+    
+    public func transaction(block: () throws -> ()) throws {
+        var potentialError: ErrorType? = nil
+        
+        dispatch_sync(queue) {
+            // Mark the beginning of the transaction
+            self.beginTransaction()
+        
+            do {
+                try block()
+                self.commitTransaction()
+            } catch let e {
+                potentialError = e
+                self.rollbackTransaction()
             }
         }
         
