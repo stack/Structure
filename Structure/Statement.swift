@@ -47,6 +47,8 @@ public class Statement {
         if result != SQLITE_OK {
             fatalError("Failed to finalize the statement: \(result)")
         }
+        
+        statement = nil
     }
     
     private func parseBindParameters() throws {

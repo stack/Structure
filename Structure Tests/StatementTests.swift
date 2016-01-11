@@ -52,6 +52,10 @@ class StatementTests: XCTestCase {
         do {
             let statement = try structure.prepare("SELECT a, b, c FROM foo WHERE b IS :ONE OR b IS $TWO OR c IS @THREE")
             
+            defer {
+                statement.finalize()
+            }
+            
             XCTAssertEqual(3, statement.bindParameters.count)
             XCTAssertEqual(1, statement.bindParameters["ONE"])
             XCTAssertEqual(2, statement.bindParameters["TWO"])
@@ -117,6 +121,10 @@ class StatementTests: XCTestCase {
     
     private func countFoo() -> Int {
         let statement = try! structure.prepare("SELECT COUNT(a) as count FROM foo")
+        
+        defer {
+            statement.finalize()
+        }
         
         var count = -1
         try! structure.perform(statement) { row in
