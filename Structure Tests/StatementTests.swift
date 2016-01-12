@@ -111,7 +111,67 @@ class StatementTests: XCTestCase {
                 XCTAssertEqual("foo", b)
                 XCTAssertEqual(42.1, c)
             }
+        } catch let e {
+            XCTFail("Failed testing insert statement: \(e)")
+        }
+    }
+    
+    func testUpdateStatement() {
+        do {
+            // Insert a row
+            let insertStatement = try structure.prepare("INSERT INTO foo (b, c) VALUES (:B, :C)")
             
+            defer {
+                insertStatement.finalize()
+            }
+            
+            insertStatement.bind("B", value: "foo")
+            insertStatement.bind("C", value: 42.1)
+            
+            try structure.perform(insertStatement, rowCallback: nil)
+        
+            // Ensure we have 1 row
+            let initialCount = countFoo()
+            XCTAssertEqual(1, initialCount)
+            
+            // Get the data that was inserted
+            let lastId = structure.lastInsertedId
+            
+            // Update the row
+            let updateStatement = try structure.prepare("UPDATE foo SET b = :B, c = :C where a = :A")
+            
+            defer {
+                updateStatement.finalize()
+            }
+            
+            updateStatement.bind("B", value: "bar")
+            updateStatement.bind("C", value: 1.1)
+            updateStatement.bind("A", value: lastId)
+            
+            try structure.perform(updateStatement)
+            
+            // Ensure there is still one row
+            let updatedCount = countFoo()
+            XCTAssertEqual(1, updatedCount)
+            
+            // Ensure the updated values are set
+            let selectStatement = try structure.prepare("SELECT a, b, c FROM foo WHERE a = :A")
+            
+            defer {
+                selectStatement.finalize()
+            }
+            
+            selectStatement.bind("A", value: lastId)
+            
+            try structure.perform(selectStatement) { row in
+                let a: Int64 = row["a"]
+                let b: String? = row["b"]
+                let c: Double = row["c"]
+                
+                XCTAssertEqual(lastId, a)
+                XCTAssertEqual("bar", b)
+                XCTAssertEqual(1.1, c)
+            }
         } catch let e {
             XCTFail("Failed testing insert statement: \(e)")
         }
