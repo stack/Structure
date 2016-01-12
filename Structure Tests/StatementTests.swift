@@ -72,6 +72,41 @@ class StatementTests: XCTestCase {
     
     // MARK: - Read / Write Tests
     
+    func testDeleteStatement() {
+        do {
+            // Insert a row
+            let insertStatement = try structure.prepare("INSERT INTO foo (b, c) VALUES (:B, :C)")
+            
+            defer {
+                insertStatement.finalize()
+            }
+            
+            insertStatement.bind("B", value: "foo")
+            insertStatement.bind("C", value: 42.1)
+            
+            try structure.perform(insertStatement, rowCallback: nil)
+            
+            // Ensure we have 1 row
+            let initialCount = countFoo()
+            XCTAssertEqual(1, initialCount)
+            
+            // Delete all rows
+            let deleteStatement = try structure.prepare("DELETE FROM foo")
+            
+            defer {
+                deleteStatement.finalize()
+            }
+            
+            try structure.perform(deleteStatement)
+            
+            // Ensure we have 0 rows
+            let deletedCount = countFoo()
+            XCTAssertEqual(0, deletedCount)
+        } catch let e {
+            XCTFail("Failed testing delete statement: \(e)")
+        }
+    }
+    
     func testInsertStatement() {
         do {
             // Ensure we have no rows
@@ -173,7 +208,7 @@ class StatementTests: XCTestCase {
                 XCTAssertEqual(1.1, c)
             }
         } catch let e {
-            XCTFail("Failed testing insert statement: \(e)")
+            XCTFail("Failed testing update statement: \(e)")
         }
     }
     

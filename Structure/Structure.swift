@@ -30,44 +30,29 @@ public class Structure {
     
     public internal(set) var userVersion: Int {
         get {
-            // Prepare the statement
-            var statement: SQLiteStatement = nil
-            var result = sqlite3_prepare_v2(database, "PRAGMA user_version", -1, &statement, nil)
-            if result != SQLITE_OK {
-                fatalError("Preparing the user_version set statement should never fail: \(errorMessage)")
-            }
-            
-            // Cleanup the statement when complete
-            defer {
-                sqlite3_finalize(statement)
-            }
-            
-            // Execute the statement
-            result = sqlite3_step(statement)
-            if result == SQLITE_ROW {
-                return Int(sqlite3_column_int(statement, 0))
-            } else {
-                fatalError("Reading the user_version get statement should never fail: \(errorMessage)")
+            do {
+                let statement = try prepare("PRAGMA user_version")
+                
+                defer {
+                    statement.finalize()
+                }
+                
+                var version = -1
+                try perform(statement) { row in
+                    version = row[0]
+                }
+                
+                return version
+            } catch let e {
+                fatalError("Failed to read user version: \(e)")
             }
         }
         
         set {
-            // Prepare the statement
-            var statement: SQLiteStatement = nil
-            var result = sqlite3_prepare_v2(database, "PRAGMA user_version = \(newValue)", -1, &statement, nil)
-            if result != SQLITE_OK {
-                fatalError("Preparing the user_version set statement should never fail: \(errorMessage)")
-            }
-            
-            // Cleanup the statement when complete
-            defer {
-                sqlite3_finalize(statement)
-            }
-            
-            // Execute the statement
-            result = sqlite3_step(statement)
-            if result != SQLITE_DONE {
-                fatalError("Stepping the user_version set statement should never fail: \(errorMessage)")
+            do {
+                try execute("PRAGMA user_version = \(newValue)")
+            } catch let e {
+                fatalError("Failed to write user version: \(e)")
             }
         }
     }
