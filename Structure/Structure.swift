@@ -9,12 +9,16 @@
 import Foundation
 import sqlite3
 
+private let StructureQueueKey: UnsafeMutablePointer<Void> = UnsafeMutablePointer.alloc(1)
+
 public class Structure {
     
     // MARK: - Properties
     
     var database: SQLiteDatabase = nil
-    var queue: dispatch_queue_t
+    
+    private var queue: dispatch_queue_t
+    private var queueId: UnsafeMutablePointer<Void>
     
     internal var errorMessage: String {
         if let message = String.fromCString(sqlite3_errmsg(database)) {
@@ -67,6 +71,8 @@ public class Structure {
     required public init(path: String) throws {
         // Build the execution queue
         queue = dispatch_queue_create("Structure Queue", DISPATCH_QUEUE_SERIAL)
+        queueId = UnsafeMutablePointer.alloc(1)
+        dispatch_queue_set_specific(queue, StructureQueueKey, queueId, nil)
         
         // Attempt to open the path
         let result = sqlite3_open_v2(path, &database, SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE, nil)
@@ -76,6 +82,9 @@ public class Structure {
     }
     
     deinit {
+        dispatch_queue_set_specific(queue, StructureQueueKey, nil, nil)
+        queueId.dealloc(1)
+        
         if database != nil {
             sqlite3_close_v2(database)
         }
@@ -88,13 +97,24 @@ public class Structure {
         return try Statement(structure: self, query: query)
     }
     
+    // MARK: - Thread Safety
+    func dispatchWithinQueue(block: dispatch_block_t) {
+        let currentId = dispatch_get_specific(StructureQueueKey)
+        if currentId == queueId {
+            block()
+        } else {
+            dispatch_sync(queue, block)
+        }
+    }
     
     // MARK: - Execution
     
     public func execute(query: String) throws {
+        // Placeholder for an error that occurs in the block
         var potentialError: StructureError? = nil
         
-        dispatch_sync(queue) {
+        // Queue the execution
+        dispatchWithinQueue {
             self.beginTransaction()
             
             // Attempt the execution
@@ -113,8 +133,10 @@ public class Structure {
             } else {
                 self.commitTransaction()
             }
-        }
+
+        };
         
+        // If an error occurred in the block, throw it
         if let error = potentialError {
             throw error
         }
@@ -127,7 +149,7 @@ public class Structure {
     public func perform(statement: Statement, rowCallback: ((Row) -> ())?) throws {
         var potentialError: StructureError? = nil
         
-        dispatch_sync(queue) {
+        dispatchWithinQueue {
             // Step until there is an error or complete
             var keepGoing = true
             while keepGoing {

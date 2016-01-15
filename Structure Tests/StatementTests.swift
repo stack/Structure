@@ -84,7 +84,7 @@ class StatementTests: XCTestCase {
             insertStatement.bind("B", value: "foo")
             insertStatement.bind("C", value: 42.1)
             
-            try structure.perform(insertStatement, rowCallback: nil)
+            try structure.perform(insertStatement)
             
             // Ensure we have 1 row
             let initialCount = countFoo()
@@ -123,7 +123,7 @@ class StatementTests: XCTestCase {
             insertStatement.bind("B", value: "foo")
             insertStatement.bind("C", value: 42.1)
             
-            try structure.perform(insertStatement, rowCallback: nil)
+            try structure.perform(insertStatement)
             
             // Ensure we have 1 row
             let updatedCount = countFoo()
@@ -163,7 +163,7 @@ class StatementTests: XCTestCase {
             insertStatement.bind("B", value: "foo")
             insertStatement.bind("C", value: 42.1)
             
-            try structure.perform(insertStatement, rowCallback: nil)
+            try structure.perform(insertStatement)
         
             // Ensure we have 1 row
             let initialCount = countFoo()
@@ -209,6 +209,43 @@ class StatementTests: XCTestCase {
             }
         } catch let e {
             XCTFail("Failed testing update statement: \(e)")
+        }
+    }
+    
+    // MARK: - Transaction Tests
+    
+    func testSuccessfulTransaction() {
+        do {
+            // Ensure there are no rows
+            let initialCount = countFoo()
+            XCTAssertEqual(0, initialCount)
+            
+            // Insert a series of data in a transaction
+            try structure.transaction {
+                let insertStatement = try self.structure.prepare("INSERT INTO foo (b, c) VALUES (:B, :C)")
+                
+                defer {
+                    insertStatement.finalize()
+                }
+                
+                insertStatement.bind("B", value: "foo")
+                insertStatement.bind("C", value: 42.1)
+                
+                try self.structure.perform(insertStatement)
+                
+                insertStatement.reset()
+                
+                insertStatement.bind("B", value: "bar")
+                insertStatement.bind("C", value: 1.1)
+                
+                try self.structure.perform(insertStatement)
+            }
+            
+            // Ensure there are two rows
+            let updatedCount = countFoo()
+            XCTAssertEqual(2, updatedCount)
+        } catch let e {
+            XCTFail("Failed testing successful transaction: \(e)")
         }
     }
     
