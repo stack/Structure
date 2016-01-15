@@ -43,6 +43,24 @@
 		D1F823851C489D2900B54B04 /* TestHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F823491C36EDAB00B54B04 /* TestHelper.swift */; };
 		D1F823861C489D2C00B54B04 /* StructureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F823051C27B01200B54B04 /* StructureTests.swift */; };
 		D1F823881C48A08F00B54B04 /* Structure.h in Headers */ = {isa = PBXBuildFile; fileRef = D1F823871C48A08F00B54B04 /* Structure.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D1F823911C48A18700B54B04 /* Structure.h in Headers */ = {isa = PBXBuildFile; fileRef = D1F823901C48A18700B54B04 /* Structure.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D1F823981C48A18700B54B04 /* Structure.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D1F8238E1C48A18700B54B04 /* Structure.framework */; };
+		D1F823A51C48A1FE00B54B04 /* Bindable.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F823541C42245900B54B04 /* Bindable.swift */; };
+		D1F823A61C48A1FE00B54B04 /* Bindable.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F823541C42245900B54B04 /* Bindable.swift */; };
+		D1F823A71C48A20100B54B04 /* Row.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F823571C42282B00B54B04 /* Row.swift */; };
+		D1F823A81C48A20200B54B04 /* Row.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F823571C42282B00B54B04 /* Row.swift */; };
+		D1F823A91C48A20500B54B04 /* SQLiteHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F822FE1C27AD2700B54B04 /* SQLiteHelpers.swift */; };
+		D1F823AA1C48A20500B54B04 /* SQLiteHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F822FE1C27AD2700B54B04 /* SQLiteHelpers.swift */; };
+		D1F823AB1C48A20900B54B04 /* Statement.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F823441C36DAFF00B54B04 /* Statement.swift */; };
+		D1F823AC1C48A20A00B54B04 /* Statement.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F823441C36DAFF00B54B04 /* Statement.swift */; };
+		D1F823AD1C48A20D00B54B04 /* Structure.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F822FB1C27AB7100B54B04 /* Structure.swift */; };
+		D1F823AE1C48A20E00B54B04 /* Structure.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F822FB1C27AB7100B54B04 /* Structure.swift */; };
+		D1F823AF1C48A21100B54B04 /* StructureError.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F823011C27AE9200B54B04 /* StructureError.swift */; };
+		D1F823B01C48A21200B54B04 /* StructureError.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F823011C27AE9200B54B04 /* StructureError.swift */; };
+		D1F823B11C48A21700B54B04 /* StatementTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F8234B1C3756E100B54B04 /* StatementTests.swift */; };
+		D1F823B21C48A21C00B54B04 /* StructureInitializationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F823471C36ED1100B54B04 /* StructureInitializationTests.swift */; };
+		D1F823B31C48A21F00B54B04 /* StructureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F823051C27B01200B54B04 /* StructureTests.swift */; };
+		D1F823B41C48A22500B54B04 /* TestHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F823491C36EDAB00B54B04 /* TestHelper.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -59,6 +77,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = D1F8235E1C489CE900B54B04;
 			remoteInfo = "Structure Mac";
+		};
+		D1F823991C48A18700B54B04 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D1F822D21C27A4DF00B54B04 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D1F8238D1C48A18700B54B04;
+			remoteInfo = "Structure tvOS";
 		};
 /* End PBXContainerItemProxy section */
 
@@ -85,6 +110,11 @@
 		D1F823681C489CE900B54B04 /* Structure Mac Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Structure Mac Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D1F8236F1C489CE900B54B04 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D1F823871C48A08F00B54B04 /* Structure.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Structure.h; sourceTree = "<group>"; };
+		D1F8238E1C48A18700B54B04 /* Structure.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Structure.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		D1F823901C48A18700B54B04 /* Structure.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Structure.h; sourceTree = "<group>"; };
+		D1F823921C48A18700B54B04 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D1F823971C48A18700B54B04 /* Structure tvOS Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Structure tvOS Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		D1F8239E1C48A18700B54B04 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -118,6 +148,21 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		D1F8238A1C48A18700B54B04 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D1F823941C48A18700B54B04 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D1F823981C48A18700B54B04 /* Structure.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -130,6 +175,8 @@
 				D1F823041C27AFE100B54B04 /* Structure Tests */,
 				D1F822E91C27A4DF00B54B04 /* Structure iOS Tests */,
 				D1F8236C1C489CE900B54B04 /* Structure Mac Tests */,
+				D1F8238F1C48A18700B54B04 /* Structure tvOS */,
+				D1F8239B1C48A18700B54B04 /* Structure tvOS Tests */,
 				D1F822DC1C27A4DF00B54B04 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -141,6 +188,8 @@
 				D1F822E51C27A4DF00B54B04 /* Structure_iOS_Tests.xctest */,
 				D1F8235F1C489CE900B54B04 /* Structure.framework */,
 				D1F823681C489CE900B54B04 /* Structure Mac Tests.xctest */,
+				D1F8238E1C48A18700B54B04 /* Structure.framework */,
+				D1F823971C48A18700B54B04 /* Structure tvOS Tests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -213,6 +262,24 @@
 			path = "Structure Mac Tests";
 			sourceTree = "<group>";
 		};
+		D1F8238F1C48A18700B54B04 /* Structure tvOS */ = {
+			isa = PBXGroup;
+			children = (
+				D1F823901C48A18700B54B04 /* Structure.h */,
+				D1F823921C48A18700B54B04 /* Info.plist */,
+			);
+			path = "Structure tvOS";
+			sourceTree = "<group>";
+		};
+		D1F8239B1C48A18700B54B04 /* Structure tvOS Tests */ = {
+			isa = PBXGroup;
+			children = (
+				D1F8239E1C48A18700B54B04 /* Info.plist */,
+			);
+			name = "Structure tvOS Tests";
+			path = "Structure tvOS Tests";
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -229,6 +296,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				D1F823621C489CE900B54B04 /* Structure.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D1F8238B1C48A18700B54B04 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D1F823911C48A18700B54B04 /* Structure.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -307,6 +382,42 @@
 			productReference = D1F823681C489CE900B54B04 /* Structure Mac Tests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
+		D1F8238D1C48A18700B54B04 /* Structure tvOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D1F8239F1C48A18700B54B04 /* Build configuration list for PBXNativeTarget "Structure tvOS" */;
+			buildPhases = (
+				D1F823891C48A18700B54B04 /* Sources */,
+				D1F8238A1C48A18700B54B04 /* Frameworks */,
+				D1F8238B1C48A18700B54B04 /* Headers */,
+				D1F8238C1C48A18700B54B04 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Structure tvOS";
+			productName = "Structure tvOS";
+			productReference = D1F8238E1C48A18700B54B04 /* Structure.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		D1F823961C48A18700B54B04 /* Structure tvOS Tests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D1F823A21C48A18700B54B04 /* Build configuration list for PBXNativeTarget "Structure tvOS Tests" */;
+			buildPhases = (
+				D1F823931C48A18700B54B04 /* Sources */,
+				D1F823941C48A18700B54B04 /* Frameworks */,
+				D1F823951C48A18700B54B04 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				D1F8239A1C48A18700B54B04 /* PBXTargetDependency */,
+			);
+			name = "Structure tvOS Tests";
+			productName = "Structure tvOS Tests";
+			productReference = D1F823971C48A18700B54B04 /* Structure tvOS Tests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -329,6 +440,12 @@
 					D1F823671C489CE900B54B04 = {
 						CreatedOnToolsVersion = 7.2;
 					};
+					D1F8238D1C48A18700B54B04 = {
+						CreatedOnToolsVersion = 7.2;
+					};
+					D1F823961C48A18700B54B04 = {
+						CreatedOnToolsVersion = 7.2;
+					};
 				};
 			};
 			buildConfigurationList = D1F822D51C27A4DF00B54B04 /* Build configuration list for PBXProject "Structure" */;
@@ -347,6 +464,8 @@
 				D1F822E41C27A4DF00B54B04 /* Structure iOS Tests */,
 				D1F8235E1C489CE900B54B04 /* Structure Mac */,
 				D1F823671C489CE900B54B04 /* Structure Mac Tests */,
+				D1F8238D1C48A18700B54B04 /* Structure tvOS */,
+				D1F823961C48A18700B54B04 /* Structure tvOS Tests */,
 			);
 		};
 /* End PBXProject section */
@@ -374,6 +493,20 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		D1F823661C489CE900B54B04 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D1F8238C1C48A18700B54B04 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D1F823951C48A18700B54B04 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -443,6 +576,36 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		D1F823891C48A18700B54B04 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D1F823A71C48A20100B54B04 /* Row.swift in Sources */,
+				D1F823A51C48A1FE00B54B04 /* Bindable.swift in Sources */,
+				D1F823AD1C48A20D00B54B04 /* Structure.swift in Sources */,
+				D1F823A91C48A20500B54B04 /* SQLiteHelpers.swift in Sources */,
+				D1F823AF1C48A21100B54B04 /* StructureError.swift in Sources */,
+				D1F823AB1C48A20900B54B04 /* Statement.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D1F823931C48A18700B54B04 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D1F823A81C48A20200B54B04 /* Row.swift in Sources */,
+				D1F823B41C48A22500B54B04 /* TestHelper.swift in Sources */,
+				D1F823A61C48A1FE00B54B04 /* Bindable.swift in Sources */,
+				D1F823B11C48A21700B54B04 /* StatementTests.swift in Sources */,
+				D1F823B31C48A21F00B54B04 /* StructureTests.swift in Sources */,
+				D1F823AE1C48A20E00B54B04 /* Structure.swift in Sources */,
+				D1F823AA1C48A20500B54B04 /* SQLiteHelpers.swift in Sources */,
+				D1F823B21C48A21C00B54B04 /* StructureInitializationTests.swift in Sources */,
+				D1F823B01C48A21200B54B04 /* StructureError.swift in Sources */,
+				D1F823AC1C48A20A00B54B04 /* Statement.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -455,6 +618,11 @@
 			isa = PBXTargetDependency;
 			target = D1F8235E1C489CE900B54B04 /* Structure Mac */;
 			targetProxy = D1F8236A1C489CE900B54B04 /* PBXContainerItemProxy */;
+		};
+		D1F8239A1C48A18700B54B04 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D1F8238D1C48A18700B54B04 /* Structure tvOS */;
+			targetProxy = D1F823991C48A18700B54B04 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -681,6 +849,72 @@
 			};
 			name = Release;
 		};
+		D1F823A01C48A18700B54B04 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = "Structure tvOS/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = us.gerstacker.Structure;
+				PRODUCT_NAME = Structure;
+				SDKROOT = appletvos;
+				SKIP_INSTALL = YES;
+				SWIFT_INCLUDE_PATHS = "$(SRCROOT)";
+				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 9.1;
+			};
+			name = Debug;
+		};
+		D1F823A11C48A18700B54B04 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = "Structure tvOS/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = us.gerstacker.Structure;
+				PRODUCT_NAME = Structure;
+				SDKROOT = appletvos;
+				SKIP_INSTALL = YES;
+				SWIFT_INCLUDE_PATHS = "$(SRCROOT)";
+				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 9.1;
+			};
+			name = Release;
+		};
+		D1F823A31C48A18700B54B04 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = "Structure tvOS Tests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "us.gerstacker.Structure-tvOSTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = appletvos;
+				SWIFT_INCLUDE_PATHS = "$(SRCROOT)";
+				TVOS_DEPLOYMENT_TARGET = 9.1;
+			};
+			name = Debug;
+		};
+		D1F823A41C48A18700B54B04 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = "Structure tvOS Tests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "us.gerstacker.Structure-tvOSTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = appletvos;
+				SWIFT_INCLUDE_PATHS = "$(SRCROOT)";
+				TVOS_DEPLOYMENT_TARGET = 9.1;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -728,6 +962,22 @@
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
+		};
+		D1F8239F1C48A18700B54B04 /* Build configuration list for PBXNativeTarget "Structure tvOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D1F823A01C48A18700B54B04 /* Debug */,
+				D1F823A11C48A18700B54B04 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		D1F823A21C48A18700B54B04 /* Build configuration list for PBXNativeTarget "Structure tvOS Tests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D1F823A31C48A18700B54B04 /* Debug */,
+				D1F823A41C48A18700B54B04 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
 		};
 /* End XCConfigurationList section */
 	};
