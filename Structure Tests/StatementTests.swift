@@ -249,6 +249,45 @@ class StatementTests: XCTestCase {
         }
     }
     
+    func testFailedTransaction() {
+        // Ensure there are no rows
+        let initialCount = countFoo()
+        XCTAssertEqual(0, initialCount)
+        
+        do {
+            // Insert a some data, but fail
+            try structure.transaction {
+                let insertStatement = try self.structure.prepare("INSERT INTO foo (b, c) VALUES (:B, :C)")
+                
+                defer {
+                    insertStatement.finalize()
+                }
+                
+                insertStatement.bind("B", value: "foo")
+                insertStatement.bind("C", value: 42.1)
+                
+                try self.structure.perform(insertStatement)
+                
+                insertStatement.reset()
+                
+                insertStatement.bind("B", value: "bar")
+                insertStatement.bind("C", value: 1.1)
+                
+                try self.structure.perform(insertStatement)
+                
+                throw StructureError.Error("Forced Error")
+            }
+        } catch StructureError.Error(let e) {
+            XCTAssertEqual("Forced Error", e)
+        } catch let e {
+            XCTFail("Unknown error when forcing a bad transaction: \(e)")
+        }
+        
+        // Ensure there are still no rows
+        let finalCount = countFoo()
+        XCTAssertEqual(0, finalCount)
+    }
+    
     // MARK: - Utilities
     
     private func countFoo() -> Int {
