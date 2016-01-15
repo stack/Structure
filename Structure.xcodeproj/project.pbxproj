@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		D1F822E61C27A4DF00B54B04 /* Structure.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D1F822DB1C27A4DF00B54B04 /* Structure.framework */; };
-		D1F822FA1C27AAD200B54B04 /* Structure.h in Headers */ = {isa = PBXBuildFile; fileRef = D1F822F91C27AAD200B54B04 /* Structure.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D1F822FC1C27AB7100B54B04 /* Structure.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F822FB1C27AB7100B54B04 /* Structure.swift */; };
 		D1F822FD1C27AB7100B54B04 /* Structure.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F822FB1C27AB7100B54B04 /* Structure.swift */; };
 		D1F822FF1C27AD2700B54B04 /* SQLiteHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F822FE1C27AD2700B54B04 /* SQLiteHelpers.swift */; };
@@ -21,11 +20,29 @@
 		D1F823481C36ED1100B54B04 /* StructureInitializationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F823471C36ED1100B54B04 /* StructureInitializationTests.swift */; };
 		D1F8234A1C36EDAB00B54B04 /* TestHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F823491C36EDAB00B54B04 /* TestHelper.swift */; };
 		D1F8234C1C3756E100B54B04 /* StatementTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F8234B1C3756E100B54B04 /* StatementTests.swift */; };
-		D1F8234F1C375DF700B54B04 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = D1F8234E1C375DF700B54B04 /* LICENSE */; };
 		D1F823551C42245900B54B04 /* Bindable.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F823541C42245900B54B04 /* Bindable.swift */; };
 		D1F823561C42245900B54B04 /* Bindable.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F823541C42245900B54B04 /* Bindable.swift */; };
 		D1F823581C42282B00B54B04 /* Row.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F823571C42282B00B54B04 /* Row.swift */; };
 		D1F823591C42282B00B54B04 /* Row.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F823571C42282B00B54B04 /* Row.swift */; };
+		D1F823621C489CE900B54B04 /* Structure.h in Headers */ = {isa = PBXBuildFile; fileRef = D1F823611C489CE900B54B04 /* Structure.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D1F823691C489CE900B54B04 /* Structure.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D1F8235F1C489CE900B54B04 /* Structure.framework */; };
+		D1F823761C489CF900B54B04 /* Bindable.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F823541C42245900B54B04 /* Bindable.swift */; };
+		D1F823771C489CF900B54B04 /* Bindable.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F823541C42245900B54B04 /* Bindable.swift */; };
+		D1F823781C489CFD00B54B04 /* Row.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F823571C42282B00B54B04 /* Row.swift */; };
+		D1F823791C489CFD00B54B04 /* Row.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F823571C42282B00B54B04 /* Row.swift */; };
+		D1F8237A1C489D0000B54B04 /* SQLiteHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F822FE1C27AD2700B54B04 /* SQLiteHelpers.swift */; };
+		D1F8237B1C489D0100B54B04 /* SQLiteHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F822FE1C27AD2700B54B04 /* SQLiteHelpers.swift */; };
+		D1F8237C1C489D0600B54B04 /* Statement.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F823441C36DAFF00B54B04 /* Statement.swift */; };
+		D1F8237D1C489D0600B54B04 /* Statement.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F823441C36DAFF00B54B04 /* Statement.swift */; };
+		D1F8237E1C489D0A00B54B04 /* Structure.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F822FB1C27AB7100B54B04 /* Structure.swift */; };
+		D1F8237F1C489D0B00B54B04 /* Structure.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F822FB1C27AB7100B54B04 /* Structure.swift */; };
+		D1F823801C489D0E00B54B04 /* StructureError.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F823011C27AE9200B54B04 /* StructureError.swift */; };
+		D1F823811C489D0E00B54B04 /* StructureError.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F823011C27AE9200B54B04 /* StructureError.swift */; };
+		D1F823831C489D2200B54B04 /* StatementTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F8234B1C3756E100B54B04 /* StatementTests.swift */; };
+		D1F823841C489D2500B54B04 /* StructureInitializationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F823471C36ED1100B54B04 /* StructureInitializationTests.swift */; };
+		D1F823851C489D2900B54B04 /* TestHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F823491C36EDAB00B54B04 /* TestHelper.swift */; };
+		D1F823861C489D2C00B54B04 /* StructureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F823051C27B01200B54B04 /* StructureTests.swift */; };
+		D1F823881C48A08F00B54B04 /* Structure.h in Headers */ = {isa = PBXBuildFile; fileRef = D1F823871C48A08F00B54B04 /* Structure.h */; settings = {ATTRIBUTES = (Public, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -36,6 +53,13 @@
 			remoteGlobalIDString = D1F822DA1C27A4DF00B54B04;
 			remoteInfo = Structure;
 		};
+		D1F8236A1C489CE900B54B04 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D1F822D21C27A4DF00B54B04 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D1F8235E1C489CE900B54B04;
+			remoteInfo = "Structure Mac";
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
@@ -43,7 +67,6 @@
 		D1F822E01C27A4DF00B54B04 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D1F822E51C27A4DF00B54B04 /* Structure_iOS_Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Structure_iOS_Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D1F822EC1C27A4DF00B54B04 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		D1F822F91C27AAD200B54B04 /* Structure.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Structure.h; sourceTree = "<group>"; };
 		D1F822FB1C27AB7100B54B04 /* Structure.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Structure.swift; sourceTree = "<group>"; };
 		D1F822FE1C27AD2700B54B04 /* SQLiteHelpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SQLiteHelpers.swift; sourceTree = "<group>"; };
 		D1F823011C27AE9200B54B04 /* StructureError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StructureError.swift; sourceTree = "<group>"; };
@@ -56,6 +79,12 @@
 		D1F823521C37804600B54B04 /* README.markdown */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.markdown; sourceTree = SOURCE_ROOT; };
 		D1F823541C42245900B54B04 /* Bindable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Bindable.swift; sourceTree = "<group>"; };
 		D1F823571C42282B00B54B04 /* Row.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Row.swift; sourceTree = "<group>"; };
+		D1F8235F1C489CE900B54B04 /* Structure.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Structure.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		D1F823611C489CE900B54B04 /* Structure.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Structure.h; sourceTree = "<group>"; };
+		D1F823631C489CE900B54B04 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D1F823681C489CE900B54B04 /* Structure Mac Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Structure Mac Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		D1F8236F1C489CE900B54B04 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D1F823871C48A08F00B54B04 /* Structure.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Structure.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -74,6 +103,21 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		D1F8235B1C489CE900B54B04 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D1F823651C489CE900B54B04 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D1F823691C489CE900B54B04 /* Structure.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -82,8 +126,10 @@
 			children = (
 				D1F822F81C27A9EB00B54B04 /* Structure */,
 				D1F822DD1C27A4DF00B54B04 /* Structure iOS */,
+				D1F823601C489CE900B54B04 /* Structure Mac */,
 				D1F823041C27AFE100B54B04 /* Structure Tests */,
 				D1F822E91C27A4DF00B54B04 /* Structure iOS Tests */,
+				D1F8236C1C489CE900B54B04 /* Structure Mac Tests */,
 				D1F822DC1C27A4DF00B54B04 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -93,6 +139,8 @@
 			children = (
 				D1F822DB1C27A4DF00B54B04 /* Structure.framework */,
 				D1F822E51C27A4DF00B54B04 /* Structure_iOS_Tests.xctest */,
+				D1F8235F1C489CE900B54B04 /* Structure.framework */,
+				D1F823681C489CE900B54B04 /* Structure Mac Tests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -100,6 +148,7 @@
 		D1F822DD1C27A4DF00B54B04 /* Structure iOS */ = {
 			isa = PBXGroup;
 			children = (
+				D1F823871C48A08F00B54B04 /* Structure.h */,
 				D1F822E01C27A4DF00B54B04 /* Info.plist */,
 			);
 			path = "Structure iOS";
@@ -116,9 +165,9 @@
 		D1F822F81C27A9EB00B54B04 /* Structure */ = {
 			isa = PBXGroup;
 			children = (
-				D1F822FE1C27AD2700B54B04 /* SQLiteHelpers.swift */,
 				D1F823541C42245900B54B04 /* Bindable.swift */,
 				D1F823571C42282B00B54B04 /* Row.swift */,
+				D1F822FE1C27AD2700B54B04 /* SQLiteHelpers.swift */,
 				D1F823441C36DAFF00B54B04 /* Statement.swift */,
 				D1F822FB1C27AB7100B54B04 /* Structure.swift */,
 				D1F823011C27AE9200B54B04 /* StructureError.swift */,
@@ -143,9 +192,25 @@
 			children = (
 				D1F8234E1C375DF700B54B04 /* LICENSE */,
 				D1F823521C37804600B54B04 /* README.markdown */,
-				D1F822F91C27AAD200B54B04 /* Structure.h */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		D1F823601C489CE900B54B04 /* Structure Mac */ = {
+			isa = PBXGroup;
+			children = (
+				D1F823631C489CE900B54B04 /* Info.plist */,
+				D1F823611C489CE900B54B04 /* Structure.h */,
+			);
+			path = "Structure Mac";
+			sourceTree = "<group>";
+		};
+		D1F8236C1C489CE900B54B04 /* Structure Mac Tests */ = {
+			isa = PBXGroup;
+			children = (
+				D1F8236F1C489CE900B54B04 /* Info.plist */,
+			);
+			path = "Structure Mac Tests";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -155,16 +220,24 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D1F822FA1C27AAD200B54B04 /* Structure.h in Headers */,
+				D1F823881C48A08F00B54B04 /* Structure.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D1F8235C1C489CE900B54B04 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D1F823621C489CE900B54B04 /* Structure.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		D1F822DA1C27A4DF00B54B04 /* Structure */ = {
+		D1F822DA1C27A4DF00B54B04 /* Structure iOS */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = D1F822EF1C27A4DF00B54B04 /* Build configuration list for PBXNativeTarget "Structure" */;
+			buildConfigurationList = D1F822EF1C27A4DF00B54B04 /* Build configuration list for PBXNativeTarget "Structure iOS" */;
 			buildPhases = (
 				D1F822D61C27A4DF00B54B04 /* Sources */,
 				D1F822D71C27A4DF00B54B04 /* Frameworks */,
@@ -175,14 +248,14 @@
 			);
 			dependencies = (
 			);
-			name = Structure;
+			name = "Structure iOS";
 			productName = Structure;
 			productReference = D1F822DB1C27A4DF00B54B04 /* Structure.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		D1F822E41C27A4DF00B54B04 /* Structure Tests */ = {
+		D1F822E41C27A4DF00B54B04 /* Structure iOS Tests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = D1F822F21C27A4DF00B54B04 /* Build configuration list for PBXNativeTarget "Structure Tests" */;
+			buildConfigurationList = D1F822F21C27A4DF00B54B04 /* Build configuration list for PBXNativeTarget "Structure iOS Tests" */;
 			buildPhases = (
 				D1F822E11C27A4DF00B54B04 /* Sources */,
 				D1F822E21C27A4DF00B54B04 /* Frameworks */,
@@ -193,9 +266,45 @@
 			dependencies = (
 				D1F822E81C27A4DF00B54B04 /* PBXTargetDependency */,
 			);
-			name = "Structure Tests";
+			name = "Structure iOS Tests";
 			productName = StructureTests;
 			productReference = D1F822E51C27A4DF00B54B04 /* Structure_iOS_Tests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		D1F8235E1C489CE900B54B04 /* Structure Mac */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D1F823701C489CE900B54B04 /* Build configuration list for PBXNativeTarget "Structure Mac" */;
+			buildPhases = (
+				D1F8235A1C489CE900B54B04 /* Sources */,
+				D1F8235B1C489CE900B54B04 /* Frameworks */,
+				D1F8235C1C489CE900B54B04 /* Headers */,
+				D1F8235D1C489CE900B54B04 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Structure Mac";
+			productName = "Structure Mac";
+			productReference = D1F8235F1C489CE900B54B04 /* Structure.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		D1F823671C489CE900B54B04 /* Structure Mac Tests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D1F823731C489CE900B54B04 /* Build configuration list for PBXNativeTarget "Structure Mac Tests" */;
+			buildPhases = (
+				D1F823641C489CE900B54B04 /* Sources */,
+				D1F823651C489CE900B54B04 /* Frameworks */,
+				D1F823661C489CE900B54B04 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				D1F8236B1C489CE900B54B04 /* PBXTargetDependency */,
+			);
+			name = "Structure Mac Tests";
+			productName = "Structure Mac Tests";
+			productReference = D1F823681C489CE900B54B04 /* Structure Mac Tests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -214,6 +323,12 @@
 					D1F822E41C27A4DF00B54B04 = {
 						CreatedOnToolsVersion = 7.2;
 					};
+					D1F8235E1C489CE900B54B04 = {
+						CreatedOnToolsVersion = 7.2;
+					};
+					D1F823671C489CE900B54B04 = {
+						CreatedOnToolsVersion = 7.2;
+					};
 				};
 			};
 			buildConfigurationList = D1F822D51C27A4DF00B54B04 /* Build configuration list for PBXProject "Structure" */;
@@ -228,8 +343,10 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				D1F822DA1C27A4DF00B54B04 /* Structure */,
-				D1F822E41C27A4DF00B54B04 /* Structure Tests */,
+				D1F822DA1C27A4DF00B54B04 /* Structure iOS */,
+				D1F822E41C27A4DF00B54B04 /* Structure iOS Tests */,
+				D1F8235E1C489CE900B54B04 /* Structure Mac */,
+				D1F823671C489CE900B54B04 /* Structure Mac Tests */,
 			);
 		};
 /* End PBXProject section */
@@ -239,11 +356,24 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D1F8234F1C375DF700B54B04 /* LICENSE in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		D1F822E31C27A4DF00B54B04 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D1F8235D1C489CE900B54B04 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D1F823661C489CE900B54B04 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -283,13 +413,48 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		D1F8235A1C489CE900B54B04 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D1F823781C489CFD00B54B04 /* Row.swift in Sources */,
+				D1F823761C489CF900B54B04 /* Bindable.swift in Sources */,
+				D1F8237E1C489D0A00B54B04 /* Structure.swift in Sources */,
+				D1F8237A1C489D0000B54B04 /* SQLiteHelpers.swift in Sources */,
+				D1F823801C489D0E00B54B04 /* StructureError.swift in Sources */,
+				D1F8237C1C489D0600B54B04 /* Statement.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D1F823641C489CE900B54B04 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D1F823771C489CF900B54B04 /* Bindable.swift in Sources */,
+				D1F823851C489D2900B54B04 /* TestHelper.swift in Sources */,
+				D1F823791C489CFD00B54B04 /* Row.swift in Sources */,
+				D1F823811C489D0E00B54B04 /* StructureError.swift in Sources */,
+				D1F8237B1C489D0100B54B04 /* SQLiteHelpers.swift in Sources */,
+				D1F823861C489D2C00B54B04 /* StructureTests.swift in Sources */,
+				D1F8237D1C489D0600B54B04 /* Statement.swift in Sources */,
+				D1F8237F1C489D0B00B54B04 /* Structure.swift in Sources */,
+				D1F823841C489D2500B54B04 /* StructureInitializationTests.swift in Sources */,
+				D1F823831C489D2200B54B04 /* StatementTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
 		D1F822E81C27A4DF00B54B04 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = D1F822DA1C27A4DF00B54B04 /* Structure */;
+			target = D1F822DA1C27A4DF00B54B04 /* Structure iOS */;
 			targetProxy = D1F822E71C27A4DF00B54B04 /* PBXContainerItemProxy */;
+		};
+		D1F8236B1C489CE900B54B04 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D1F8235E1C489CE900B54B04 /* Structure Mac */;
+			targetProxy = D1F8236A1C489CE900B54B04 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -395,7 +560,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = us.gerstacker.Structure;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = Structure;
 				SKIP_INSTALL = YES;
 				SWIFT_INCLUDE_PATHS = "$(SRCROOT)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -414,7 +579,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = us.gerstacker.Structure;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = Structure;
 				SKIP_INSTALL = YES;
 				SWIFT_INCLUDE_PATHS = "$(SRCROOT)";
 			};
@@ -442,6 +607,80 @@
 			};
 			name = Release;
 		};
+		D1F823711C489CE900B54B04 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "-";
+				COMBINE_HIDPI_IMAGES = YES;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_VERSION = A;
+				INFOPLIST_FILE = "Structure Mac/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				PRODUCT_BUNDLE_IDENTIFIER = us.gerstacker.Structure;
+				PRODUCT_NAME = Structure;
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				SWIFT_INCLUDE_PATHS = "$(SRCROOT)";
+			};
+			name = Debug;
+		};
+		D1F823721C489CE900B54B04 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "-";
+				COMBINE_HIDPI_IMAGES = YES;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_VERSION = A;
+				INFOPLIST_FILE = "Structure Mac/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				PRODUCT_BUNDLE_IDENTIFIER = us.gerstacker.Structure;
+				PRODUCT_NAME = Structure;
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				SWIFT_INCLUDE_PATHS = "$(SRCROOT)";
+			};
+			name = Release;
+		};
+		D1F823741C489CE900B54B04 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "-";
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = "Structure Mac Tests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				PRODUCT_BUNDLE_IDENTIFIER = "us.gerstacker.Structure-MacTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_INCLUDE_PATHS = "$(SRCROOT)";
+			};
+			name = Debug;
+		};
+		D1F823751C489CE900B54B04 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "-";
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = "Structure Mac Tests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				PRODUCT_BUNDLE_IDENTIFIER = "us.gerstacker.Structure-MacTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_INCLUDE_PATHS = "$(SRCROOT)";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -454,7 +693,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		D1F822EF1C27A4DF00B54B04 /* Build configuration list for PBXNativeTarget "Structure" */ = {
+		D1F822EF1C27A4DF00B54B04 /* Build configuration list for PBXNativeTarget "Structure iOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				D1F822F01C27A4DF00B54B04 /* Debug */,
@@ -463,11 +702,29 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		D1F822F21C27A4DF00B54B04 /* Build configuration list for PBXNativeTarget "Structure Tests" */ = {
+		D1F822F21C27A4DF00B54B04 /* Build configuration list for PBXNativeTarget "Structure iOS Tests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				D1F822F31C27A4DF00B54B04 /* Debug */,
 				D1F822F41C27A4DF00B54B04 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D1F823701C489CE900B54B04 /* Build configuration list for PBXNativeTarget "Structure Mac" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D1F823711C489CE900B54B04 /* Debug */,
+				D1F823721C489CE900B54B04 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D1F823731C489CE900B54B04 /* Build configuration list for PBXNativeTarget "Structure Mac Tests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D1F823741C489CE900B54B04 /* Debug */,
+				D1F823751C489CE900B54B04 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
