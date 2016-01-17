@@ -276,7 +276,6 @@
 			children = (
 				D1F8239E1C48A18700B54B04 /* Info.plist */,
 			);
-			name = "Structure tvOS Tests";
 			path = "Structure tvOS Tests";
 			sourceTree = "<group>";
 		};
@@ -750,6 +749,7 @@
 				PRODUCT_NAME = Structure;
 				SKIP_INSTALL = YES;
 				SWIFT_INCLUDE_PATHS = "$(SRCROOT)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 			};
 			name = Release;
 		};
@@ -816,6 +816,7 @@
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
 				SWIFT_INCLUDE_PATHS = "$(SRCROOT)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 			};
 			name = Release;
 		};
@@ -884,6 +885,7 @@
 				SDKROOT = appletvos;
 				SKIP_INSTALL = YES;
 				SWIFT_INCLUDE_PATHS = "$(SRCROOT)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				TARGETED_DEVICE_FAMILY = 3;
 				TVOS_DEPLOYMENT_TARGET = 9.1;
 			};
@@ -970,6 +972,7 @@
 				D1F823A11C48A18700B54B04 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		D1F823A21C48A18700B54B04 /* Build configuration list for PBXNativeTarget "Structure tvOS Tests" */ = {
 			isa = XCConfigurationList;
@@ -978,6 +981,7 @@
 				D1F823A41C48A18700B54B04 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
