@@ -81,13 +81,32 @@ public class Structure {
         }
     }
     
+    public func close() throws {
+        var potentialError: StructureError? = nil
+        
+        dispatchWithinQueue {
+            let result = sqlite3_close_v2(self.database)
+            if result != SQLITE_OK {
+                potentialError = StructureError.fromSqliteResult(result)
+            } else {
+                self.database = nil
+            }
+        }
+        
+        if let error = potentialError {
+            throw error
+        }
+    }
+    
     deinit {
         dispatch_queue_set_specific(queue, StructureQueueKey, nil, nil)
         queueId.dealloc(1)
         
+        // Force a final closure, just in case
         if database != nil {
             sqlite3_close_v2(database)
         }
+        
     }
     
     
@@ -98,6 +117,7 @@ public class Structure {
     }
     
     // MARK: - Thread Safety
+    
     func dispatchWithinQueue(block: dispatch_block_t) {
         let currentId = dispatch_get_specific(StructureQueueKey)
         if currentId == queueId {

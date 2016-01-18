@@ -20,6 +20,9 @@ class StructureTests: XCTestCase {
     }
     
     override func tearDown() {
+        try! structure.close()
+        structure = nil
+        
         super.tearDown()
     }
 

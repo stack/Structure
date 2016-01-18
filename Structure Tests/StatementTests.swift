@@ -23,6 +23,9 @@ class StatementTests: XCTestCase {
     }
     
     override func tearDown() {
+        try! structure.close()
+        structure = nil
+        
         super.tearDown()
     }
     
