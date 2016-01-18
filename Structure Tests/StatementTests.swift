@@ -19,7 +19,7 @@ class StatementTests: XCTestCase {
         super.setUp()
         
         structure = try! Structure()
-        try! structure.execute("CREATE TABLE foo (a INTEGER PRIMARY KEY AUTOINCREMENT, b TEXT, c REAL)")
+        try! structure.execute("CREATE TABLE foo (a INTEGER PRIMARY KEY AUTOINCREMENT, b TEXT, c REAL, d INT)")
     }
     
     override func tearDown() {
@@ -78,7 +78,7 @@ class StatementTests: XCTestCase {
     func testDeleteStatement() {
         do {
             // Insert a row
-            let insertStatement = try structure.prepare("INSERT INTO foo (b, c) VALUES (:B, :C)")
+            let insertStatement = try structure.prepare("INSERT INTO foo (b, c,d ) VALUES (:B, :C, :D)")
             
             defer {
                 insertStatement.finalize()
@@ -86,6 +86,7 @@ class StatementTests: XCTestCase {
             
             insertStatement.bind("B", value: "foo")
             insertStatement.bind("C", value: 42.1)
+            insertStatement.bind("D", value: 42)
             
             try structure.perform(insertStatement)
             
@@ -117,7 +118,7 @@ class StatementTests: XCTestCase {
             XCTAssertEqual(0, initialCount)
             
             // Insert a row
-            let insertStatement = try structure.prepare("INSERT INTO foo (b, c) VALUES (:B, :C)")
+            let insertStatement = try structure.prepare("INSERT INTO foo (b, c, d) VALUES (:B, :C, :D)")
             
             defer {
                 insertStatement.finalize()
@@ -125,6 +126,7 @@ class StatementTests: XCTestCase {
             
             insertStatement.bind("B", value: "foo")
             insertStatement.bind("C", value: 42.1)
+            insertStatement.bind("D", value: 42)
             
             try structure.perform(insertStatement)
             
@@ -134,7 +136,7 @@ class StatementTests: XCTestCase {
             
             // Get the data that was inserted
             let lastId = structure.lastInsertedId
-            let selectStatement = try structure.prepare("SELECT a, b, c FROM foo")
+            let selectStatement = try structure.prepare("SELECT a, b, c, d FROM foo")
             
             defer {
                 selectStatement.finalize()
@@ -144,18 +146,22 @@ class StatementTests: XCTestCase {
                 let aString: Int64 = row["a"]
                 let bString: String? = row["b"]
                 let cString: Double = row["c"]
+                let dString: Int = row["d"]
                 
                 XCTAssertEqual(lastId, aString)
                 XCTAssertEqual("foo", bString)
                 XCTAssertEqual(42.1, cString)
+                XCTAssertEqual(42, dString)
                 
                 let aInt: Int64 = row[0]
                 let bInt: String? = row[1]
                 let cInt: Double = row[2]
+                let dInt: Int = row[3]
                 
                 XCTAssertEqual(lastId, aInt)
                 XCTAssertEqual("foo", bInt)
                 XCTAssertEqual(42.1, cInt)
+                XCTAssertEqual(42, dInt)
             }
         } catch let e {
             XCTFail("Failed testing insert statement: \(e)")
@@ -165,7 +171,7 @@ class StatementTests: XCTestCase {
     func testUpdateStatement() {
         do {
             // Insert a row
-            let insertStatement = try structure.prepare("INSERT INTO foo (b, c) VALUES (:B, :C)")
+            let insertStatement = try structure.prepare("INSERT INTO foo (b, c, d) VALUES (:B, :C, :D)")
             
             defer {
                 insertStatement.finalize()
@@ -173,6 +179,7 @@ class StatementTests: XCTestCase {
             
             insertStatement.bind("B", value: "foo")
             insertStatement.bind("C", value: 42.1)
+            insertStatement.bind("D", value: 42)
             
             try structure.perform(insertStatement)
         
@@ -184,7 +191,7 @@ class StatementTests: XCTestCase {
             let lastId = structure.lastInsertedId
             
             // Update the row
-            let updateStatement = try structure.prepare("UPDATE foo SET b = :B, c = :C where a = :A")
+            let updateStatement = try structure.prepare("UPDATE foo SET b = :B, c = :C, d = :D where a = :A")
             
             defer {
                 updateStatement.finalize()
@@ -192,6 +199,7 @@ class StatementTests: XCTestCase {
             
             updateStatement.bind("B", value: "bar")
             updateStatement.bind("C", value: 1.1)
+            updateStatement.bind("D", value: 2)
             updateStatement.bind("A", value: lastId)
             
             try structure.perform(updateStatement)
@@ -201,7 +209,7 @@ class StatementTests: XCTestCase {
             XCTAssertEqual(1, updatedCount)
             
             // Ensure the updated values are set
-            let selectStatement = try structure.prepare("SELECT a, b, c FROM foo WHERE a = :A")
+            let selectStatement = try structure.prepare("SELECT a, b, c, d FROM foo WHERE a = :A")
             
             defer {
                 selectStatement.finalize()
@@ -213,18 +221,22 @@ class StatementTests: XCTestCase {
                 let aString: Int64 = row["a"]
                 let bString: String? = row["b"]
                 let cString: Double = row["c"]
+                let dString: Int = row["d"]
                 
                 XCTAssertEqual(lastId, aString)
                 XCTAssertEqual("bar", bString)
                 XCTAssertEqual(1.1, cString)
+                XCTAssertEqual(2, dString)
                 
                 let aInt: Int64 = row[0]
                 let bInt: String? = row[1]
                 let cInt: Double = row[2]
+                let dInt: Int = row[3]
                 
                 XCTAssertEqual(lastId, aInt)
                 XCTAssertEqual("bar", bInt)
                 XCTAssertEqual(1.1, cInt)
+                XCTAssertEqual(2, dInt)
             }
         } catch let e {
             XCTFail("Failed testing update statement: \(e)")
