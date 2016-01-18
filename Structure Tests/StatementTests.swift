@@ -141,13 +141,21 @@ class StatementTests: XCTestCase {
             }
             
             try structure.perform(selectStatement) { row in
-                let a: Int64 = row["a"]
-                let b: String? = row["b"]
-                let c: Double = row["c"]
+                let aString: Int64 = row["a"]
+                let bString: String? = row["b"]
+                let cString: Double = row["c"]
                 
-                XCTAssertEqual(lastId, a)
-                XCTAssertEqual("foo", b)
-                XCTAssertEqual(42.1, c)
+                XCTAssertEqual(lastId, aString)
+                XCTAssertEqual("foo", bString)
+                XCTAssertEqual(42.1, cString)
+                
+                let aInt: Int64 = row[0]
+                let bInt: String? = row[1]
+                let cInt: Double = row[2]
+                
+                XCTAssertEqual(lastId, aInt)
+                XCTAssertEqual("foo", bInt)
+                XCTAssertEqual(42.1, cInt)
             }
         } catch let e {
             XCTFail("Failed testing insert statement: \(e)")
@@ -202,13 +210,21 @@ class StatementTests: XCTestCase {
             selectStatement.bind("A", value: lastId)
             
             try structure.perform(selectStatement) { row in
-                let a: Int64 = row["a"]
-                let b: String? = row["b"]
-                let c: Double = row["c"]
+                let aString: Int64 = row["a"]
+                let bString: String? = row["b"]
+                let cString: Double = row["c"]
                 
-                XCTAssertEqual(lastId, a)
-                XCTAssertEqual("bar", b)
-                XCTAssertEqual(1.1, c)
+                XCTAssertEqual(lastId, aString)
+                XCTAssertEqual("bar", bString)
+                XCTAssertEqual(1.1, cString)
+                
+                let aInt: Int64 = row[0]
+                let bInt: String? = row[1]
+                let cInt: Double = row[2]
+                
+                XCTAssertEqual(lastId, aInt)
+                XCTAssertEqual("bar", bInt)
+                XCTAssertEqual(1.1, cInt)
             }
         } catch let e {
             XCTFail("Failed testing update statement: \(e)")
