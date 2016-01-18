@@ -19,7 +19,7 @@ public class Row {
     
     // MARK: - Double Values
     
-    public subscript(index: Int32) -> Double {
+    private subscript(index: Int32) -> Double {
         return sqlite3_column_double(statement.statement, index)
     }
     
@@ -37,7 +37,7 @@ public class Row {
     
     // MARK: - Int Values
     
-    public subscript(index: Int32) -> Int {
+    private subscript(index: Int32) -> Int {
         let value = sqlite3_column_int(statement.statement, Int32(index))
         return Int(value)
     }
@@ -56,7 +56,7 @@ public class Row {
     
     // MARK: - Int64 Values
     
-    public subscript(index: Int32) -> Int64 {
+    private subscript(index: Int32) -> Int64 {
         return sqlite3_column_int64(statement.statement, Int32(index))
     }
     
@@ -74,7 +74,7 @@ public class Row {
     
     // MARK: - String Values
     
-    public subscript(index: Int32) -> String? {
+    private subscript(index: Int32) -> String? {
         let value = UnsafePointer<CChar>(sqlite3_column_text(statement.statement, Int32(index)))
         return String.fromCString(value)
     }
