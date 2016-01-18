@@ -8,6 +8,7 @@ Structure wraps the basic CRUD pattern of a database's usage. All queries are ru
 
 If you are familiar with the SQLite C API, you should be familiar with Structure. Full examples are available in the `Structure Tests` folder.
 
+```swift
     let structure = try Structre("/tmp/structure.db")
     
     let statement = try structure.prepare("INSERT INTO foo (b, c, d) VALUES (:B, :C, :D)")
@@ -21,6 +22,7 @@ If you are familiar with the SQLite C API, you should be familiar with Structure
     statement.bind("D", value: 42)
     
     try structure.perform(statement)
+```
 
 ## Database Lifecycle
 
@@ -38,11 +40,15 @@ Binding values to parameters is done via the `bind(index:, value:)` and `bind(ke
 
 To perform a Statement that does not return rows, use the `perform(statement:)` method on the Structure object. To perform a Statement that does return rows, use the `perform(statement:, rowCallback:)` method. For each row returned, a Row object will be provided, which allows subscript access to the values. The type to access the subscript must be explicit, meaning the following is not valid.
 
+```swift
     let value = row[0]
+```
 
 The proper way to retrieve the value is:
 
+```swift
     let value: Int = row[0]
+```
 
 The subscript methods use the SQLite conversions internally to return the proper type. For example, although a column may be defined as `REAL`, you can retrieve the value as a String. The SQLite conversion rules apply.
 
