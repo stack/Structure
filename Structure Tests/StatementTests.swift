@@ -78,7 +78,7 @@ class StatementTests: XCTestCase {
     func testDeleteStatement() {
         do {
             // Insert a row
-            let insertStatement = try structure.prepare("INSERT INTO foo (b, c,d ) VALUES (:B, :C, :D)")
+            let insertStatement = try structure.prepare("INSERT INTO foo (b, c, d) VALUES (:B, :C, :D)")
             
             defer {
                 insertStatement.finalize()
@@ -162,6 +162,67 @@ class StatementTests: XCTestCase {
                 XCTAssertEqual("foo", bInt)
                 XCTAssertEqual(42.1, cInt)
                 XCTAssertEqual(42, dInt)
+            }
+        } catch let e {
+            XCTFail("Failed testing insert statement: \(e)")
+        }
+    }
+    
+    func testInsertNull() {
+        do {
+            // Ensure we have no rows
+            let initialCount = countFoo()
+            XCTAssertEqual(0, initialCount)
+            
+            // Insert a row
+            let insertStatement = try structure.prepare("INSERT INTO foo (b, c, d) VALUES (:B, :C, :D)")
+            
+            defer {
+                insertStatement.finalize()
+            }
+            
+            let nullString: String? = nil
+            let nullDouble: Double? = nil
+            let nullInt: Int? = nil
+            
+            insertStatement.bind("B", value: nullString)
+            insertStatement.bind("C", value: nullDouble)
+            insertStatement.bind("D", value: nullInt)
+            
+            try structure.perform(insertStatement)
+            
+            // Ensure we have 1 row
+            let updatedCount = countFoo()
+            XCTAssertEqual(1, updatedCount)
+            
+            // Get the data that was inserted
+            let lastId = structure.lastInsertedId
+            let selectStatement = try structure.prepare("SELECT a, b, c, d FROM foo")
+            
+            defer {
+                selectStatement.finalize()
+            }
+            
+            try structure.perform(selectStatement) { row in
+                let aString: Int64 = row["a"]
+                let bString: String? = row["b"]
+                let cString: Double = row["c"]
+                let dString: Int = row["d"]
+                
+                XCTAssertEqual(lastId, aString)
+                XCTAssertNil(bString)
+                XCTAssertEqual(0.0, cString)
+                XCTAssertEqual(0, dString)
+                
+                let aInt: Int64 = row[0]
+                let bInt: String? = row[1]
+                let cInt: Double = row[2]
+                let dInt: Int = row[3]
+                
+                XCTAssertEqual(lastId, aInt)
+                XCTAssertNil(bInt)
+                XCTAssertEqual(0.0, cInt)
+                XCTAssertEqual(0, dInt)
             }
         } catch let e {
             XCTFail("Failed testing insert statement: \(e)")
