@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import sqlite3
+import SQLite
 
 public enum StructureError: ErrorType {
     case Error(String)

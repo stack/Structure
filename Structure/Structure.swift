@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import sqlite3
+import SQLite
 
 private let StructureQueueKey: UnsafeMutablePointer<Void> = UnsafeMutablePointer.alloc(1)
 

@@ -6,7 +6,7 @@
 //  Copyright © 2016 Stephen H. Gerstacker. All rights reserved.
 //
 
-import sqlite3
+import SQLite
 
 public class Statement {
     

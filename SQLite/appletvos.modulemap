@@ -1,0 +1,5 @@
+module SQLite [system] {
+    header "/Applications/Xcode.app/Contents/Developer/Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS.sdk/usr/include/sqlite3.h"
+    link "sqlite3"
+    export *
+}
