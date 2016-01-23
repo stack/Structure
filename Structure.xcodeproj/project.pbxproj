@@ -121,9 +121,7 @@
 		D13114F51C508B9D003A8981 /* macosx.modulemap */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = "sourcecode.module-map"; path = macosx.modulemap; sourceTree = "<group>"; };
 		D13114F61C508B9D003A8981 /* SQLite.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = SQLite.xcconfig; sourceTree = "<group>"; };
 		D13115091C51E18A003A8981 /* SQLite.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SQLite.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		D131150A1C51E18A003A8981 /* SQLite Mac copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "SQLite Mac copy-Info.plist"; path = "/Users/stack/Development/Personal/Structure/SQLite Mac copy-Info.plist"; sourceTree = "<absolute>"; };
 		D13115131C51E1B3003A8981 /* SQLite.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SQLite.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		D13115141C51E1B3003A8981 /* SQLite iOS copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "SQLite iOS copy-Info.plist"; path = "/Users/stack/Development/Personal/Structure/SQLite iOS copy-Info.plist"; sourceTree = "<absolute>"; };
 		D1F822DB1C27A4DF00B54B04 /* Structure.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Structure.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D1F822E01C27A4DF00B54B04 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D1F822E51C27A4DF00B54B04 /* Structure_iOS_Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Structure_iOS_Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -253,8 +251,6 @@
 				D1F8239B1C48A18700B54B04 /* Structure tvOS Tests */,
 				D13114E31C508B56003A8981 /* SQLite */,
 				D1F822DC1C27A4DF00B54B04 /* Products */,
-				D131150A1C51E18A003A8981 /* SQLite Mac copy-Info.plist */,
-				D13115141C51E1B3003A8981 /* SQLite iOS copy-Info.plist */,
 			);
 			sourceTree = "<group>";
 		};
@@ -900,7 +896,7 @@
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_VERSION = A;
-				INFOPLIST_FILE = "SQLite Mac copy-Info.plist";
+				INFOPLIST_FILE = SQLite/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = us.gerstacker.SQLite;
@@ -921,7 +917,7 @@
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_VERSION = A;
-				INFOPLIST_FILE = "SQLite Mac copy-Info.plist";
+				INFOPLIST_FILE = SQLite/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = us.gerstacker.SQLite;
@@ -942,7 +938,7 @@
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_VERSION = A;
-				INFOPLIST_FILE = "SQLite iOS copy-Info.plist";
+				INFOPLIST_FILE = SQLite/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = us.gerstacker.SQLite;
@@ -963,7 +959,7 @@
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_VERSION = A;
-				INFOPLIST_FILE = "SQLite iOS copy-Info.plist";
+				INFOPLIST_FILE = SQLite/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = us.gerstacker.SQLite;
@@ -1278,6 +1274,7 @@
 				D13114E91C508B56003A8981 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		D13115061C51E18A003A8981 /* Build configuration list for PBXNativeTarget "SQLite iOS" */ = {
 			isa = XCConfigurationList;
