@@ -7,9 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		D13115191C51E217003A8981 /* SQLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D13115091C51E18A003A8981 /* SQLite.framework */; };
-		D131151A1C51E226003A8981 /* SQLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D13114E21C508B56003A8981 /* SQLite.framework */; };
-		D131151B1C51E22B003A8981 /* SQLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D13115131C51E1B3003A8981 /* SQLite.framework */; };
+		D13115191C51E217003A8981 /* SQLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D13115091C51E18A003A8981 /* SQLite.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		D131151A1C51E226003A8981 /* SQLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D13114E21C508B56003A8981 /* SQLite.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		D131151B1C51E22B003A8981 /* SQLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D13115131C51E1B3003A8981 /* SQLite.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		D1F822E61C27A4DF00B54B04 /* Structure.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D1F822DB1C27A4DF00B54B04 /* Structure.framework */; };
 		D1F822FC1C27AB7100B54B04 /* Structure.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F822FB1C27AB7100B54B04 /* Structure.swift */; };
 		D1F822FD1C27AB7100B54B04 /* Structure.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F822FB1C27AB7100B54B04 /* Structure.swift */; };
