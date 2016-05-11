@@ -6,6 +6,7 @@
 //  Copyright © 2016 Stephen H. Gerstacker. All rights reserved.
 //
 
+import Foundation
 import SQLite
 
 public class Statement {
@@ -136,6 +137,8 @@ public class Statement {
             sqlite3_bind_int(statement, idx, Int32(x))
         case let x as Int64:
             sqlite3_bind_int64(statement, idx, x)
+        case let x as NSData:
+            sqlite3_bind_blob(statement, idx, x.bytes, Int32(x.length), SQLITE_TRANSIENT)
         case let x as String:
             sqlite3_bind_text(statement, idx, x, Int32(x.characters.count), SQLITE_TRANSIENT)
         default:

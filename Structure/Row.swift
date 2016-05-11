@@ -38,7 +38,7 @@ public class Row {
     // MARK: - Int Values
     
     private subscript(index: Int32) -> Int {
-        let value = sqlite3_column_int(statement.statement, Int32(index))
+        let value = sqlite3_column_int(statement.statement, index)
         return Int(value)
     }
     
@@ -57,7 +57,7 @@ public class Row {
     // MARK: - Int64 Values
     
     private subscript(index: Int32) -> Int64 {
-        return sqlite3_column_int64(statement.statement, Int32(index))
+        return sqlite3_column_int64(statement.statement, index)
     }
     
     public subscript(index: Int) -> Int64 {
@@ -72,10 +72,35 @@ public class Row {
         return self[index]
     }
     
+    // MARK: - NSData Values
+    
+    private subscript(index: Int32) -> NSData? {
+        let size = sqlite3_column_bytes(statement.statement, index)
+        let data = sqlite3_column_blob(statement.statement, index)
+        
+        if size == 0 || data == nil {
+            return nil
+        }
+        
+        return NSData(bytes: data, length: Int(size))
+    }
+    
+    public subscript(index: Int) -> NSData? {
+        return self[Int32(index)]
+    }
+    
+    public subscript(key: String) -> NSData? {
+        guard let index = statement.columns[key] else {
+            return nil
+        }
+        
+        return self[index]
+    }
+    
     // MARK: - String Values
     
     private subscript(index: Int32) -> String? {
-        let value = UnsafePointer<CChar>(sqlite3_column_text(statement.statement, Int32(index)))
+        let value = UnsafePointer<CChar>(sqlite3_column_text(statement.statement, index))
         return String.fromCString(value)
     }
     

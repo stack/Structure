@@ -6,11 +6,17 @@
 //  Copyright © 2016 Stephen H. Gerstacker. All rights reserved.
 //
 
+import Foundation
+
 public protocol Bindable {
     
 }
 
 extension Double: Bindable {
+    
+}
+
+extension NSData: Bindable {
     
 }
 
