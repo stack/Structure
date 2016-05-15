@@ -179,7 +179,7 @@ public class Structure {
                     if let callback = rowCallback {
                         callback(Row(statement: statement))
                     }
-                case.Unhandled(let code):
+                case .Unhandled(let code):
                     fatalError("Unhandled result code from stepping a statement: \(code)")
                 }
             }
@@ -188,6 +188,34 @@ public class Structure {
         if let error = potentialError {
             throw error
         }
+    }
+    
+    public func step(statement: Statement) throws -> Row? {
+        var potentialError: StructureError? = nil
+        var potentialRow: Row? = nil
+        
+        dispatchWithinQueue {
+            let result = statement.step()
+            
+            switch result {
+            case .Done:
+                potentialRow = nil
+            case .Error(let code):
+                potentialError = StructureError.fromSqliteResult(code)
+            case .OK:
+                potentialRow = nil
+            case .Row:
+                potentialRow = Row(statement: statement)
+            case .Unhandled(let code):
+                fatalError("Unhandled result code from stepping a statement: \(code)")
+            }
+        }
+        
+        if let error = potentialError {
+            throw error
+        }
+        
+        return potentialRow
     }
     
     public func transaction(block: (structure: Structure) throws -> ()) throws {

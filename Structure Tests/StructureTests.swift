@@ -76,6 +76,46 @@ class StructureTests: XCTestCase {
         }
     }
     
+    // MARK: - Step Tests
+    
+    func testStepSuccessfully() {
+        try! structure.execute("CREATE TABLE foo (a INT)")
+        try! structure.execute("INSERT INTO foo (a) VALUES (1)")
+        
+        do {
+            let statement = try structure.prepare("SELECT a FROM foo")
+            
+            defer {
+                statement.finalize()
+            }
+            
+            if let row = try structure.step(statement) {
+                let a: Int = row["a"]
+                XCTAssertEqual(1, a)
+            } else {
+                XCTFail("Failed to step a successful query")
+            }
+        } catch let e {
+            XCTFail("Unknown failure stepping a successful query: \(e)")
+        }
+    }
+    
+    func testStepEmpty() {
+        try! structure.execute("CREATE TABLE foo (a INT)")
+        
+        do {
+            let statement = try structure.prepare("SELECT a FROM foo")
+            
+            defer {
+                statement.finalize()
+            }
+            
+            XCTAssertNil(try structure.step(statement))
+        } catch let e {
+            XCTFail("Unknown failure stepping an empty query: \(e)")
+        }
+    }
+    
     // MARK: - Migration Tests
     
     func testMigrationWorksInitially() {
