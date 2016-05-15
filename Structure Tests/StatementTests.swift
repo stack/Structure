@@ -339,8 +339,8 @@ class StatementTests: XCTestCase {
             XCTAssertEqual(0, initialCount)
             
             // Insert a series of data in a transaction
-            try structure.transaction {
-                let insertStatement = try self.structure.prepare("INSERT INTO foo (b, c) VALUES (:B, :C)")
+            try structure.transaction { s in
+                let insertStatement = try s.prepare("INSERT INTO foo (b, c) VALUES (:B, :C)")
                 
                 defer {
                     insertStatement.finalize()
@@ -349,14 +349,14 @@ class StatementTests: XCTestCase {
                 insertStatement.bind("B", value: "foo")
                 insertStatement.bind("C", value: 42.1)
                 
-                try self.structure.perform(insertStatement)
+                try s.perform(insertStatement)
                 
                 insertStatement.reset()
                 
                 insertStatement.bind("B", value: "bar")
                 insertStatement.bind("C", value: 1.1)
                 
-                try self.structure.perform(insertStatement)
+                try s.perform(insertStatement)
             }
             
             // Ensure there are two rows
@@ -374,8 +374,8 @@ class StatementTests: XCTestCase {
         
         do {
             // Insert a some data, but fail
-            try structure.transaction {
-                let insertStatement = try self.structure.prepare("INSERT INTO foo (b, c) VALUES (:B, :C)")
+            try structure.transaction { s in
+                let insertStatement = try s.prepare("INSERT INTO foo (b, c) VALUES (:B, :C)")
                 
                 defer {
                     insertStatement.finalize()
@@ -384,14 +384,14 @@ class StatementTests: XCTestCase {
                 insertStatement.bind("B", value: "foo")
                 insertStatement.bind("C", value: 42.1)
                 
-                try self.structure.perform(insertStatement)
+                try s.perform(insertStatement)
                 
                 insertStatement.reset()
                 
                 insertStatement.bind("B", value: "bar")
                 insertStatement.bind("C", value: 1.1)
                 
-                try self.structure.perform(insertStatement)
+                try s.perform(insertStatement)
                 
                 throw StructureError.Error("Forced Error")
             }

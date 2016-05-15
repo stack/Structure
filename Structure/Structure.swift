@@ -109,7 +109,6 @@ public class Structure {
         
     }
     
-    
     // MARK: - Statement Creation
     
     public func prepare(query: String) throws -> Statement {
@@ -135,8 +134,6 @@ public class Structure {
         
         // Queue the execution
         dispatchWithinQueue {
-            self.beginTransaction()
-            
             // Attempt the execution
             var errorMessage: UnsafeMutablePointer<Int8> = nil
             let result = sqlite3_exec(self.database, query, nil, nil, &errorMessage)
@@ -148,12 +145,7 @@ public class Structure {
                 }
                 
                 sqlite3_free(errorMessage)
-                
-                self.rollbackTransaction()
-            } else {
-                self.commitTransaction()
             }
-
         };
         
         // If an error occurred in the block, throw it
@@ -198,7 +190,7 @@ public class Structure {
         }
     }
     
-    public func transaction(block: () throws -> ()) throws {
+    public func transaction(block: (structure: Structure) throws -> ()) throws {
         var potentialError: ErrorType? = nil
         
         dispatch_sync(queue) {
@@ -206,7 +198,7 @@ public class Structure {
             self.beginTransaction()
         
             do {
-                try block()
+                try block(structure: self)
                 self.commitTransaction()
             } catch let e {
                 potentialError = e
@@ -219,6 +211,39 @@ public class Structure {
         }
     }
     
+    // MARK: - Migration
+    
+    internal func migrate(version: Int, migration: (structure: Structure) throws -> ()) throws {
+        // Skip if this migration has already run
+        guard userVersion < version else {
+            return
+        }
+        
+        // Error if this migration is out of order
+        guard version - userVersion == 1 else {
+            throw StructureError.Error("Attempted migration \(version) is out of order with \(userVersion)")
+        }
+        
+        // Submit the
+        var potentialError: ErrorType? = nil
+        
+        dispatchWithinQueue {
+            self.beginTransaction()
+            
+            do {
+                try migration(structure: self)
+                self.userVersion = version
+                self.commitTransaction()
+            } catch let e {
+                potentialError = e
+                self.rollbackTransaction()
+            }
+        }
+        
+        if let error = potentialError {
+            throw error
+        }
+    }
     
     // MARK: - Transaction Management
     
