@@ -213,7 +213,7 @@ public class Structure {
     
     // MARK: - Migration
     
-    internal func migrate(version: Int, migration: (structure: Structure) throws -> ()) throws {
+    public func migrate(version: Int, migration: (structure: Structure) throws -> ()) throws {
         // Skip if this migration has already run
         guard userVersion < version else {
             return
