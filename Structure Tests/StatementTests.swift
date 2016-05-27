@@ -29,6 +29,23 @@ class StatementTests: XCTestCase {
         super.tearDown()
     }
     
+    // MARK: - Bind Tests
+    
+    func testBindEmoji() {
+        let insertStatement = try! structure.prepare("INSERT INTO foo (b) VALUES (:b)")
+        insertStatement.bind("b", value: "💩 Fletch 💩")
+        
+        try! structure.step(insertStatement)
+        insertStatement.finalize()
+        
+        let selectStatement = try! structure.prepare("SELECT b FROM foo LIMIT 1")
+        let row = try! structure.step(selectStatement)
+        
+        let result: String = row!["b"]!
+        XCTAssertEqual(result, "💩 Fletch 💩")
+        
+        selectStatement.finalize()
+    }
     
     // MARK: - Prepare Tests
     

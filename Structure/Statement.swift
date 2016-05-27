@@ -140,7 +140,7 @@ public class Statement {
         case let x as NSData:
             sqlite3_bind_blob(statement, idx, x.bytes, Int32(x.length), SQLITE_TRANSIENT)
         case let x as String:
-            sqlite3_bind_text(statement, idx, x, Int32(x.characters.count), SQLITE_TRANSIENT)
+            sqlite3_bind_text(statement, idx, x, Int32(x.utf8.count), SQLITE_TRANSIENT)
         default:
             fatalError("Unhndled bindable type")
         }
