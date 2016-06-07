@@ -64,7 +64,7 @@ Each transaction is wrapped in the SQLite `TRANSACTION` mechanism, allowing roll
 
 ## License
 
-Structure is copyright © 2016 Stephen H. Gerstacker. It is free software, and may be redistributed under the terms specified in the `LICENSE` file.
+Structure is copyright © 2016 Stephen H. Gerstacker. It is free software, and may be redistributed under the terms specified in the `LICENSE.md` file.
 
 # Installation
 
