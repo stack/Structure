@@ -4,11 +4,16 @@ branches:
   only:
     - master
 
-xcode_project: Structure.xcodeproj
-xcode_scheme: Structure iOS Tests
 osx_image: xcode7.3
-xcode_sdk: iphonesimulator9.3
+xcode_project: Structure.xcodeproj
 
-script:
-  - xcodebuild test -project Structure.xcodeproj -scheme "Structure iOS" -destination "platform=iOS Simulator,name=iPhone 6s"
+xcode_scheme:
+        - Structure iOS
+        - Structure Mac
+        - Structure tvOS
+
+xcode_sdk:
+        - iphonesimulator9.3
+        - macosx10.11
+        - tvOS9.2
 
