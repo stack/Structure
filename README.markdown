@@ -1,4 +1,4 @@
-# Structure
+# Structure [![GitHub license](https://img.shields.io/badge/license-MIT-lightgrey.svg)](https://raw.githubusercontent.com/stack/Structure/master/LICENSE.md) [![GitHub release](https://img.shields.io/github/release/carthage/carthage.svg)](https://github.com/stack/Structure/releases)
 
 Structure is a [SQLite](https://sqlite.org "SQLite Home Page") wrapper, written in Swift. It is written specifically for the needs of the author, but any comments or criticisms are welcomed.
 
@@ -70,5 +70,5 @@ Structure is copyright © 2016 Stephen H. Gerstacker. It is free software, and m
 
 Currently only Carthage is supported. Add the following to your `Cartfile`:
 
-    github "stack/Structure"
+    github "stack/Structure" ~> 1.0
 
