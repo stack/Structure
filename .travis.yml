@@ -17,3 +17,17 @@ xcode_sdk:
         - macosx10.11
         - tvOS9.2
 
+matrix:
+        exclude:
+                - xcode_scheme: Structure iOS
+                  xcode_sdk: macosx10.11
+                - xcode_scheme: Structure iOS
+                  xcode_sdk: tvOS9.2
+                - xcode_scheme: Structure Mac
+                  xcode_sdk: iphonesimulator9.3
+                - xcode_scheme: Structure Mac
+                  xcode_sdk: tvOS9.2
+                - xcode_scheme: Structure tvOS
+                  xcode_sdk: iphonesimulator9.3
+                - xcode_scheme: Structure tvOS
+                  xcode_sdk: macosx10.11
