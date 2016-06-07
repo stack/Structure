@@ -9,13 +9,15 @@
 import Foundation
 import SQLite
 
+/// A common identifier for use with dispatch queues
 private let StructureQueueKey: UnsafeMutablePointer<Void> = UnsafeMutablePointer.alloc(1)
 
+/// The root class of the Structure framework
 public class Structure {
     
     // MARK: - Properties
     
-    var database: SQLiteDatabase = nil
+    internal var database: SQLiteDatabase = nil
     
     private var queue: dispatch_queue_t
     private var queueId: UnsafeMutablePointer<Void>
@@ -28,10 +30,12 @@ public class Structure {
         }
     }
     
+    /// The lasted ID generate
     public var lastInsertedId: Int64 {
         return sqlite3_last_insert_rowid(database)
     }
     
+    /// A number store along with the database, typically used for schema versioning.
     public internal(set) var userVersion: Int {
         get {
             do {
@@ -64,10 +68,23 @@ public class Structure {
     
     // MARK: - Initialization
     
+    /**
+        Initializes a new Structure object with all data stored in memory. No data will be persisted.
+     
+        - Throws: `StructureError.InternalError` if opening the database fails.
+    */
     convenience public init() throws {
         try self.init(path: ":memory:")
     }
     
+    /**
+        Initializes a new Structure object at the given path. If the file already exists, it will be opened, otherwise it will be created.
+ 
+        - Parameters:
+            - path: The full path to the Structure object to open or create.
+ 
+        - Throws: `StructureError.InternalError` if opening the database fails.
+    */
     required public init(path: String) throws {
         // Build the execution queue
         queue = dispatch_queue_create("Structure Queue", DISPATCH_QUEUE_SERIAL)
@@ -81,6 +98,11 @@ public class Structure {
         }
     }
     
+    /**
+        Close a Structure object. Once closed, a Structure object should not be used again. The behaviour is undefined.
+ 
+        - Throws: `StructureError.InternalError` if closing the database failed.
+    */
     public func close() throws {
         var potentialError: StructureError? = nil
         
@@ -111,13 +133,22 @@ public class Structure {
     
     // MARK: - Statement Creation
     
+    /**
+        Creates a new statement with the query string. Queries are validated and must have all parameters named.
+ 
+        - Throws: 
+            `StructureError.InternalError` if parsing by SQLite has failed.
+            `Structure.Error` if a parameter is not named properly.
+     
+        - Returns: A new Statement object.
+    */
     public func prepare(query: String) throws -> Statement {
         return try Statement(structure: self, query: query)
     }
     
     // MARK: - Thread Safety
     
-    func dispatchWithinQueue(block: dispatch_block_t) {
+    internal func dispatchWithinQueue(block: dispatch_block_t) {
         let currentId = dispatch_get_specific(StructureQueueKey)
         if currentId == queueId {
             block()
@@ -128,6 +159,14 @@ public class Structure {
     
     // MARK: - Execution
     
+    /**
+        A shortcut method to execute a query without using the `prepare` and `finalize` functions.
+ 
+        - Parameters:
+            - query: The query to execute
+ 
+        - Throws: `StructureError.InternalError` if the execution failed.
+    */
     public func execute(query: String) throws {
         // Placeholder for an error that occurs in the block
         var potentialError: StructureError? = nil
@@ -154,10 +193,27 @@ public class Structure {
         }
     }
     
+    /**
+        Performs the given Statement that does not return any rows.
+ 
+        - Parameters:
+            - statement: The statement to perform.
+ 
+        - Throws: `Structure.InternalError` if performing the Statement failed.
+    */
     public func perform(statement: Statement) throws {
         try perform(statement, rowCallback: nil)
     }
     
+    /**
+        Performs the given Statement, calling the given callback for each row returned.
+ 
+        - Parameters:
+            - statement: The statement to perform.
+            - rowCallback: The callback performed for each row that results from the Statement.
+ 
+        - Throws: `Structure.InternalError` if performing the Statement failed.
+    */
     public func perform(statement: Statement, rowCallback: ((Row) -> ())?) throws {
         var potentialError: StructureError? = nil
         
@@ -190,6 +246,16 @@ public class Structure {
         }
     }
     
+    /**
+        Performs one iteration of a given statement.
+ 
+        - Parameters:
+            - statement: The statement to perform.
+ 
+        - Throws: `StructureError.InternalError` if performing the statement failed.
+ 
+        - Returns: A row from a single execution of the Statement, or nil if the query did not return a row.
+    */
     public func step(statement: Statement) throws -> Row? {
         var potentialError: StructureError? = nil
         var potentialRow: Row? = nil
@@ -218,6 +284,15 @@ public class Structure {
         return potentialRow
     }
     
+    /**
+        Any Statements performed within the given block will be wrapped in a transaction, 
+        allowing single execution of all Statements and rollback for failed executions.
+ 
+        - Parameters:
+            - block: The block containg Statements to be executed in one concurrent transaction.
+ 
+        - Throws: `StructureError.InternalError` if an error is thrown inside of the block.
+    */
     public func transaction(block: (structure: Structure) throws -> ()) throws {
         var potentialError: ErrorType? = nil
         
@@ -241,6 +316,19 @@ public class Structure {
     
     // MARK: - Migration
     
+    /**
+        Performs the Statements in the given block, ensuring they are only executed
+        when `userVersion` is one less than the given version. This ensures the same
+        set of migration blocks can be run multiple times, only allowing new migration
+        versions to be run. Once completed, the userVersion is incremented to the
+        given version.
+ 
+        - Parameters:
+            - version: The incremental version number of the migration, starting at 1.
+            - migration: A block containing Statements executed to perform a migration.
+ 
+        - Throws: `StructureError.InternalError` if an error is thrown inside of the block.
+    */
     public func migrate(version: Int, migration: (structure: Structure) throws -> ()) throws {
         // Skip if this migration has already run
         guard userVersion < version else {

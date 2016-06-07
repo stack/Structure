@@ -9,6 +9,7 @@
 import Foundation
 import SQLite
 
+/// A wrapper around the SQLite statement
 public class Statement {
     
     // MARK: - Properties
@@ -43,6 +44,9 @@ public class Statement {
         }
     }
     
+    /**
+        Finalize the statement, freeing any resources associated with it.
+    */
     public func finalize() {
         let result = sqlite3_finalize(statement)
         if result != SQLITE_OK {
@@ -99,6 +103,9 @@ public class Statement {
         }
     }
     
+    /**
+        Reset the statement for reuse without rebuilding.
+    */
     public func reset() {
         let result = sqlite3_reset(statement)
         if result != SQLITE_OK {
@@ -116,11 +123,25 @@ public class Statement {
     
     // MARK: - Data Binding
     
+    /**
+        Bind a `Bindable` value to the given index.
+ 
+        - Parameters:
+            - index: The index of the parameter to bind.
+            - value: The `Bindable` value to assign to the index.
+    */
     public func bind(index: Int, value: Bindable?) {
         bind(Int32(index), value: value)
     }
     
-    public func bind(index: Int32, value: Bindable?) {
+    /**
+        Bind a `Bindable` value to the given native index.
+     
+        - Parameters:
+            - index: The native index of the parameter to bind.
+        - value: The `Bindable` value to assign to the native index.
+    */
+    private func bind(index: Int32, value: Bindable?) {
         let idx = Int32(index)
         
         // If we don't have a value, bind NULL
@@ -146,6 +167,13 @@ public class Statement {
         }
     }
     
+    /**
+        Bind a `Bindable` value to the given index.
+     
+        - Parameters:
+            - index: The named index of the parameter to bind.
+        - value: The `Bindable` value to assign to the namaed index.
+    */
     public func bind(key: String, value: Bindable?) {
         // Ensure we can map a parameter to an index
         guard let index = bindParameters[key] else {
