@@ -2,7 +2,7 @@
 
 Structure is a [SQLite](https://sqlite.org "SQLite Home Page") wrapper, written in Swift. It is written specifically for the needs of the author, but any comments or criticisms are welcomed.
 
-Structure wraps the basic CRUD pattern of a database's usage. All queries are run internally through a single queue. While SQLite already provides thread safety, this provides a simple mechanism to perform an atomic series of commands, with rollback features.
+Structure wraps the basic CRUD pattern of a database's usage. All queries are run internally through a single, internal queue. While SQLite already provides thread safety, this provides a simple mechanism to perform an atomic series of commands, with rollback features.
 
 ## Basic Usage
 
@@ -36,9 +36,9 @@ Parameters in a Statement are required to be named. SQLite allows the use of ":"
 
 ## Using Statements
 
-Binding values to parameters is done via the `bind(index:, value:)` and `bind(key:, value:)` methods. The former is for binding to the index of the parameter. The latter is used to bind to the parameter name, minus the prefix. The value is Bindable, which is a protocol that currently wraps the Double, Int, Int64, and String types. The Bindable values are optional, which allows the setting of `NULL` for a value. Remember: SQLite parameter indexes start with 1, not 0.
+Binding values to parameters is done via the `bind(index:, value:)` and `bind(key:, value:)` methods. The former is for binding to the index of the parameter. The latter is used to bind to the parameter name, minus the prefix. The value is Bindable, which is a protocol that currently wraps the Double, Int, Int64, NSData, and String types. The Bindable values are optional, which allows the setting of `NULL` for a value. Remember: SQLite parameter indexes start with 1, not 0.
 
-To perform a Statement that does not return rows, use the `perform(statement:)` method on the Structure object. To perform a Statement that does return rows, use the `perform(statement:, rowCallback:)` method. For each row returned, a Row object will be provided, which allows subscript access to the values. The type to access the subscript must be explicit, meaning the following is not valid.
+To perform a Statement that does not return rows, use the `perform(statement:)` method on the Structure object. To perform a Statement that does return rows, use the `perform(statement:, rowCallback:)` method. For each row returned, a Row object will be provided, which allows subscript access to the values. The type to access the subscript must be explicit, meaning the following is not valid. 
 
 ```swift
     let value = row[0]
@@ -53,6 +53,8 @@ The proper way to retrieve the value is:
 The subscript methods use the SQLite conversions internally to return the proper type. For example, although a column may be defined as `REAL`, you can retrieve the value as a String. The SQLite conversion rules apply.
 
 Row subscripts can either be accessed via their index or their name. Remember, row subscripts start with 0, not 1.
+
+A Statement can be stepped using the `step(statement:)` method, allowing for single row execution of Statement if desired.
 
 ## Transactions
 
