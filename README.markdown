@@ -66,3 +66,9 @@ Each transaction is wrapped in the SQLite `TRANSACTION` mechanism, allowing roll
 
 Structure is copyright © 2016 Stephen H. Gerstacker. It is free software, and may be redistributed under the terms specified in the `LICENSE` file.
 
+# Installation
+
+Currently only Carthage is supported. Add the following to your `Cartfile`:
+
+    github "stack/Structure"
+
