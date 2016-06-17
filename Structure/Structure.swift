@@ -12,6 +12,9 @@ import SQLite
 /// A common identifier for use with dispatch queues
 private let StructureQueueKey: UnsafeMutablePointer<Void> = UnsafeMutablePointer.alloc(1)
 
+/// Simplified type for the callback that happens per-row of a `perform` function.
+public typealias PerformCallback = (Row) -> Void
+
 /// The root class of the Structure framework
 public class Structure {
     
@@ -148,12 +151,12 @@ public class Structure {
     
     // MARK: - Thread Safety
     
-    internal func dispatchWithinQueue(block: dispatch_block_t) {
+    internal func dispatchWithinQueue(@noescape block: Void -> ()) {
         let currentId = dispatch_get_specific(StructureQueueKey)
         if currentId == queueId {
             block()
         } else {
-            dispatch_sync(queue, block)
+            os_dispatch_sync(queue, block)
         }
     }
     
@@ -202,19 +205,6 @@ public class Structure {
         - Throws: `Structure.InternalError` if performing the Statement failed.
     */
     public func perform(statement: Statement) throws {
-        try perform(statement, rowCallback: nil)
-    }
-    
-    /**
-        Performs the given Statement, calling the given callback for each row returned.
- 
-        - Parameters:
-            - statement: The statement to perform.
-            - rowCallback: The callback performed for each row that results from the Statement.
- 
-        - Throws: `Structure.InternalError` if performing the Statement failed.
-    */
-    public func perform(statement: Statement, rowCallback: ((Row) -> ())?) throws {
         var potentialError: StructureError? = nil
         
         dispatchWithinQueue {
@@ -232,9 +222,46 @@ public class Structure {
                 case .OK:
                     keepGoing = false
                 case .Row:
-                    if let callback = rowCallback {
-                        callback(Row(statement: statement))
-                    }
+                    potentialError = StructureError.Error("Performed a statement without a row callback, and got a row")
+                case .Unhandled(let code):
+                    fatalError("Unhandled result code from stepping a statement: \(code)")
+                }
+            }
+        }
+        
+        if let error = potentialError {
+            throw error
+        }
+    }
+    
+    /**
+        Performs the given Statement, calling the given callback for each row returned.
+ 
+        - Parameters:
+            - statement: The statement to perform.
+            - rowCallback: The callback performed for each row that results from the Statement.
+ 
+        - Throws: `Structure.InternalError` if performing the Statement failed.
+    */
+    public func perform(statement: Statement, @noescape rowCallback: PerformCallback) throws {
+        var potentialError: StructureError? = nil
+        
+        dispatchWithinQueue {
+            // Step until there is an error or complete
+            var keepGoing = true
+            while keepGoing {
+                let result = statement.step()
+                
+                switch result {
+                case .Done:
+                    keepGoing = false
+                case .Error(let code):
+                    potentialError = StructureError.fromSqliteResult(code)
+                    keepGoing = false
+                case .OK:
+                    keepGoing = false
+                case .Row:
+                    rowCallback(Row(statement: statement))
                 case .Unhandled(let code):
                     fatalError("Unhandled result code from stepping a statement: \(code)")
                 }
@@ -293,10 +320,10 @@ public class Structure {
  
         - Throws: `StructureError.InternalError` if an error is thrown inside of the block.
     */
-    public func transaction(block: (structure: Structure) throws -> ()) throws {
+    public func transaction(@noescape block: (structure: Structure) throws -> ()) throws {
         var potentialError: ErrorType? = nil
         
-        dispatch_sync(queue) {
+        os_dispatch_sync(queue) {
             // Mark the beginning of the transaction
             self.beginTransaction()
         
@@ -329,7 +356,7 @@ public class Structure {
  
         - Throws: `StructureError.InternalError` if an error is thrown inside of the block.
     */
-    public func migrate(version: Int, migration: (structure: Structure) throws -> ()) throws {
+    public func migrate(version: Int, @noescape migration: (structure: Structure) throws -> ()) throws {
         // Skip if this migration has already run
         guard userVersion < version else {
             return
