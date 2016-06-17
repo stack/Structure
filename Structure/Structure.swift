@@ -15,6 +15,10 @@ private let StructureQueueKey: UnsafeMutablePointer<Void> = UnsafeMutablePointer
 /// Simplified type for the callback that happens per-row of a `perform` function.
 public typealias PerformCallback = (Row) -> Void
 
+private typealias EnsureVersionWrapper = (newVersion: Int, currentVersion: Int) throws -> ()
+private typealias OnErrorWrapper = (error: ErrorType) throws -> ()
+
+
 /// The root class of the Structure framework
 public class Structure {
     
@@ -320,13 +324,17 @@ public class Structure {
  
         - Throws: `StructureError.InternalError` if an error is thrown inside of the block.
     */
-    public func transaction(@noescape block: (structure: Structure) throws -> ()) throws {
+    public func transaction(@noescape block: (structure: Structure) throws -> ()) rethrows {
+        try transaction(block, onError: { throw $0 })
+    }
+    
+    private func transaction(@noescape block: (structure: Structure) throws -> (), @noescape onError: OnErrorWrapper) rethrows {
         var potentialError: ErrorType? = nil
         
         os_dispatch_sync(queue) {
             // Mark the beginning of the transaction
             self.beginTransaction()
-        
+            
             do {
                 try block(structure: self)
                 self.commitTransaction()
@@ -337,9 +345,10 @@ public class Structure {
         }
         
         if let error = potentialError {
-            throw error
+            try onError(error: error)
         }
     }
+    
     
     // MARK: - Migration
     
@@ -356,16 +365,27 @@ public class Structure {
  
         - Throws: `StructureError.InternalError` if an error is thrown inside of the block.
     */
-    public func migrate(version: Int, @noescape migration: (structure: Structure) throws -> ()) throws {
+    public func migrate(version: Int, @noescape migration: (structure: Structure) throws -> ()) rethrows {
+        try migrate(version,
+                    migration: migration,
+                    ensureVersion: {
+                        guard $0 - $1 == 1 else {
+                            throw StructureError.Error("Attempted migration \($0) is out of order with \($1)")
+                        }
+                    },
+                    onError: {
+                        throw $0
+                    })
+    }
+    
+    private func migrate(version: Int, @noescape migration: (structure: Structure) throws -> (), @noescape ensureVersion: EnsureVersionWrapper, @noescape onError: OnErrorWrapper) rethrows {
         // Skip if this migration has already run
         guard userVersion < version else {
             return
         }
         
         // Error if this migration is out of order
-        guard version - userVersion == 1 else {
-            throw StructureError.Error("Attempted migration \(version) is out of order with \(userVersion)")
-        }
+        try ensureVersion(newVersion: version, currentVersion: userVersion)
         
         // Submit the
         var potentialError: ErrorType? = nil
@@ -384,7 +404,7 @@ public class Structure {
         }
         
         if let error = potentialError {
-            throw error
+            try onError(error: error)
         }
     }
     
