@@ -195,4 +195,78 @@ class StructureTests: XCTestCase {
         
         XCTAssertEqual(0, count)
     }
+    
+    // MARK: - Concurrency Tests
+    
+    func testMultipleModifications() {
+        // Build a table with an integer value
+        try! structure.migrate(1) { s in
+            try s.execute("CREATE TABLE foo (id INTEGER PRIMARY KEY, value INTEGER)")
+        }
+        
+        // Inject initial data
+        try! structure.execute("INSERT INTO foo (value) VALUES (0)")
+        let id = structure.lastInsertedId
+        
+        // Build statements for fetch and update
+        let fetchStatement = try! structure.prepare("SELECT value FROM foo WHERE id = :id")
+        let updateStatement = try! structure.prepare("UPDATE foo SET value = :value WHERE id = :id")
+        
+        // Ensure the default value is set properly
+        fetchStatement.bind("id", value: id)
+        
+        guard let initialRow = try! structure.step(fetchStatement) else {
+            XCTFail("Failed to get initial value")
+            return
+        }
+        
+        XCTAssertEqual(initialRow["value"] as Int, 0)
+        
+        // Construct a large series of read / increment / write instructions
+        let queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)
+        let group = dispatch_group_create()
+        
+        for _ in 0 ..< 1000 {
+            dispatch_group_async(group, queue) {
+                self.structure.transaction { (structure) in
+                    // Fetch
+                    fetchStatement.reset()
+                    fetchStatement.bind("id", value: id)
+                    
+                    guard let row = try! structure.step(fetchStatement) else {
+                        XCTFail("Failed to get initial value")
+                        return
+                    }
+                    
+                    // Increment
+                    let newValue: Int = row["value"] + 1
+                    
+                    // Update
+                    updateStatement.reset()
+                    updateStatement.bind("value", value: newValue)
+                    updateStatement.bind("id", value: id)
+                    
+                    try! structure.perform(updateStatement)
+                }
+            }
+        }
+        
+        // Wait for everything to complete
+        dispatch_group_wait(group, DISPATCH_TIME_FOREVER)
+        
+        // Ensure the value got incremented 100 times
+        fetchStatement.reset()
+        fetchStatement.bind("id", value: id)
+        
+        guard let finalRow = try! structure.step(fetchStatement) else {
+            XCTFail("Failed to get final value")
+            return
+        }
+        
+        XCTAssertEqual(finalRow["value"] as Int, 1000)
+        
+        // Cleanup
+        fetchStatement.finalize()
+        updateStatement.finalize()
+    }
 }

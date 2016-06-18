@@ -4,6 +4,7 @@
 
 *   Audited closures for use of `@noescape`.
 *   Audited parameter `throws` for use of `rethrows`.
+*   Concurrency testing.
 
 
 ### [1.0](https://github.com/stack/Structure/releases/tag/v1.0.0)
