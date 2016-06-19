@@ -223,7 +223,7 @@ class StructureTests: XCTestCase {
         XCTAssertEqual(initialRow["value"] as Int, 0)
         
         // Construct a large series of read / increment / write instructions
-        let queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)
+        let queue = dispatch_queue_create("Test Queue", DISPATCH_QUEUE_CONCURRENT)
         let group = dispatch_group_create()
         
         for _ in 0 ..< 1000 {
