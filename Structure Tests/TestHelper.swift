@@ -12,6 +12,6 @@ func XCTSuccess() {
     XCTAssertTrue(true)
 }
 
-func XCTSuccess(message: String) {
+func XCTSuccess(_ message: String) {
     XCTAssertTrue(true, message)
 }

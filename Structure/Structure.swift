@@ -10,13 +10,13 @@ import Foundation
 import SQLite
 
 /// A common identifier for use with dispatch queues
-private let StructureQueueKey: UnsafeMutablePointer<Void> = UnsafeMutablePointer.alloc(1)
+private let StructureQueueKey: DispatchSpecificKey = DispatchSpecificKey()
 
 /// Simplified type for the callback that happens per-row of a `perform` function.
 public typealias PerformCallback = (Row) -> Void
 
 private typealias EnsureVersionWrapper = (newVersion: Int, currentVersion: Int) throws -> ()
-private typealias OnErrorWrapper = (error: ErrorType) throws -> ()
+private typealias OnErrorWrapper = (error: ErrorProtocol) throws -> ()
 
 
 /// The root class of the Structure framework
@@ -24,9 +24,9 @@ public class Structure {
     
     // MARK: - Properties
     
-    internal var database: SQLiteDatabase = nil
+    internal var database: SQLiteDatabase? = nil
     
-    private var queue: dispatch_queue_t
+    private var queue: DispatchQueue
     private var queueId: UnsafeMutablePointer<Void>
     
     internal var errorMessage: String {
@@ -94,9 +94,9 @@ public class Structure {
     */
     required public init(path: String) throws {
         // Build the execution queue
-        queue = dispatch_queue_create("Structure Queue", DISPATCH_QUEUE_SERIAL)
-        queueId = UnsafeMutablePointer.alloc(1)
-        dispatch_queue_set_specific(queue, StructureQueueKey, queueId, nil)
+        queue = DispatchQueue(label: "Structure Queue", attributes: DispatchQueueAttributes.serial)
+        queueId = UnsafeMutablePointer(allocatingCapacity: 1)
+        queue.setSpecific(key: StructureQueueKey, value: queueId)
         
         // Attempt to open the path
         let result = sqlite3_open_v2(path, &database, SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE, nil)
@@ -128,8 +128,8 @@ public class Structure {
     }
     
     deinit {
-        dispatch_queue_set_specific(queue, StructureQueueKey, nil, nil)
-        queueId.dealloc(1)
+        queue.setSpecific(key: StructureQueueKey, value: nil)
+        queueId.deallocateCapacity(1)
         
         // Force a final closure, just in case
         if database != nil {
@@ -149,14 +149,14 @@ public class Structure {
      
         - Returns: A new Statement object.
     */
-    public func prepare(query: String) throws -> Statement {
+    public func prepare(_ query: String) throws -> Statement {
         return try Statement(structure: self, query: query)
     }
     
     // MARK: - Thread Safety
     
-    internal func dispatchWithinQueue(@noescape block: Void -> ()) {
-        let currentId = dispatch_get_specific(StructureQueueKey)
+    internal func dispatchWithinQueue(@noescape _ block: (Void) -> ()) {
+        let currentId = DispatchQueue.getSpecific(StructureQueueKey)
         if currentId == queueId {
             block()
         } else {
@@ -174,17 +174,17 @@ public class Structure {
  
         - Throws: `StructureError.InternalError` if the execution failed.
     */
-    public func execute(query: String) throws {
+    public func execute(_ query: String) throws {
         // Placeholder for an error that occurs in the block
         var potentialError: StructureError? = nil
         
         // Queue the execution
         dispatchWithinQueue {
             // Attempt the execution
-            var errorMessage: UnsafeMutablePointer<Int8> = nil
+            var errorMessage: UnsafeMutablePointer<Int8>? = nil
             let result = sqlite3_exec(self.database, query, nil, nil, &errorMessage)
             if result != SQLITE_OK {
-                if let message = String.fromCString(errorMessage) {
+                if let message = String(validatingUTF8: errorMessage!) {
                     potentialError = StructureError.InternalError(Int(result), message)
                 } else {
                     potentialError = StructureError.InternalError(Int(result), "<Unknown exec error>")
@@ -208,7 +208,7 @@ public class Structure {
  
         - Throws: `Structure.InternalError` if performing the Statement failed.
     */
-    public func perform(statement: Statement) throws {
+    public func perform(_ statement: Statement) throws {
         var potentialError: StructureError? = nil
         
         dispatchWithinQueue {
@@ -218,16 +218,16 @@ public class Structure {
                 let result = statement.step()
                 
                 switch result {
-                case .Done:
+                case .done:
                     keepGoing = false
-                case .Error(let code):
+                case .error(let code):
                     potentialError = StructureError.fromSqliteResult(code)
                     keepGoing = false
-                case .OK:
+                case .ok:
                     keepGoing = false
-                case .Row:
-                    potentialError = StructureError.Error("Performed a statement without a row callback, and got a row")
-                case .Unhandled(let code):
+                case .row:
+                    potentialError = StructureError.error("Performed a statement without a row callback, and got a row")
+                case .unhandled(let code):
                     fatalError("Unhandled result code from stepping a statement: \(code)")
                 }
             }
@@ -247,7 +247,7 @@ public class Structure {
  
         - Throws: `Structure.InternalError` if performing the Statement failed.
     */
-    public func perform(statement: Statement, @noescape rowCallback: PerformCallback) throws {
+    public func perform(_ statement: Statement, @noescape rowCallback: PerformCallback) throws {
         var potentialError: StructureError? = nil
         
         dispatchWithinQueue {
@@ -257,16 +257,16 @@ public class Structure {
                 let result = statement.step()
                 
                 switch result {
-                case .Done:
+                case .done:
                     keepGoing = false
-                case .Error(let code):
+                case .error(let code):
                     potentialError = StructureError.fromSqliteResult(code)
                     keepGoing = false
-                case .OK:
+                case .ok:
                     keepGoing = false
-                case .Row:
+                case .row:
                     rowCallback(Row(statement: statement))
-                case .Unhandled(let code):
+                case .unhandled(let code):
                     fatalError("Unhandled result code from stepping a statement: \(code)")
                 }
             }
@@ -287,7 +287,7 @@ public class Structure {
  
         - Returns: A row from a single execution of the Statement, or nil if the query did not return a row.
     */
-    public func step(statement: Statement) throws -> Row? {
+    public func step(_ statement: Statement) throws -> Row? {
         var potentialError: StructureError? = nil
         var potentialRow: Row? = nil
         
@@ -295,15 +295,15 @@ public class Structure {
             let result = statement.step()
             
             switch result {
-            case .Done:
+            case .done:
                 potentialRow = nil
-            case .Error(let code):
+            case .error(let code):
                 potentialError = StructureError.fromSqliteResult(code)
-            case .OK:
+            case .ok:
                 potentialRow = nil
-            case .Row:
+            case .row:
                 potentialRow = Row(statement: statement)
-            case .Unhandled(let code):
+            case .unhandled(let code):
                 fatalError("Unhandled result code from stepping a statement: \(code)")
             }
         }
@@ -329,7 +329,7 @@ public class Structure {
     }
     
     private func transaction(@noescape block: (structure: Structure) throws -> (), @noescape onError: OnErrorWrapper) rethrows {
-        var potentialError: ErrorType? = nil
+        var potentialError: ErrorProtocol? = nil
         
         os_dispatch_sync(queue) {
             // Mark the beginning of the transaction
@@ -370,7 +370,7 @@ public class Structure {
                     migration: migration,
                     ensureVersion: {
                         guard $0 - $1 == 1 else {
-                            throw StructureError.Error("Attempted migration \($0) is out of order with \($1)")
+                            throw StructureError.error("Attempted migration \($0) is out of order with \($1)")
                         }
                     },
                     onError: {
@@ -388,7 +388,7 @@ public class Structure {
         try ensureVersion(newVersion: version, currentVersion: userVersion)
         
         // Submit the
-        var potentialError: ErrorType? = nil
+        var potentialError: ErrorProtocol? = nil
         
         dispatchWithinQueue {
             self.beginTransaction()

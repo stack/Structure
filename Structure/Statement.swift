@@ -15,7 +15,7 @@ public class Statement {
     // MARK: - Properties
     
     internal let structure: Structure
-    internal var statement: SQLiteStatement = nil
+    internal var statement: SQLiteStatement? = nil
     
     internal var bindParameters: [String:Int32] = [String:Int32]()
     internal var columns: [String:Int32] = [String:Int32]()
@@ -130,7 +130,7 @@ public class Statement {
             - index: The index of the parameter to bind.
             - value: The `Bindable` value to assign to the index.
     */
-    public func bind(index: Int, value: Bindable?) {
+    public func bind(_ index: Int, value: Bindable?) {
         bind(Int32(index), value: value)
     }
     
@@ -141,7 +141,7 @@ public class Statement {
             - index: The native index of the parameter to bind.
         - value: The `Bindable` value to assign to the native index.
     */
-    private func bind(index: Int32, value: Bindable?) {
+    private func bind(_ index: Int32, value: Bindable?) {
         let idx = Int32(index)
         
         // If we don't have a value, bind NULL
@@ -158,7 +158,7 @@ public class Statement {
             sqlite3_bind_int(statement, idx, Int32(x))
         case let x as Int64:
             sqlite3_bind_int64(statement, idx, x)
-        case let x as NSData:
+        case let x as Data:
             sqlite3_bind_blob(statement, idx, x.bytes, Int32(x.length), SQLITE_TRANSIENT)
         case let x as String:
             sqlite3_bind_text(statement, idx, x, Int32(x.utf8.count), SQLITE_TRANSIENT)
@@ -174,7 +174,7 @@ public class Statement {
             - index: The named index of the parameter to bind.
         - value: The `Bindable` value to assign to the namaed index.
     */
-    public func bind(key: String, value: Bindable?) {
+    public func bind(_ key: String, value: Bindable?) {
         // Ensure we can map a parameter to an index
         guard let index = bindParameters[key] else {
             return

@@ -163,7 +163,7 @@ public class Row {
      
         - Returns: The data value associated with the index, transforms by the underlying SQLite API if necessary, or `nil` if the underlying value is `NULL`.
     */
-    private subscript(index: Int32) -> NSData? {
+    private subscript(index: Int32) -> Data? {
         let size = sqlite3_column_bytes(statement.statement, index)
         let data = sqlite3_column_blob(statement.statement, index)
         
@@ -171,7 +171,7 @@ public class Row {
             return nil
         }
         
-        return NSData(bytes: data, length: Int(size))
+        return Data(bytes: data, length: Int(size))
     }
     
     /**
@@ -182,7 +182,7 @@ public class Row {
      
         - Returns: The data value associated with the index, transforms by the underlying SQLite API if necessary, or `nil` if the underlying value is `NULL`.
     */
-    public subscript(index: Int) -> NSData? {
+    public subscript(index: Int) -> Data? {
         return self[Int32(index)]
     }
     
@@ -194,7 +194,7 @@ public class Row {
      
         - Returns: The data value associated with the index, transforms by the underlying SQLite API if necessary, or `nil` if the underlying value is `NULL`.
     */
-    public subscript(key: String) -> NSData? {
+    public subscript(key: String) -> Data? {
         guard let index = statement.columns[key] else {
             return nil
         }

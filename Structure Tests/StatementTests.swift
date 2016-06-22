@@ -105,7 +105,7 @@ class StatementTests: XCTestCase {
             insertStatement.bind("C", value: 42.1)
             insertStatement.bind("D", value: 42)
             
-            let data = NSData(bytes: [ 0x41, 0x42, 0x43 ] as [UInt8], length: 3)
+            let data = Data(bytes: UnsafePointer<UInt8>([ 0x41, 0x42, 0x43 ] as [UInt8]), count: 3)
             insertStatement.bind("E", value: data)
             
             try structure.perform(insertStatement)
@@ -148,7 +148,7 @@ class StatementTests: XCTestCase {
             insertStatement.bind("C", value: 42.1)
             insertStatement.bind("D", value: 42)
             
-            let data = NSData(bytes: [ 0x41, 0x42, 0x43 ] as [UInt8], length: 3)
+            let data = Data(bytes: UnsafePointer<UInt8>([ 0x41, 0x42, 0x43 ] as [UInt8]), count: 3)
             insertStatement.bind("E", value: data)
             
             try structure.perform(insertStatement)
@@ -170,7 +170,7 @@ class StatementTests: XCTestCase {
                 let bString: String? = row["b"]
                 let cString: Double = row["c"]
                 let dString: Int = row["d"]
-                let eString: NSData? = row["e"]
+                let eString: Data? = row["e"]
                 
                 XCTAssertEqual(lastId, aString)
                 XCTAssertEqual("foo", bString)
@@ -182,7 +182,7 @@ class StatementTests: XCTestCase {
                 let bInt: String? = row[1]
                 let cInt: Double = row[2]
                 let dInt: Int = row[3]
-                let eInt: NSData? = row[4]
+                let eInt: Data? = row[4]
                 
                 XCTAssertEqual(lastId, aInt)
                 XCTAssertEqual("foo", bInt)
@@ -211,7 +211,7 @@ class StatementTests: XCTestCase {
             let nullString: String? = nil
             let nullDouble: Double? = nil
             let nullInt: Int? = nil
-            let nullData: NSData? = nil
+            let nullData: Data? = nil
             
             insertStatement.bind("B", value: nullString)
             insertStatement.bind("C", value: nullDouble)
@@ -237,7 +237,7 @@ class StatementTests: XCTestCase {
                 let bString: String? = row["b"]
                 let cString: Double = row["c"]
                 let dString: Int = row["d"]
-                let eString: NSData? = row["e"]
+                let eString: Data? = row["e"]
                 
                 XCTAssertEqual(lastId, aString)
                 XCTAssertNil(bString)
@@ -249,7 +249,7 @@ class StatementTests: XCTestCase {
                 let bInt: String? = row[1]
                 let cInt: Double = row[2]
                 let dInt: Int = row[3]
-                let eInt: NSData? = row[4]
+                let eInt: Data? = row[4]
                 
                 XCTAssertEqual(lastId, aInt)
                 XCTAssertNil(bInt)
@@ -275,7 +275,7 @@ class StatementTests: XCTestCase {
             insertStatement.bind("C", value: 42.1)
             insertStatement.bind("D", value: 42)
             
-            let data = NSData(bytes: [ 0x41, 0x42, 0x43 ] as [UInt8], length: 3)
+            let data = Data(bytes: UnsafePointer<UInt8>([ 0x41, 0x42, 0x43 ] as [UInt8]), count: 3)
             insertStatement.bind("E", value: data)
             
             try structure.perform(insertStatement)
@@ -299,7 +299,7 @@ class StatementTests: XCTestCase {
             updateStatement.bind("D", value: 2)
             updateStatement.bind("A", value: lastId)
             
-            let data2 = NSData(bytes: [ 0x44, 0x45, 0x46 ] as [UInt8], length: 3)
+            let data2 = Data(bytes: UnsafePointer<UInt8>([ 0x44, 0x45, 0x46 ] as [UInt8]), count: 3)
             updateStatement.bind("E", value: data2)
             
             try structure.perform(updateStatement)
@@ -322,7 +322,7 @@ class StatementTests: XCTestCase {
                 let bString: String? = row["b"]
                 let cString: Double = row["c"]
                 let dString: Int = row["d"]
-                let eString: NSData? = row["e"]
+                let eString: Data? = row["e"]
                 
                 XCTAssertEqual(lastId, aString)
                 XCTAssertEqual("bar", bString)
@@ -334,7 +334,7 @@ class StatementTests: XCTestCase {
                 let bInt: String? = row[1]
                 let cInt: Double = row[2]
                 let dInt: Int = row[3]
-                let eInt: NSData? = row[4]
+                let eInt: Data? = row[4]
                 
                 XCTAssertEqual(lastId, aInt)
                 XCTAssertEqual("bar", bInt)
@@ -410,9 +410,9 @@ class StatementTests: XCTestCase {
                 
                 try s.perform(insertStatement)
                 
-                throw StructureError.Error("Forced Error")
+                throw StructureError.error("Forced Error")
             }
-        } catch StructureError.Error(let e) {
+        } catch StructureError.error(let e) {
             XCTAssertEqual("Forced Error", e)
         } catch let e {
             XCTFail("Unknown error when forcing a bad transaction: \(e)")

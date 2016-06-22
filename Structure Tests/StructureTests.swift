@@ -223,11 +223,11 @@ class StructureTests: XCTestCase {
         XCTAssertEqual(initialRow["value"] as Int, 0)
         
         // Construct a large series of read / increment / write instructions
-        let queue = dispatch_queue_create("Test Queue", DISPATCH_QUEUE_CONCURRENT)
-        let group = dispatch_group_create()
+        let queue = DispatchQueue(label: "Test Queue", attributes: DispatchQueueAttributes.concurrent)
+        let group = DispatchGroup()
         
         for _ in 0 ..< 1000 {
-            dispatch_group_async(group, queue) {
+            queue.async(group: group) {
                 self.structure.transaction { (structure) in
                     // Fetch
                     fetchStatement.reset()
@@ -252,7 +252,7 @@ class StructureTests: XCTestCase {
         }
         
         // Wait for everything to complete
-        dispatch_group_wait(group, DISPATCH_TIME_FOREVER)
+        group.wait(timeout: DispatchTime.distantFuture)
         
         // Ensure the value got incremented 100 times
         fetchStatement.reset()

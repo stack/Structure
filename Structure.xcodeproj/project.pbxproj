@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		D13115191C51E217003A8981 /* SQLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D13115091C51E18A003A8981 /* SQLite.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		D131151A1C51E226003A8981 /* SQLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D13114E21C508B56003A8981 /* SQLite.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		D131151B1C51E22B003A8981 /* SQLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D13115131C51E1B3003A8981 /* SQLite.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		D1661DB41D1389E10018D170 /* GCDHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1661DB31D1389E10018D170 /* GCDHelpers.swift */; };
@@ -70,6 +69,7 @@
 		D1F823B21C48A21C00B54B04 /* StructureInitializationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F823471C36ED1100B54B04 /* StructureInitializationTests.swift */; };
 		D1F823B31C48A21F00B54B04 /* StructureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F823051C27B01200B54B04 /* StructureTests.swift */; };
 		D1F823B41C48A22500B54B04 /* TestHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F823491C36EDAB00B54B04 /* TestHelper.swift */; };
+		DC5C7F651D1B2FCD0037E671 /* SQLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D13115091C51E18A003A8981 /* SQLite.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -185,7 +185,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D13115191C51E217003A8981 /* SQLite.framework in Frameworks */,
+				DC5C7F651D1B2FCD0037E671 /* SQLite.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -588,29 +588,55 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0720;
-				LastUpgradeCheck = 0720;
+				LastUpgradeCheck = 0800;
 				ORGANIZATIONNAME = "Stephen H. Gerstacker";
 				TargetAttributes = {
 					D13114E11C508B56003A8981 = {
 						CreatedOnToolsVersion = 7.2;
+						DevelopmentTeam = GE3GZ86XX9;
+						DevelopmentTeamName = "Stephen Gerstacker";
+						ProvisioningStyle = Automatic;
+					};
+					D13115011C51E18A003A8981 = {
+						DevelopmentTeam = GE3GZ86XX9;
+						DevelopmentTeamName = "Stephen Gerstacker";
+						ProvisioningStyle = Automatic;
+					};
+					D131150B1C51E1B3003A8981 = {
+						DevelopmentTeam = GE3GZ86XX9;
+						DevelopmentTeamName = "Stephen Gerstacker";
+						ProvisioningStyle = Automatic;
 					};
 					D1F822DA1C27A4DF00B54B04 = {
 						CreatedOnToolsVersion = 7.2;
+						DevelopmentTeam = GE3GZ86XX9;
+						DevelopmentTeamName = "Stephen Gerstacker";
+						LastSwiftMigration = 0800;
 					};
 					D1F822E41C27A4DF00B54B04 = {
 						CreatedOnToolsVersion = 7.2;
+						LastSwiftMigration = 0800;
 					};
 					D1F8235E1C489CE900B54B04 = {
 						CreatedOnToolsVersion = 7.2;
+						DevelopmentTeam = GE3GZ86XX9;
+						DevelopmentTeamName = "Stephen Gerstacker";
+						LastSwiftMigration = 0800;
+						ProvisioningStyle = Automatic;
 					};
 					D1F823671C489CE900B54B04 = {
 						CreatedOnToolsVersion = 7.2;
+						LastSwiftMigration = 0800;
 					};
 					D1F8238D1C48A18700B54B04 = {
 						CreatedOnToolsVersion = 7.2;
+						DevelopmentTeam = GE3GZ86XX9;
+						DevelopmentTeamName = "Stephen Gerstacker";
+						LastSwiftMigration = 0800;
 					};
 					D1F823961C48A18700B54B04 = {
 						CreatedOnToolsVersion = 7.2;
+						LastSwiftMigration = 0800;
 					};
 				};
 			};
@@ -863,7 +889,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = D13114F61C508B9D003A8981 /* SQLite.xcconfig */;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_IDENTITY = "Mac Developer";
 				COMBINE_HIDPI_IMAGES = YES;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -873,6 +899,7 @@
 				INFOPLIST_FILE = SQLite/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				PRODUCT_BUNDLE_IDENTIFIER = us.gerstacker.SQLite;
 				PRODUCT_NAME = SQLite;
 				SDKROOT = macosx;
@@ -884,7 +911,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = D13114F61C508B9D003A8981 /* SQLite.xcconfig */;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_IDENTITY = "Mac Developer";
 				COMBINE_HIDPI_IMAGES = YES;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -894,6 +921,7 @@
 				INFOPLIST_FILE = SQLite/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				PRODUCT_BUNDLE_IDENTIFIER = us.gerstacker.SQLite;
 				PRODUCT_NAME = SQLite;
 				SDKROOT = macosx;
@@ -906,6 +934,7 @@
 			baseConfigurationReference = D13114F61C508B9D003A8981 /* SQLite.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "-";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COMBINE_HIDPI_IMAGES = YES;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -914,6 +943,7 @@
 				FRAMEWORK_VERSION = A;
 				INFOPLIST_FILE = SQLite/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = us.gerstacker.SQLite;
 				PRODUCT_NAME = SQLite;
@@ -927,6 +957,7 @@
 			baseConfigurationReference = D13114F61C508B9D003A8981 /* SQLite.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "-";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COMBINE_HIDPI_IMAGES = YES;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -935,6 +966,7 @@
 				FRAMEWORK_VERSION = A;
 				INFOPLIST_FILE = SQLite/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = us.gerstacker.SQLite;
 				PRODUCT_NAME = SQLite;
@@ -948,6 +980,7 @@
 			baseConfigurationReference = D13114F61C508B9D003A8981 /* SQLite.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "-";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "iPhone Developer";
 				COMBINE_HIDPI_IMAGES = YES;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -961,6 +994,7 @@
 				PRODUCT_NAME = SQLite;
 				SDKROOT = appletvos;
 				SKIP_INSTALL = YES;
+				TVOS_DEPLOYMENT_TARGET = 9.0;
 			};
 			name = Debug;
 		};
@@ -969,6 +1003,7 @@
 			baseConfigurationReference = D13114F61C508B9D003A8981 /* SQLite.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "-";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "iPhone Developer";
 				COMBINE_HIDPI_IMAGES = YES;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -982,6 +1017,7 @@
 				PRODUCT_NAME = SQLite;
 				SDKROOT = appletvos;
 				SKIP_INSTALL = YES;
+				TVOS_DEPLOYMENT_TARGET = 9.0;
 			};
 			name = Release;
 		};
@@ -1079,6 +1115,7 @@
 		D1F822F01C27A4DF00B54B04 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
 				CLANG_ENABLE_MODULES = YES;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -1093,12 +1130,14 @@
 				SKIP_INSTALL = YES;
 				SWIFT_INCLUDE_PATHS = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
 		D1F822F11C27A4DF00B54B04 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
 				CLANG_ENABLE_MODULES = YES;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -1113,6 +1152,7 @@
 				SKIP_INSTALL = YES;
 				SWIFT_INCLUDE_PATHS = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};
@@ -1124,6 +1164,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = us.gerstacker.StructureTests;
 				PRODUCT_NAME = Structure_iOS_Tests;
 				SWIFT_INCLUDE_PATHS = "";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -1135,13 +1176,16 @@
 				PRODUCT_BUNDLE_IDENTIFIER = us.gerstacker.StructureTests;
 				PRODUCT_NAME = Structure_iOS_Tests;
 				SWIFT_INCLUDE_PATHS = "";
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};
 		D1F823711C489CE900B54B04 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "-";
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				CODE_SIGN_IDENTITY = "Mac Developer";
 				COMBINE_HIDPI_IMAGES = YES;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -1157,13 +1201,15 @@
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
 				SWIFT_INCLUDE_PATHS = "";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
 		D1F823721C489CE900B54B04 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "-";
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				CODE_SIGN_IDENTITY = "Mac Developer";
 				COMBINE_HIDPI_IMAGES = YES;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -1180,6 +1226,7 @@
 				SKIP_INSTALL = YES;
 				SWIFT_INCLUDE_PATHS = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};
@@ -1195,6 +1242,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 				SWIFT_INCLUDE_PATHS = "";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -1210,12 +1258,15 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 				SWIFT_INCLUDE_PATHS = "";
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};
 		D1F823A01C48A18700B54B04 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
@@ -1228,6 +1279,7 @@
 				SDKROOT = appletvos;
 				SKIP_INSTALL = YES;
 				SWIFT_INCLUDE_PATHS = "";
+				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = 3;
 				TVOS_DEPLOYMENT_TARGET = 9.0;
 			};
@@ -1236,6 +1288,7 @@
 		D1F823A11C48A18700B54B04 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
@@ -1249,6 +1302,7 @@
 				SKIP_INSTALL = YES;
 				SWIFT_INCLUDE_PATHS = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = 3;
 				TVOS_DEPLOYMENT_TARGET = 9.0;
 			};
@@ -1263,6 +1317,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = appletvos;
 				SWIFT_INCLUDE_PATHS = "";
+				SWIFT_VERSION = 3.0;
 				TVOS_DEPLOYMENT_TARGET = 9.1;
 			};
 			name = Debug;
@@ -1276,6 +1331,8 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = appletvos;
 				SWIFT_INCLUDE_PATHS = "";
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 3.0;
 				TVOS_DEPLOYMENT_TARGET = 9.1;
 			};
 			name = Release;

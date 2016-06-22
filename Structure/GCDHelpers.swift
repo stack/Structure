@@ -8,4 +8,4 @@
 
 import Foundation
 
-@_silgen_name("dispatch_sync") internal func os_dispatch_sync(queue: dispatch_queue_t, @noescape _ block: dispatch_block_t)
+@_silgen_name("dispatch_sync") internal func os_dispatch_sync(_ queue: DispatchQueue, @noescape _ block: dispatch_block_t)

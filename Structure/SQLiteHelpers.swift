@@ -9,12 +9,12 @@
 import SQLite
 
 /// Type aliases for common SQLite pointers
-typealias SQLiteDatabase = COpaquePointer
-typealias SQLiteStatement = COpaquePointer
+typealias SQLiteDatabase = OpaquePointer
+typealias SQLiteStatement = OpaquePointer
 
 /// Proper import for the SQLite string memory functions
-let SQLITE_STATIC = unsafeBitCast(0, sqlite3_destructor_type.self)
-let SQLITE_TRANSIENT = unsafeBitCast(-1, sqlite3_destructor_type.self)
+let SQLITE_STATIC = unsafeBitCast(0, to: sqlite3_destructor_type.self)
+let SQLITE_TRANSIENT = unsafeBitCast(-1, to: sqlite3_destructor_type.self)
 
 /**
     A map of SQLite result codes to Swift-friendly values
@@ -26,11 +26,11 @@ let SQLITE_TRANSIENT = unsafeBitCast(-1, sqlite3_destructor_type.self)
     - Unhandled: Any of the other SQLite errors that are currently not handled.
 */
 public enum SQLiteResult {
-    case OK
-    case Error(Int32)
-    case Row
-    case Done
-    case Unhandled(Int32)
+    case ok
+    case error(Int32)
+    case row
+    case done
+    case unhandled(Int32)
     
     /**
         Converts a SQLite error code to a `SQLiteResult`
@@ -40,18 +40,18 @@ public enum SQLiteResult {
  
         - Returns: The equivalent `SQLiteResult` value, or `Unhandled` if the value is currently handled.
     */
-    static func fromResultCode(code: Int32) -> SQLiteResult {
+    static func fromResultCode(_ code: Int32) -> SQLiteResult {
         switch code {
         case SQLITE_OK:
-            return .OK
+            return .ok
         case SQLITE_ERROR:
-            return .Error(code)
+            return .error(code)
         case SQLITE_ROW:
-            return .Row
+            return .row
         case SQLITE_DONE:
-            return .Done
+            return .done
         default:
-            return .Unhandled(code)
+            return .unhandled(code)
         }
     }
 }
