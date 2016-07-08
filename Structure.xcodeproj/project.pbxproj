@@ -9,12 +9,6 @@
 /* Begin PBXBuildFile section */
 		D131151A1C51E226003A8981 /* SQLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D13114E21C508B56003A8981 /* SQLite.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		D131151B1C51E22B003A8981 /* SQLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D13115131C51E1B3003A8981 /* SQLite.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
-		D1661DB41D1389E10018D170 /* GCDHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1661DB31D1389E10018D170 /* GCDHelpers.swift */; };
-		D1661DB51D1389E10018D170 /* GCDHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1661DB31D1389E10018D170 /* GCDHelpers.swift */; };
-		D1661DB61D1389E10018D170 /* GCDHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1661DB31D1389E10018D170 /* GCDHelpers.swift */; };
-		D1661DB71D1389E10018D170 /* GCDHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1661DB31D1389E10018D170 /* GCDHelpers.swift */; };
-		D1661DB81D1389E10018D170 /* GCDHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1661DB31D1389E10018D170 /* GCDHelpers.swift */; };
-		D1661DB91D1389E10018D170 /* GCDHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1661DB31D1389E10018D170 /* GCDHelpers.swift */; };
 		D1F822E61C27A4DF00B54B04 /* Structure.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D1F822DB1C27A4DF00B54B04 /* Structure.framework */; };
 		D1F822FC1C27AB7100B54B04 /* Structure.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F822FB1C27AB7100B54B04 /* Structure.swift */; };
 		D1F822FD1C27AB7100B54B04 /* Structure.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F822FB1C27AB7100B54B04 /* Structure.swift */; };
@@ -128,7 +122,6 @@
 		D13114F61C508B9D003A8981 /* SQLite.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = SQLite.xcconfig; sourceTree = "<group>"; };
 		D13115091C51E18A003A8981 /* SQLite.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SQLite.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D13115131C51E1B3003A8981 /* SQLite.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SQLite.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		D1661DB31D1389E10018D170 /* GCDHelpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GCDHelpers.swift; sourceTree = "<group>"; };
 		D1661DBA1D138F820018D170 /* LICENSE.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = LICENSE.md; sourceTree = SOURCE_ROOT; };
 		D1661DC11D138FD40018D170 /* CHANGELOG.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = CHANGELOG.md; sourceTree = SOURCE_ROOT; };
 		D1F822DB1C27A4DF00B54B04 /* Structure.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Structure.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -299,7 +292,6 @@
 			isa = PBXGroup;
 			children = (
 				D1F823541C42245900B54B04 /* Bindable.swift */,
-				D1661DB31D1389E10018D170 /* GCDHelpers.swift */,
 				D1F823571C42282B00B54B04 /* Row.swift */,
 				D1F822FE1C27AD2700B54B04 /* SQLiteHelpers.swift */,
 				D1F823441C36DAFF00B54B04 /* Statement.swift */,
@@ -759,7 +751,6 @@
 			files = (
 				D1F823551C42245900B54B04 /* Bindable.swift in Sources */,
 				D1F822FF1C27AD2700B54B04 /* SQLiteHelpers.swift in Sources */,
-				D1661DB41D1389E10018D170 /* GCDHelpers.swift in Sources */,
 				D1F823021C27AE9200B54B04 /* StructureError.swift in Sources */,
 				D1F822FC1C27AB7100B54B04 /* Structure.swift in Sources */,
 				D1F823581C42282B00B54B04 /* Row.swift in Sources */,
@@ -780,7 +771,6 @@
 				D1F823461C36DAFF00B54B04 /* Statement.swift in Sources */,
 				D1F8234C1C3756E100B54B04 /* StatementTests.swift in Sources */,
 				D1F823591C42282B00B54B04 /* Row.swift in Sources */,
-				D1661DB51D1389E10018D170 /* GCDHelpers.swift in Sources */,
 				D1F823561C42245900B54B04 /* Bindable.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -791,7 +781,6 @@
 			files = (
 				D1F823781C489CFD00B54B04 /* Row.swift in Sources */,
 				D1F823761C489CF900B54B04 /* Bindable.swift in Sources */,
-				D1661DB61D1389E10018D170 /* GCDHelpers.swift in Sources */,
 				D1F8237E1C489D0A00B54B04 /* Structure.swift in Sources */,
 				D1F8237A1C489D0000B54B04 /* SQLiteHelpers.swift in Sources */,
 				D1F823801C489D0E00B54B04 /* StructureError.swift in Sources */,
@@ -812,7 +801,6 @@
 				D1F8237D1C489D0600B54B04 /* Statement.swift in Sources */,
 				D1F8237F1C489D0B00B54B04 /* Structure.swift in Sources */,
 				D1F823841C489D2500B54B04 /* StructureInitializationTests.swift in Sources */,
-				D1661DB71D1389E10018D170 /* GCDHelpers.swift in Sources */,
 				D1F823831C489D2200B54B04 /* StatementTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -823,7 +811,6 @@
 			files = (
 				D1F823A71C48A20100B54B04 /* Row.swift in Sources */,
 				D1F823A51C48A1FE00B54B04 /* Bindable.swift in Sources */,
-				D1661DB81D1389E10018D170 /* GCDHelpers.swift in Sources */,
 				D1F823AD1C48A20D00B54B04 /* Structure.swift in Sources */,
 				D1F823A91C48A20500B54B04 /* SQLiteHelpers.swift in Sources */,
 				D1F823AF1C48A21100B54B04 /* StructureError.swift in Sources */,
@@ -844,7 +831,6 @@
 				D1F823AA1C48A20500B54B04 /* SQLiteHelpers.swift in Sources */,
 				D1F823B21C48A21C00B54B04 /* StructureInitializationTests.swift in Sources */,
 				D1F823B01C48A21200B54B04 /* StructureError.swift in Sources */,
-				D1661DB91D1389E10018D170 /* GCDHelpers.swift in Sources */,
 				D1F823AC1C48A20A00B54B04 /* Statement.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

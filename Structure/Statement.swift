@@ -61,28 +61,31 @@ public class Statement {
         
         if count > 0 {
             for idx in 1 ... count {
-                let bindName = sqlite3_bind_parameter_name(statement, idx)
+                // Ensure we have a name
+                guard let bindName = sqlite3_bind_parameter_name(statement, idx) else {
+                    throw StructureError.error("Bind parameter \(idx) was not named")
+                }
                 
                 // We need to have a readable name
-                guard let name = String.fromCString(bindName) else {
-                    throw StructureError.Error("Bind parameter \(idx) was not named")
+                guard let name = String(validatingUTF8: bindName) else {
+                    throw StructureError.error("Bind parameters \(idx) failed to convert name")
                 }
                 
                 // The name must not be empty
                 if name.isEmpty {
-                    throw StructureError.Error("Bind parameter \(idx) has an empty name")
+                    throw StructureError.error("Bind parameter \(idx) has an empty name")
                 }
                 
                 // The name must start with a valid token
-                let nameIndex = name.startIndex.successor()
-                let token = name.substringToIndex(nameIndex)
+                let nameIndex = name.index(after: name.startIndex)
+                let token = name.substring(to: nameIndex)
                 
                 if token != ":" && token != "$" && token != "@" {
-                    throw StructureError.Error("Bind parameter \(idx) has an invalid name of \(name)")
+                    throw StructureError.error("Bind parameter \(idx) has an invalid name of \(name)")
                 }
                 
                 // Valid, so get the name without the token
-                let finalName = name.substringFromIndex(nameIndex)
+                let finalName = name.substring(from: nameIndex)
                 bindParameters[finalName] = idx
             }
         }
@@ -93,9 +96,13 @@ public class Statement {
         for idx in 0 ..< count {
             let columnName = sqlite3_column_name(statement, idx)
             
-            // Ensre we can use the name
-            guard let name = String.fromCString(columnName) else {
-                throw StructureError.Error("Column \(idx) was not named")
+            guard let column = columnName else {
+                throw StructureError.error("Column \(idx) was not named")
+            }
+            
+            // Ensure we can use the name
+            guard let name = String(validatingUTF8: column) else {
+                throw StructureError.error("Column \(idx) was not properly named")
             }
             
             // Valid, store the name
@@ -159,7 +166,10 @@ public class Statement {
         case let x as Int64:
             sqlite3_bind_int64(statement, idx, x)
         case let x as Data:
-            sqlite3_bind_blob(statement, idx, x.bytes, Int32(x.length), SQLITE_TRANSIENT)
+            x.withUnsafeBytes { data -> Void in
+                sqlite3_bind_blob(statement, idx, data, Int32(x.count), SQLITE_TRANSIENT)
+            }
+            
         case let x as String:
             sqlite3_bind_text(statement, idx, x, Int32(x.utf8.count), SQLITE_TRANSIENT)
         default:

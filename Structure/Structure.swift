@@ -10,13 +10,13 @@ import Foundation
 import SQLite
 
 /// A common identifier for use with dispatch queues
-private let StructureQueueKey: DispatchSpecificKey = DispatchSpecificKey()
+private let StructureQueueKey: DispatchSpecificKey<UnsafeMutablePointer<Void>> = DispatchSpecificKey()
 
 /// Simplified type for the callback that happens per-row of a `perform` function.
 public typealias PerformCallback = (Row) -> Void
 
 private typealias EnsureVersionWrapper = (newVersion: Int, currentVersion: Int) throws -> ()
-private typealias OnErrorWrapper = (error: ErrorProtocol) throws -> ()
+private typealias ErrorWrapper = (error: ErrorProtocol) throws -> ()
 
 
 /// The root class of the Structure framework
@@ -30,7 +30,7 @@ public class Structure {
     private var queueId: UnsafeMutablePointer<Void>
     
     internal var errorMessage: String {
-        if let message = String.fromCString(sqlite3_errmsg(database)) {
+        if let message = String(validatingUTF8: sqlite3_errmsg(database)) {
             return message
         } else {
             return "<Unknown Error>"
@@ -155,12 +155,12 @@ public class Structure {
     
     // MARK: - Thread Safety
     
-    internal func dispatchWithinQueue(@noescape _ block: (Void) -> ()) {
-        let currentId = DispatchQueue.getSpecific(StructureQueueKey)
+    internal func dispatchWithinQueue(_ block: @noescape (Void) -> ()) {
+        let currentId = DispatchQueue.getSpecific(key: StructureQueueKey)
         if currentId == queueId {
             block()
         } else {
-            os_dispatch_sync(queue, block)
+            queue.sync(execute: block)
         }
     }
     
@@ -185,9 +185,9 @@ public class Structure {
             let result = sqlite3_exec(self.database, query, nil, nil, &errorMessage)
             if result != SQLITE_OK {
                 if let message = String(validatingUTF8: errorMessage!) {
-                    potentialError = StructureError.InternalError(Int(result), message)
+                    potentialError = StructureError.internalError(Int(result), message)
                 } else {
-                    potentialError = StructureError.InternalError(Int(result), "<Unknown exec error>")
+                    potentialError = StructureError.internalError(Int(result), "<Unknown exec error>")
                 }
                 
                 sqlite3_free(errorMessage)
@@ -247,7 +247,8 @@ public class Structure {
  
         - Throws: `Structure.InternalError` if performing the Statement failed.
     */
-    public func perform(_ statement: Statement, @noescape rowCallback: PerformCallback) throws {
+    // TODO: Swift 3 bug: public func perform(_ statement: Statement, rowCallback: @noescape PerformCallback) throws {
+    public func perform(_ statement: Statement, rowCallback: @noescape (Row) -> Void) throws {
         var potentialError: StructureError? = nil
         
         dispatchWithinQueue {
@@ -324,14 +325,16 @@ public class Structure {
  
         - Throws: `StructureError.InternalError` if an error is thrown inside of the block.
     */
-    public func transaction(@noescape block: (structure: Structure) throws -> ()) rethrows {
-        try transaction(block, onError: { throw $0 })
+    public func transaction(block: @noescape (structure: Structure) throws -> ()) rethrows {
+        try transaction(block: block, onError: { throw $0 })
     }
     
-    private func transaction(@noescape block: (structure: Structure) throws -> (), @noescape onError: OnErrorWrapper) rethrows {
+    // TODO: Swift 3 bug: private func transaction(block: @noescape (structure: Structure) throws -> (), onError: @noescape OnErrorWrapper) rethrows {
+    private func transaction(block: @noescape (structure: Structure) throws -> (), onError: @noescape (error: ErrorProtocol) throws -> ()) rethrows {
+    
         var potentialError: ErrorProtocol? = nil
         
-        os_dispatch_sync(queue) {
+        queue.sync { 
             // Mark the beginning of the transaction
             self.beginTransaction()
             
@@ -365,8 +368,8 @@ public class Structure {
  
         - Throws: `StructureError.InternalError` if an error is thrown inside of the block.
     */
-    public func migrate(version: Int, @noescape migration: (structure: Structure) throws -> ()) rethrows {
-        try migrate(version,
+    public func migrate(version: Int, migration: @noescape (structure: Structure) throws -> ()) rethrows {
+        try migrate(version: version,
                     migration: migration,
                     ensureVersion: {
                         guard $0 - $1 == 1 else {
@@ -378,7 +381,8 @@ public class Structure {
                     })
     }
     
-    private func migrate(version: Int, @noescape migration: (structure: Structure) throws -> (), @noescape ensureVersion: EnsureVersionWrapper, @noescape onError: OnErrorWrapper) rethrows {
+    // TODO: Swift 3 bug: private func migrate(version: Int, migration: @noescape (structure: Structure) throws -> (), ensureVersion: @noescape EnsureVersionWrapper, onError: @noescape OnErrorWrapper) rethrows {
+    private func migrate(version: Int, migration: @noescape (structure: Structure) throws -> (), ensureVersion: @noescape (newVersion: Int, currentVersion: Int) throws -> (), onError: @noescape (error: ErrorProtocol) throws -> ()) rethrows {
         // Skip if this migration has already run
         guard userVersion < version else {
             return

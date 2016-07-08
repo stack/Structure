@@ -20,9 +20,9 @@ public enum StructureError: ErrorProtocol {
     case internalError(Int, String)
     
     internal static func fromSqliteResult(_ result: Int32) -> StructureError {
-        let errorMessage = sqlite3_errstr(result)
-        if let error = String.fromCString(errorMessage) {
-            return InternalError(Int(result), error)
+        
+        if let errorMessage = sqlite3_errstr(result), let error = String(validatingUTF8: errorMessage) {
+            return internalError(Int(result), error)
         } else {
             return internalError(0, "Unknown error")
         }
