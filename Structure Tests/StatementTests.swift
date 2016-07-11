@@ -35,7 +35,7 @@ class StatementTests: XCTestCase {
         let insertStatement = try! structure.prepare("INSERT INTO foo (b) VALUES (:b)")
         insertStatement.bind("b", value: "💩 Fletch 💩")
         
-        try! structure.step(insertStatement)
+        _ = try! structure.step(insertStatement)
         insertStatement.finalize()
         
         let selectStatement = try! structure.prepare("SELECT b FROM foo LIMIT 1")
@@ -51,7 +51,7 @@ class StatementTests: XCTestCase {
     
     func testPrepareInvalidStatement() {
         do {
-            try structure.prepare("SELECT FOO BAR BAZ")
+            _ = try structure.prepare("SELECT FOO BAR BAZ")
             XCTFail("Preparation of invalid query succeeded")
         } catch let e {
             XCTSuccess("Preparation of invalid query failed: \(e)")
@@ -60,7 +60,7 @@ class StatementTests: XCTestCase {
     
     func testPrepareRequiresNamedParameters() {
         do {
-            try structure.prepare("SELECT a FROM foo WHERE b = ?")
+            _ = try structure.prepare("SELECT a FROM foo WHERE b = ?")
             XCTFail("Preparation of query with unnamed parameters succeeded")
         } catch let e {
             XCTSuccess("Preparation of query with unnamed parameters failed: \(e)")

@@ -875,6 +875,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = D13114F61C508B9D003A8981 /* SQLite.xcconfig */;
 			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				COMBINE_HIDPI_IMAGES = YES;
 				DEFINES_MODULE = YES;
@@ -897,6 +898,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = D13114F61C508B9D003A8981 /* SQLite.xcconfig */;
 			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				COMBINE_HIDPI_IMAGES = YES;
 				DEFINES_MODULE = YES;
@@ -919,6 +921,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = D13114F61C508B9D003A8981 /* SQLite.xcconfig */;
 			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
 				CODE_SIGN_IDENTITY = "-";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COMBINE_HIDPI_IMAGES = YES;
@@ -942,6 +945,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = D13114F61C508B9D003A8981 /* SQLite.xcconfig */;
 			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
 				CODE_SIGN_IDENTITY = "-";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COMBINE_HIDPI_IMAGES = YES;
@@ -965,6 +969,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = D13114F61C508B9D003A8981 /* SQLite.xcconfig */;
 			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
 				CODE_SIGN_IDENTITY = "-";
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "iPhone Developer";
 				COMBINE_HIDPI_IMAGES = YES;
@@ -988,6 +993,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = D13114F61C508B9D003A8981 /* SQLite.xcconfig */;
 			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
 				CODE_SIGN_IDENTITY = "-";
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "iPhone Developer";
 				COMBINE_HIDPI_IMAGES = YES;

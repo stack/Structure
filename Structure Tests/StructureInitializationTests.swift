@@ -36,7 +36,7 @@ class StructureInitializationTests: XCTestCase {
         
         do {
             let _ = try Structure(path: tempPath)
-            try FileManager.default().removeItem(atPath: tempPath)
+            try FileManager.default.removeItem(atPath: tempPath)
         } catch let e {
             XCTFail("Structure creation should succeed: \(e)")
         }

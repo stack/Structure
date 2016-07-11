@@ -10,7 +10,7 @@ import Foundation
 import SQLite
 
 /// A common identifier for use with dispatch queues
-private let StructureQueueKey: DispatchSpecificKey<UnsafeMutablePointer<Void>> = DispatchSpecificKey()
+private let StructureQueueKey = DispatchSpecificKey<UnsafeMutablePointer<Void>?>()
 
 /// Simplified type for the callback that happens per-row of a `perform` function.
 public typealias PerformCallback = (Row) -> Void
@@ -94,7 +94,7 @@ public class Structure {
     */
     required public init(path: String) throws {
         // Build the execution queue
-        queue = DispatchQueue(label: "Structure Queue", attributes: DispatchQueueAttributes.serial)
+        queue = DispatchQueue(label: "Structure Queue", attributes: .serial)
         queueId = UnsafeMutablePointer(allocatingCapacity: 1)
         queue.setSpecific(key: StructureQueueKey, value: queueId)
         
@@ -156,11 +156,12 @@ public class Structure {
     // MARK: - Thread Safety
     
     internal func dispatchWithinQueue(_ block: @noescape (Void) -> ()) {
-        let currentId = DispatchQueue.getSpecific(key: StructureQueueKey)
-        if currentId == queueId {
-            block()
-        } else {
-            queue.sync(execute: block)
+        if let currentId = DispatchQueue.getSpecific(key: StructureQueueKey) {
+            if currentId == queueId {
+                block()
+            } else {
+                queue.sync(execute: block)
+            }
         }
     }
     
