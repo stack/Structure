@@ -24,7 +24,10 @@ public class Structure {
     
     // MARK: - Properties
     
-    internal var database: SQLiteDatabase? = nil
+    private var databasePointer: SQLiteDatabase? = nil
+    internal var database: SQLiteDatabase {
+        return databasePointer!
+    }
     
     private var queue: DispatchQueue
     private var queueId: UnsafeMutablePointer<Void>
@@ -99,7 +102,7 @@ public class Structure {
         queue.setSpecific(key: StructureQueueKey, value: queueId)
         
         // Attempt to open the path
-        let result = sqlite3_open_v2(path, &database, SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE, nil)
+        let result = sqlite3_open_v2(path, &databasePointer, SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE, nil)
         if result != SQLITE_OK {
             throw StructureError.fromSqliteResult(result)
         }
@@ -118,7 +121,7 @@ public class Structure {
             if result != SQLITE_OK {
                 potentialError = StructureError.fromSqliteResult(result)
             } else {
-                self.database = nil
+                self.databasePointer = nil
             }
         }
         
@@ -132,7 +135,7 @@ public class Structure {
         queueId.deallocateCapacity(1)
         
         // Force a final closure, just in case
-        if database != nil {
+        if databasePointer != nil {
             sqlite3_close_v2(database)
         }
         
@@ -156,12 +159,10 @@ public class Structure {
     // MARK: - Thread Safety
     
     internal func dispatchWithinQueue(_ block: @noescape (Void) -> ()) {
-        if let currentId = DispatchQueue.getSpecific(key: StructureQueueKey) {
-            if currentId == queueId {
-                block()
-            } else {
-                queue.sync(execute: block)
-            }
+        if let currentId = DispatchQueue.getSpecific(key: StructureQueueKey) where currentId == queueId {
+            block()
+        } else {
+            queue.sync(execute: block)
         }
     }
     
