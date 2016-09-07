@@ -153,7 +153,7 @@ public class Row {
         return self[index]
     }
     
-    // MARK: - NSData Values
+    // MARK: - Data Values
     
     /**
         Returns the data value for the given, native index value.

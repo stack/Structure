@@ -38,7 +38,7 @@ Parameters in a Statement are required to be named. SQLite allows the use of ":"
 
 ## Using Statements
 
-Binding values to parameters is done via the `bind(index:, value:)` and `bind(key:, value:)` methods. The former is for binding to the index of the parameter. The latter is used to bind to the parameter name, minus the prefix. The value is Bindable, which is a protocol that currently wraps the Double, Int, Int64, NSData, and String types. The Bindable values are optional, which allows the setting of `NULL` for a value. Remember: SQLite parameter indexes start with 1, not 0.
+Binding values to parameters is done via the `bind(index:, value:)` and `bind(key:, value:)` methods. The former is for binding to the index of the parameter. The latter is used to bind to the parameter name, minus the prefix. The value is Bindable, which is a protocol that currently wraps the Double, Int, Int64, Data, and String types. The Bindable values are optional, which allows the setting of `NULL` for a value. Remember: SQLite parameter indexes start with 1, not 0.
 
 To perform a Statement that does not return rows, use the `perform(statement:)` method on the Structure object. To perform a Statement that does return rows, use the `perform(statement:, rowCallback:)` method. For each row returned, a Row object will be provided, which allows subscript access to the values. The type to access the subscript must be explicit, meaning the following is not valid. 
 
