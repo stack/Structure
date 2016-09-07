@@ -1,6 +1,6 @@
 # Structure 
 
-[![Travis CI](https://travis-ci.org/stack/Structure.svg?branch=master)](https://travis-ci.org/stack/Structure) ![platforms](https://img.shields.io/badge/platforms-iOS%20%7C%20OSX%20%7C%20tvOS-333333.svg) [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
+[![Travis CI](https://travis-ci.org/stack/Structure.svg?branch=2.0)](https://travis-ci.org/stack/Structure) ![platforms](https://img.shields.io/badge/platforms-iOS%20%7C%20OSX%20%7C%20tvOS-333333.svg) [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
 
 Structure is a [SQLite](https://sqlite.org "SQLite Home Page") wrapper, written in Swift. It is written specifically for the needs of the author, but any comments or criticisms are welcomed.
 
@@ -70,7 +70,14 @@ Structure is copyright © 2016 Stephen H. Gerstacker. It is free software, and m
 
 # Installation
 
-Currently only Carthage is supported. Add the following to your `Cartfile`:
+Currently only Carthage is supported. For Xcode 8 / Swift 3.0, add the following to your Carfile:
+
+    github "stack/Structure" ~> 1.1
+
+For Xcode 8 / Swift 2.3, add the following to your 'Cartfile`:
+
+    github "stack/Structure" ~> 1.1
+
+For Xcode 7.3 / Swift 2.2, add the following to your Cartfile:
 
     github "stack/Structure" ~> 1.0
-
