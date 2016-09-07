@@ -10,14 +10,10 @@ import Foundation
 import SQLite
 
 /// A common identifier for use with dispatch queues
-private let StructureQueueKey = DispatchSpecificKey<UnsafeMutablePointer<Void>?>()
+private let StructureQueueKey = DispatchSpecificKey<UnsafeMutableRawPointer>()
 
 /// Simplified type for the callback that happens per-row of a `perform` function.
 public typealias PerformCallback = (Row) -> Void
-
-private typealias EnsureVersionWrapper = (newVersion: Int, currentVersion: Int) throws -> ()
-private typealias ErrorWrapper = (error: ErrorProtocol) throws -> ()
-
 
 /// The root class of the Structure framework
 public class Structure {
@@ -30,7 +26,7 @@ public class Structure {
     }
     
     private var queue: DispatchQueue
-    private var queueId: UnsafeMutablePointer<Void>
+    private var queueId: DispatchSpecificKey<Int>
     
     internal var errorMessage: String {
         if let message = String(validatingUTF8: sqlite3_errmsg(database)) {
@@ -97,9 +93,9 @@ public class Structure {
     */
     required public init(path: String) throws {
         // Build the execution queue
-        queue = DispatchQueue(label: "Structure Queue", attributes: .serial)
-        queueId = UnsafeMutablePointer(allocatingCapacity: 1)
-        queue.setSpecific(key: StructureQueueKey, value: queueId)
+        queue = DispatchQueue(label: "Structure Queue", attributes: [])
+        queueId = DispatchSpecificKey<Int>()
+        queue.setSpecific(key: queueId, value: 42)
         
         // Attempt to open the path
         let result = sqlite3_open_v2(path, &databasePointer, SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE, nil)
@@ -131,9 +127,6 @@ public class Structure {
     }
     
     deinit {
-        queue.setSpecific(key: StructureQueueKey, value: nil)
-        queueId.deallocateCapacity(1)
-        
         // Force a final closure, just in case
         if databasePointer != nil {
             sqlite3_close_v2(database)
@@ -158,8 +151,8 @@ public class Structure {
     
     // MARK: - Thread Safety
     
-    internal func dispatchWithinQueue(_ block: @noescape (Void) -> ()) {
-        if let currentId = DispatchQueue.getSpecific(key: StructureQueueKey) where currentId == queueId {
+    internal func dispatchWithinQueue(_ block: (Void) -> ()) {
+        if DispatchQueue.getSpecific(key: queueId) != nil {
             block()
         } else {
             queue.sync(execute: block)
@@ -249,8 +242,7 @@ public class Structure {
  
         - Throws: `Structure.InternalError` if performing the Statement failed.
     */
-    // TODO: Swift 3 bug: public func perform(_ statement: Statement, rowCallback: @noescape PerformCallback) throws {
-    public func perform(_ statement: Statement, rowCallback: @noescape (Row) -> Void) throws {
+    public func perform(_ statement: Statement, rowCallback: (Row) -> Void) throws {
         var potentialError: StructureError? = nil
         
         dispatchWithinQueue {
@@ -327,21 +319,20 @@ public class Structure {
  
         - Throws: `StructureError.InternalError` if an error is thrown inside of the block.
     */
-    public func transaction(block: @noescape (structure: Structure) throws -> ()) rethrows {
+    public func transaction(block: (Structure) throws -> ()) rethrows {
         try transaction(block: block, onError: { throw $0 })
     }
     
-    // TODO: Swift 3 bug: private func transaction(block: @noescape (structure: Structure) throws -> (), onError: @noescape OnErrorWrapper) rethrows {
-    private func transaction(block: @noescape (structure: Structure) throws -> (), onError: @noescape (error: ErrorProtocol) throws -> ()) rethrows {
+    private func transaction(block: (Structure) throws -> (), onError: (Error) throws -> ()) rethrows {
     
-        var potentialError: ErrorProtocol? = nil
+        var potentialError: Error? = nil
         
         queue.sync { 
             // Mark the beginning of the transaction
             self.beginTransaction()
             
             do {
-                try block(structure: self)
+                try block(self)
                 self.commitTransaction()
             } catch let e {
                 potentialError = e
@@ -350,7 +341,7 @@ public class Structure {
         }
         
         if let error = potentialError {
-            try onError(error: error)
+            try onError(error)
         }
     }
     
@@ -370,7 +361,7 @@ public class Structure {
  
         - Throws: `StructureError.InternalError` if an error is thrown inside of the block.
     */
-    public func migrate(version: Int, migration: @noescape (structure: Structure) throws -> ()) rethrows {
+    public func migrate(version: Int, migration: (Structure) throws -> ()) rethrows {
         try migrate(version: version,
                     migration: migration,
                     ensureVersion: {
@@ -383,24 +374,23 @@ public class Structure {
                     })
     }
     
-    // TODO: Swift 3 bug: private func migrate(version: Int, migration: @noescape (structure: Structure) throws -> (), ensureVersion: @noescape EnsureVersionWrapper, onError: @noescape OnErrorWrapper) rethrows {
-    private func migrate(version: Int, migration: @noescape (structure: Structure) throws -> (), ensureVersion: @noescape (newVersion: Int, currentVersion: Int) throws -> (), onError: @noescape (error: ErrorProtocol) throws -> ()) rethrows {
+    private func migrate(version: Int, migration: (Structure) throws -> (), ensureVersion: (Int, Int) throws -> (), onError: (Error) throws -> ()) rethrows {
         // Skip if this migration has already run
         guard userVersion < version else {
             return
         }
         
         // Error if this migration is out of order
-        try ensureVersion(newVersion: version, currentVersion: userVersion)
+        try ensureVersion(version, userVersion)
         
         // Submit the
-        var potentialError: ErrorProtocol? = nil
+        var potentialError: Error? = nil
         
         dispatchWithinQueue {
             self.beginTransaction()
             
             do {
-                try migration(structure: self)
+                try migration(self)
                 self.userVersion = version
                 self.commitTransaction()
             } catch let e {
@@ -410,7 +400,7 @@ public class Structure {
         }
         
         if let error = potentialError {
-            try onError(error: error)
+            try onError(error)
         }
     }
     

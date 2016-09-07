@@ -167,7 +167,7 @@ public class Row {
         let size = sqlite3_column_bytes(statement.statement, index)
         
         if let data = sqlite3_column_blob(statement.statement, index) {
-            return Data(bytes: UnsafePointer<UInt8>(data), count: Int(size))
+            return Data(bytes: UnsafeRawPointer(data), count: Int(size))
         } else {
             return nil
         }
@@ -212,11 +212,25 @@ public class Row {
         - Returns: The string value associated with the index, transforms by the underlying SQLite API if necessary, or `nil` if the underlying value is `NULL`.
     */
     private subscript(index: Int32) -> String? {
+        // Attempt to get the data from the row
+        guard let data = sqlite3_column_text(statement.statement, index) else {
+            return nil
+        }
+        
+        if let (result, _) = String.decodeCString(data, as: UTF8.self) {
+            return result
+        } else {
+            return nil
+        }
+        
+        /*
+        if let value = UnsafePointer.withMemoryRebound(<#T##UnsafePointer<Pointee>#>)
         if let value = UnsafePointer<CChar>(sqlite3_column_text(statement.statement, index)) {
             return String(validatingUTF8: value)
         } else {
             return nil
         }
+        */
     }
     
     /**
