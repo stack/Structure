@@ -153,7 +153,7 @@ public class Row {
         return self[index]
     }
     
-    // MARK: - NSData Values
+    // MARK: - Data Values
     
     /**
         Returns the data value for the given, native index value.
@@ -163,15 +163,14 @@ public class Row {
      
         - Returns: The data value associated with the index, transforms by the underlying SQLite API if necessary, or `nil` if the underlying value is `NULL`.
     */
-    private subscript(index: Int32) -> NSData? {
+    private subscript(index: Int32) -> Data? {
         let size = sqlite3_column_bytes(statement.statement, index)
-        let data = sqlite3_column_blob(statement.statement, index)
         
-        if size == 0 || data == nil {
+        if let data = sqlite3_column_blob(statement.statement, index) {
+            return Data(bytes: UnsafeRawPointer(data), count: Int(size))
+        } else {
             return nil
         }
-        
-        return NSData(bytes: data, length: Int(size))
     }
     
     /**
@@ -182,7 +181,7 @@ public class Row {
      
         - Returns: The data value associated with the index, transforms by the underlying SQLite API if necessary, or `nil` if the underlying value is `NULL`.
     */
-    public subscript(index: Int) -> NSData? {
+    public subscript(index: Int) -> Data? {
         return self[Int32(index)]
     }
     
@@ -194,7 +193,7 @@ public class Row {
      
         - Returns: The data value associated with the index, transforms by the underlying SQLite API if necessary, or `nil` if the underlying value is `NULL`.
     */
-    public subscript(key: String) -> NSData? {
+    public subscript(key: String) -> Data? {
         guard let index = statement.columns[key] else {
             return nil
         }
@@ -213,8 +212,25 @@ public class Row {
         - Returns: The string value associated with the index, transforms by the underlying SQLite API if necessary, or `nil` if the underlying value is `NULL`.
     */
     private subscript(index: Int32) -> String? {
-        let value = UnsafePointer<CChar>(sqlite3_column_text(statement.statement, index))
-        return String.fromCString(value)
+        // Attempt to get the data from the row
+        guard let data = sqlite3_column_text(statement.statement, index) else {
+            return nil
+        }
+        
+        if let (result, _) = String.decodeCString(data, as: UTF8.self) {
+            return result
+        } else {
+            return nil
+        }
+        
+        /*
+        if let value = UnsafePointer.withMemoryRebound(<#T##UnsafePointer<Pointee>#>)
+        if let value = UnsafePointer<CChar>(sqlite3_column_text(statement.statement, index)) {
+            return String(validatingUTF8: value)
+        } else {
+            return nil
+        }
+        */
     }
     
     /**

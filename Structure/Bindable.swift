@@ -18,8 +18,8 @@ extension Double: Bindable {
     
 }
 
-/// NSData is a Bindable type
-extension NSData: Bindable {
+/// Data is a Bindable type
+extension Data: Bindable {
     
 }
 

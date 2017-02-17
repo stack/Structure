@@ -1,6 +1,6 @@
 # Structure 
 
-[![Travis CI](https://travis-ci.org/stack/Structure.svg?branch=1.1)](https://travis-ci.org/stack/Structure) ![platforms](https://img.shields.io/badge/platforms-iOS%20%7C%20OSX%20%7C%20tvOS-333333.svg) [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
+[![Travis CI](https://travis-ci.org/stack/Structure.svg?branch=2.0)](https://travis-ci.org/stack/Structure) ![platforms](https://img.shields.io/badge/platforms-iOS%20%7C%20OSX%20%7C%20tvOS-333333.svg) [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
 
 Structure is a [SQLite](https://sqlite.org "SQLite Home Page") wrapper, written in Swift. It is written specifically for the needs of the author, but any comments or criticisms are welcomed.
 
@@ -38,7 +38,7 @@ Parameters in a Statement are required to be named. SQLite allows the use of ":"
 
 ## Using Statements
 
-Binding values to parameters is done via the `bind(index:, value:)` and `bind(key:, value:)` methods. The former is for binding to the index of the parameter. The latter is used to bind to the parameter name, minus the prefix. The value is Bindable, which is a protocol that currently wraps the Double, Int, Int64, NSData, and String types. The Bindable values are optional, which allows the setting of `NULL` for a value. Remember: SQLite parameter indexes start with 1, not 0.
+Binding values to parameters is done via the `bind(index:, value:)` and `bind(key:, value:)` methods. The former is for binding to the index of the parameter. The latter is used to bind to the parameter name, minus the prefix. The value is Bindable, which is a protocol that currently wraps the Double, Int, Int64, Data, and String types. The Bindable values are optional, which allows the setting of `NULL` for a value. Remember: SQLite parameter indexes start with 1, not 0.
 
 To perform a Statement that does not return rows, use the `perform(statement:)` method on the Structure object. To perform a Statement that does return rows, use the `perform(statement:, rowCallback:)` method. For each row returned, a Row object will be provided, which allows subscript access to the values. The type to access the subscript must be explicit, meaning the following is not valid. 
 
@@ -70,6 +70,7 @@ Structure is copyright © 2016 Stephen H. Gerstacker. It is free software, and m
 
 # Installation
 
+<<<<<<< HEAD
 Currently only Carthage is supported. For Xcode 7.3 / Swift 2.2, add the following to your `Cartfile`:
 
     github "stack/Structure" ~> 1.0
@@ -80,3 +81,8 @@ For Xcode 8 / Swift 2.3, add the following to your 'Cartfile`:
 
 Support for Swift 3.0 will be completed once it has stablized.
 
+=======
+Currently only Carthage is supported. For Xcode 8 / Swift 3.0, add the following to your Carfile:
+
+    github "stack/Structure" ~> 2.0
+>>>>>>> 2.0

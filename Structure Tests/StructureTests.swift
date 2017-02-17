@@ -122,7 +122,7 @@ class StructureTests: XCTestCase {
         XCTAssertEqual(0, structure.userVersion)
         
         do {
-            try structure.migrate(1) { s in
+            try structure.migrate(version: 1) { s in
                 try s.execute("CREATE TABLE foo (a INT)")
             }
         } catch let e {
@@ -136,11 +136,11 @@ class StructureTests: XCTestCase {
         XCTAssertEqual(0, structure.userVersion)
         
         do {
-            try structure.migrate(1) { s in
+            try structure.migrate(version: 1) { s in
                 try s.execute("CREATE TABLE foo (a INT)")
             }
             
-            try structure.migrate(2) { s in
+            try structure.migrate(version: 2) { s in
                 try s.execute("CREATE TABLE bar (a INT)")
             }
         } catch let e {
@@ -154,7 +154,7 @@ class StructureTests: XCTestCase {
         XCTAssertEqual(0, structure.userVersion)
         
         do {
-            try structure.migrate(2) { s in
+            try structure.migrate(version: 2) { s in
                 try s.execute("CREATE TABLE foo (a INT)")
             }
             XCTFail("Migration should not have succeeded")
@@ -169,11 +169,11 @@ class StructureTests: XCTestCase {
         XCTAssertEqual(0, structure.userVersion)
         
         do {
-            try structure.migrate(1) { s in
+            try structure.migrate(version: 1) { s in
                 try s.execute("CREATE TABLE foo (a INT)")
             }
             
-            try structure.migrate(1) { s in
+            try structure.migrate(version: 1) { s in
                 try s.execute("INSERT INTO foo (a) VALUES (1)")
             }
         } catch let e {
@@ -200,7 +200,7 @@ class StructureTests: XCTestCase {
     
     func testMultipleModifications() {
         // Build a table with an integer value
-        try! structure.migrate(1) { s in
+        try! structure.migrate(version: 1) { s in
             try s.execute("CREATE TABLE foo (id INTEGER PRIMARY KEY, value INTEGER)")
         }
         
@@ -223,11 +223,11 @@ class StructureTests: XCTestCase {
         XCTAssertEqual(initialRow["value"] as Int, 0)
         
         // Construct a large series of read / increment / write instructions
-        let queue = dispatch_queue_create("Test Queue", DISPATCH_QUEUE_CONCURRENT)
-        let group = dispatch_group_create()
+        let queue = DispatchQueue(label: "Test Queue", attributes: [ .concurrent ])
+        let group = DispatchGroup()
         
         for _ in 0 ..< 1000 {
-            dispatch_group_async(group, queue) {
+            queue.async(group: group) {
                 self.structure.transaction { (structure) in
                     // Fetch
                     fetchStatement.reset()
@@ -252,7 +252,7 @@ class StructureTests: XCTestCase {
         }
         
         // Wait for everything to complete
-        dispatch_group_wait(group, DISPATCH_TIME_FOREVER)
+        _ = group.wait(timeout: DispatchTime.distantFuture)
         
         // Ensure the value got incremented 100 times
         fetchStatement.reset()

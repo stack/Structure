@@ -15,7 +15,7 @@ public class Statement {
     // MARK: - Properties
     
     internal let structure: Structure
-    internal var statement: SQLiteStatement = nil
+    internal var statement: SQLiteStatement? = nil
     
     internal var bindParameters: [String:Int32] = [String:Int32]()
     internal var columns: [String:Int32] = [String:Int32]()
@@ -61,28 +61,31 @@ public class Statement {
         
         if count > 0 {
             for idx in 1 ... count {
-                let bindName = sqlite3_bind_parameter_name(statement, idx)
+                // Ensure we have a name
+                guard let bindName = sqlite3_bind_parameter_name(statement, idx) else {
+                    throw StructureError.error("Bind parameter \(idx) was not named")
+                }
                 
                 // We need to have a readable name
-                guard let name = String.fromCString(bindName) else {
-                    throw StructureError.Error("Bind parameter \(idx) was not named")
+                guard let name = String(validatingUTF8: bindName) else {
+                    throw StructureError.error("Bind parameters \(idx) failed to convert name")
                 }
                 
                 // The name must not be empty
                 if name.isEmpty {
-                    throw StructureError.Error("Bind parameter \(idx) has an empty name")
+                    throw StructureError.error("Bind parameter \(idx) has an empty name")
                 }
                 
                 // The name must start with a valid token
-                let nameIndex = name.startIndex.successor()
-                let token = name.substringToIndex(nameIndex)
+                let nameIndex = name.index(after: name.startIndex)
+                let token = name.substring(to: nameIndex)
                 
                 if token != ":" && token != "$" && token != "@" {
-                    throw StructureError.Error("Bind parameter \(idx) has an invalid name of \(name)")
+                    throw StructureError.error("Bind parameter \(idx) has an invalid name of \(name)")
                 }
                 
                 // Valid, so get the name without the token
-                let finalName = name.substringFromIndex(nameIndex)
+                let finalName = name.substring(from: nameIndex)
                 bindParameters[finalName] = idx
             }
         }
@@ -93,9 +96,13 @@ public class Statement {
         for idx in 0 ..< count {
             let columnName = sqlite3_column_name(statement, idx)
             
-            // Ensre we can use the name
-            guard let name = String.fromCString(columnName) else {
-                throw StructureError.Error("Column \(idx) was not named")
+            guard let column = columnName else {
+                throw StructureError.error("Column \(idx) was not named")
+            }
+            
+            // Ensure we can use the name
+            guard let name = String(validatingUTF8: column) else {
+                throw StructureError.error("Column \(idx) was not properly named")
             }
             
             // Valid, store the name
@@ -130,7 +137,7 @@ public class Statement {
             - index: The index of the parameter to bind.
             - value: The `Bindable` value to assign to the index.
     */
-    public func bind(index: Int, value: Bindable?) {
+    public func bind(_ index: Int, value: Bindable?) {
         bind(Int32(index), value: value)
     }
     
@@ -141,7 +148,7 @@ public class Statement {
             - index: The native index of the parameter to bind.
         - value: The `Bindable` value to assign to the native index.
     */
-    private func bind(index: Int32, value: Bindable?) {
+    private func bind(_ index: Int32, value: Bindable?) {
         let idx = Int32(index)
         
         // If we don't have a value, bind NULL
@@ -158,8 +165,11 @@ public class Statement {
             sqlite3_bind_int(statement, idx, Int32(x))
         case let x as Int64:
             sqlite3_bind_int64(statement, idx, x)
-        case let x as NSData:
-            sqlite3_bind_blob(statement, idx, x.bytes, Int32(x.length), SQLITE_TRANSIENT)
+        case let x as Data:
+            x.withUnsafeBytes { data -> Void in
+                sqlite3_bind_blob(statement, idx, data, Int32(x.count), SQLITE_TRANSIENT)
+            }
+            
         case let x as String:
             sqlite3_bind_text(statement, idx, x, Int32(x.utf8.count), SQLITE_TRANSIENT)
         default:
@@ -174,7 +184,7 @@ public class Statement {
             - index: The named index of the parameter to bind.
         - value: The `Bindable` value to assign to the namaed index.
     */
-    public func bind(key: String, value: Bindable?) {
+    public func bind(_ key: String, value: Bindable?) {
         // Ensure we can map a parameter to an index
         guard let index = bindParameters[key] else {
             return

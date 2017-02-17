@@ -1,0 +1,4 @@
+module SQLite [system][extern_c] {
+    header "sqlite3.h"
+    export *
+}
