@@ -72,12 +72,4 @@ Structure is copyright © 2016 Stephen H. Gerstacker. It is free software, and m
 
 Currently only Carthage is supported. For Xcode 8 / Swift 3.0, add the following to your Carfile:
 
-    github "stack/Structure" ~> 1.1
-
-For Xcode 8 / Swift 2.3, add the following to your 'Cartfile`:
-
-    github "stack/Structure" ~> 1.1
-
-For Xcode 7.3 / Swift 2.2, add the following to your Cartfile:
-
-    github "stack/Structure" ~> 1.0
+    github "stack/Structure" ~> 2.0
