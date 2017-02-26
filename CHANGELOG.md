@@ -1,3 +1,16 @@
+### [2.0.1](https://github.com/stack/Structure/releases/tag/v2.0.1)
+
+### Updated
+
+The `perform` method now has a throwable `rowCallback`, to allow bubbling up of
+errors that occur in that callback.
+
+### [2.0.0](https://github.com/stack/Structure/releases/tag/v2.0.0)
+
+### Updated
+
+*   Support for Xcode 8 & Swift 3.0
+
 ### [1.1.0](https://github.com/stack/Structure/releases/tag/v1.1.0)
 
 ### Updated
