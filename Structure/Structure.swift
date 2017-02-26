@@ -241,9 +241,10 @@ public class Structure {
             - rowCallback: The callback performed for each row that results from the Statement.
  
         - Throws: `Structure.InternalError` if performing the Statement failed.
+        - Throws: `Error` if the `rowCallback` throws and error
     */
-    public func perform(_ statement: Statement, rowCallback: (Row) -> Void) throws {
-        var potentialError: StructureError? = nil
+    public func perform(_ statement: Statement, rowCallback: (Row) throws -> Void) throws {
+        var potentialError: Error? = nil
         
         dispatchWithinQueue {
             // Step until there is an error or complete
@@ -260,7 +261,11 @@ public class Structure {
                 case .ok:
                     keepGoing = false
                 case .row:
-                    rowCallback(Row(statement: statement))
+                    do {
+                        try rowCallback(Row(statement: statement))
+                    } catch let e {
+                        potentialError = e
+                    }
                 case .unhandled(let code):
                     fatalError("Unhandled result code from stepping a statement: \(code)")
                 }
