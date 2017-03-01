@@ -3,7 +3,7 @@
 //  Structure
 //
 //  Created by Stephen Gerstacker on 1/1/16.
-//  Copyright © 2016 Stephen H. Gerstacker. All rights reserved.
+//  Copyright © 2017 Stephen H. Gerstacker. All rights reserved.
 //
 
 import Foundation
@@ -30,7 +30,7 @@ public class Statement {
         // Attempt to build the statement
         let result = sqlite3_prepare_v2(structure.database, query, -1, &statement, nil)
         if result != SQLITE_OK {
-            throw StructureError.fromSqliteResult(result)
+            throw StructureError.from(sqliteResult: result)
         }
         
         // Parse the information from the statement
@@ -40,20 +40,13 @@ public class Statement {
     
     deinit {
         if statement != nil {
-            sqlite3_finalize(statement)
+            let result = sqlite3_finalize(statement)
+            if result != SQLITE_OK {
+                fatalError("Failed to finalize the statement: \(result)")
+            }
+            
+            statement = nil
         }
-    }
-    
-    /**
-        Finalize the statement, freeing any resources associated with it.
-    */
-    public func finalize() {
-        let result = sqlite3_finalize(statement)
-        if result != SQLITE_OK {
-            fatalError("Failed to finalize the statement: \(result)")
-        }
-        
-        statement = nil
     }
     
     private func parseBindParameters() throws {
@@ -125,7 +118,7 @@ public class Statement {
     
     internal func step() -> SQLiteResult {
         let result = sqlite3_step(statement)
-        return SQLiteResult.fromResultCode(result)
+        return SQLiteResult.from(resultCode: result)
     }
     
     // MARK: - Data Binding
@@ -137,8 +130,8 @@ public class Statement {
             - index: The index of the parameter to bind.
             - value: The `Bindable` value to assign to the index.
     */
-    public func bind(_ index: Int, value: Bindable?) {
-        bind(Int32(index), value: value)
+    public func bind(value: Bindable?, at index: Int) {
+        bind(value: value, at: Int32(index))
     }
     
     /**
@@ -148,7 +141,7 @@ public class Statement {
             - index: The native index of the parameter to bind.
         - value: The `Bindable` value to assign to the native index.
     */
-    private func bind(_ index: Int32, value: Bindable?) {
+    private func bind(value: Bindable?, at index: Int32) {
         let idx = Int32(index)
         
         // If we don't have a value, bind NULL
@@ -184,13 +177,13 @@ public class Statement {
             - index: The named index of the parameter to bind.
         - value: The `Bindable` value to assign to the namaed index.
     */
-    public func bind(_ key: String, value: Bindable?) {
+    public func bind(value: Bindable?, for key: String) {
         // Ensure we can map a parameter to an index
         guard let index = bindParameters[key] else {
             return
         }
         
         // Pass the index to the proper function
-        bind(index, value: value)
+        bind(value: value, at: index)
     }
 }

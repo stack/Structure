@@ -3,7 +3,7 @@
 //  Structure
 //
 //  Created by Stephen Gerstacker on 1/10/16.
-//  Copyright © 2016 Stephen H. Gerstacker. All rights reserved.
+//  Copyright © 2017 Stephen H. Gerstacker. All rights reserved.
 //
 
 import Foundation
@@ -222,15 +222,6 @@ public class Row {
         } else {
             return nil
         }
-        
-        /*
-        if let value = UnsafePointer.withMemoryRebound(<#T##UnsafePointer<Pointee>#>)
-        if let value = UnsafePointer<CChar>(sqlite3_column_text(statement.statement, index)) {
-            return String(validatingUTF8: value)
-        } else {
-            return nil
-        }
-        */
     }
     
     /**

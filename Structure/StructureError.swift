@@ -3,7 +3,7 @@
 //  Structure
 //
 //  Created by Stephen Gerstacker on 12/20/15.
-//  Copyright © 2016 Stephen H. Gerstacker. All rights reserved.
+//  Copyright © 2017 Stephen H. Gerstacker. All rights reserved.
 //
 
 import Foundation
@@ -19,11 +19,15 @@ public enum StructureError: Error {
     case error(String)
     case internalError(Int, String)
     
-    internal static func fromSqliteResult(_ result: Int32) -> StructureError {
-        if let errorMessage = sqlite3_errstr(result), let error = String(validatingUTF8: errorMessage) {
-            return internalError(Int(result), error)
+    internal static func from(sqliteResult: Int) -> StructureError {
+        if let errorMessage = sqlite3_errstr(Int32(sqliteResult)), let error = String(validatingUTF8: errorMessage) {
+            return internalError(Int(sqliteResult), error)
         } else {
             return internalError(0, "Unknown error")
         }
+    }
+    
+    internal static func from(sqliteResult: Int32) -> StructureError {
+        return from(sqliteResult: Int(sqliteResult))
     }
 }

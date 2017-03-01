@@ -3,7 +3,7 @@
 //  Structure
 //
 //  Created by Stephen Gerstacker on 12/20/15.
-//  Copyright © 2016 Stephen H. Gerstacker. All rights reserved.
+//  Copyright © 2017 Stephen H. Gerstacker. All rights reserved.
 //
 
 import Foundation
@@ -45,14 +45,10 @@ public class Structure {
     public internal(set) var userVersion: Int {
         get {
             do {
-                let statement = try prepare("PRAGMA user_version")
-                
-                defer {
-                    statement.finalize()
-                }
+                let statement = try prepare(query: "PRAGMA user_version")
                 
                 var version = -1
-                try perform(statement) { row in
+                try perform(statement: statement) { row in
                     version = row[0]
                 }
                 
@@ -64,7 +60,7 @@ public class Structure {
         
         set {
             do {
-                try execute("PRAGMA user_version = \(newValue)")
+                try execute(query: "PRAGMA user_version = \(newValue)")
             } catch let e {
                 fatalError("Failed to write user version: \(e)")
             }
@@ -100,7 +96,7 @@ public class Structure {
         // Attempt to open the path
         let result = sqlite3_open_v2(path, &databasePointer, SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE, nil)
         if result != SQLITE_OK {
-            throw StructureError.fromSqliteResult(result)
+            throw StructureError.from(sqliteResult: result)
         }
     }
     
@@ -115,7 +111,7 @@ public class Structure {
         dispatchWithinQueue {
             let result = sqlite3_close_v2(self.database)
             if result != SQLITE_OK {
-                potentialError = StructureError.fromSqliteResult(result)
+                potentialError = StructureError.from(sqliteResult: result)
             } else {
                 self.databasePointer = nil
             }
@@ -130,6 +126,7 @@ public class Structure {
         // Force a final closure, just in case
         if databasePointer != nil {
             sqlite3_close_v2(database)
+            self.databasePointer = nil
         }
         
     }
@@ -145,13 +142,13 @@ public class Structure {
      
         - Returns: A new Statement object.
     */
-    public func prepare(_ query: String) throws -> Statement {
+    public func prepare(query: String) throws -> Statement {
         return try Statement(structure: self, query: query)
     }
     
     // MARK: - Thread Safety
     
-    internal func dispatchWithinQueue(_ block: (Void) -> ()) {
+    internal func dispatchWithinQueue(block: (Void) -> ()) {
         if DispatchQueue.getSpecific(key: queueId) != nil {
             block()
         } else {
@@ -169,7 +166,7 @@ public class Structure {
  
         - Throws: `StructureError.InternalError` if the execution failed.
     */
-    public func execute(_ query: String) throws {
+    public func execute(query: String) throws {
         // Placeholder for an error that occurs in the block
         var potentialError: StructureError? = nil
         
@@ -203,7 +200,7 @@ public class Structure {
  
         - Throws: `Structure.InternalError` if performing the Statement failed.
     */
-    public func perform(_ statement: Statement) throws {
+    public func perform(statement: Statement) throws {
         var potentialError: StructureError? = nil
         
         dispatchWithinQueue {
@@ -215,8 +212,8 @@ public class Structure {
                 switch result {
                 case .done:
                     keepGoing = false
-                case .error(let code):
-                    potentialError = StructureError.fromSqliteResult(code)
+                case .error(let code, _):
+                    potentialError = StructureError.from(sqliteResult: Int32(code))
                     keepGoing = false
                 case .ok:
                     keepGoing = false
@@ -243,7 +240,7 @@ public class Structure {
         - Throws: `Structure.InternalError` if performing the Statement failed.
         - Throws: `Error` if the `rowCallback` throws and error
     */
-    public func perform(_ statement: Statement, rowCallback: (Row) throws -> Void) throws {
+    public func perform(statement: Statement, rowCallback: (Row) throws -> Void) throws {
         var potentialError: Error? = nil
         
         dispatchWithinQueue {
@@ -255,8 +252,8 @@ public class Structure {
                 switch result {
                 case .done:
                     keepGoing = false
-                case .error(let code):
-                    potentialError = StructureError.fromSqliteResult(code)
+                case .error(let code, _):
+                    potentialError = StructureError.from(sqliteResult: Int32(code))
                     keepGoing = false
                 case .ok:
                     keepGoing = false
@@ -287,7 +284,7 @@ public class Structure {
  
         - Returns: A row from a single execution of the Statement, or nil if the query did not return a row.
     */
-    public func step(_ statement: Statement) throws -> Row? {
+    public func step(statement: Statement) throws -> Row? {
         var potentialError: StructureError? = nil
         var potentialRow: Row? = nil
         
@@ -297,8 +294,8 @@ public class Structure {
             switch result {
             case .done:
                 potentialRow = nil
-            case .error(let code):
-                potentialError = StructureError.fromSqliteResult(code)
+            case .error(let code, _):
+                potentialError = StructureError.from(sqliteResult: Int32(code))
             case .ok:
                 potentialRow = nil
             case .row:

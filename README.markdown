@@ -13,17 +13,17 @@ If you are familiar with the SQLite C API, you should be familiar with Structure
 ```swift
     let structure = try Structre("/tmp/structure.db")
     
-    let statement = try structure.prepare("INSERT INTO foo (b, c, d) VALUES (:B, :C, :D)")
+    let statement = try structure.prepare(query: "INSERT INTO foo (b, c, d) VALUES (:B, :C, :D)")
     
     defer {
         statement.finalize()
     }
     
-    statement.bind("B", value: "foo")
-    statement.bind("C", value: 42.1)
-    statement.bind("D", value: 42)
+    statement.bind(value: "foo", for: "B")
+    statement.bind(value: 42.1, for: "C")
+    statement.bind(value: 42, for: "D")
     
-    try structure.perform(statement)
+    try structure.perform(statement: statement)
 ```
 
 ## Database Lifecycle
@@ -66,10 +66,10 @@ Each transaction is wrapped in the SQLite `TRANSACTION` mechanism, allowing roll
 
 ## License
 
-Structure is copyright © 2016 Stephen H. Gerstacker. It is free software, and may be redistributed under the terms specified in the `LICENSE.md` file.
+Structure is copyright © 2017 Stephen H. Gerstacker. It is free software, and may be redistributed under the terms specified in the `LICENSE.md` file.
 
 # Installation
 
 Currently only Carthage is supported. For Xcode 8 / Swift 3.0, add the following to your Carfile:
 
-    github "stack/Structure" ~> 2.0
+    github "stack/Structure" ~> 3.0

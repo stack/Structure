@@ -1,3 +1,13 @@
+### [3.0.0](https://github.com/stack/Structure/releases/tag/v3.0.0)
+
+### Updated
+
+All methods names and parameters follow a more Swift-like naming convention.
+
+`bind(_:value:)` is now `bind(value:for:)` and `bind(value:at:)`.
+
+`finalize()` is no longer needed.
+
 ### [2.0.1](https://github.com/stack/Structure/releases/tag/v2.0.1)
 
 ### Updated

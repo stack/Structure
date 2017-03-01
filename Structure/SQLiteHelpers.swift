@@ -3,7 +3,7 @@
 //  Structure
 //
 //  Created by Stephen Gerstacker on 12/20/15.
-//  Copyright © 2016 Stephen H. Gerstacker. All rights reserved.
+//  Copyright © 2017 Stephen H. Gerstacker. All rights reserved.
 //
 
 import SQLite
@@ -27,31 +27,31 @@ let SQLITE_TRANSIENT = unsafeBitCast(-1, to: sqlite3_destructor_type.self)
 */
 public enum SQLiteResult {
     case ok
-    case error(Int32)
+    case error(Int, String)
     case row
     case done
-    case unhandled(Int32)
+    case unhandled(Int, String)
     
     /**
         Converts a SQLite error code to a `SQLiteResult`
  
         - Parameters:
-            - code: The native, SQLite error code.
+            - resultCode: The native, SQLite error code.
  
         - Returns: The equivalent `SQLiteResult` value, or `Unhandled` if the value is currently handled.
     */
-    static func fromResultCode(_ code: Int32) -> SQLiteResult {
-        switch code {
+    static func from(resultCode: Int32) -> SQLiteResult {
+        switch resultCode {
         case SQLITE_OK:
             return .ok
         case SQLITE_ERROR:
-            return .error(code)
+            return .error(Int(resultCode), String(cString: sqlite3_errstr(resultCode)))
         case SQLITE_ROW:
             return .row
         case SQLITE_DONE:
             return .done
         default:
-            return .unhandled(code)
+            return .unhandled(Int(resultCode), String(cString: sqlite3_errstr(resultCode)))
         }
     }
 }
