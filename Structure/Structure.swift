@@ -98,6 +98,9 @@ public class Structure {
         if result != SQLITE_OK {
             throw StructureError.from(sqliteResult: result)
         }
+        
+        // Register all custom functions
+        registerFunctions()
     }
     
     /**
@@ -129,6 +132,32 @@ public class Structure {
             self.databasePointer = nil
         }
         
+    }
+    
+    private func registerFunctions() {
+        sqlite3_create_function(database, "UPPER", 1, SQLITE_UTF8, nil, { (context, numberOfArguments, arguments) in
+            guard let args = arguments else {
+                sqlite3_result_error(context, "UPPER could not unwrap arguments", -1)
+                return
+            }
+            
+            let firstArg = args.advanced(by: 0)
+            guard let firstData = firstArg.pointee else {
+                sqlite3_result_error(context, "UPPER could not get first argument data", -1)
+                return
+            }
+
+            guard let value = sqlite3_value_text(firstData) else {
+                sqlite3_result_error(context, "UPPER could not get text from first argument", -1)
+                return
+            }
+            
+            let stringValue = String(cString: value).uppercased()
+            
+            stringValue.withCString {
+                sqlite3_result_text(context, $0, Int32(stringValue.lengthOfBytes(using: .utf8)), SQLITE_STATIC)
+            }
+        }, nil, nil)
     }
     
     // MARK: - Statement Creation

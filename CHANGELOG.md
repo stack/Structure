@@ -2,7 +2,9 @@
 
 ### Updated
 
-`sqlite3` has been updated to 3.19.3
+Added an `UPPER` SQLite function to use Swift's uppercase handling.
+
+`sqlite3` has been updated to 3.19.3.
 
 ### [3.0.0](https://github.com/stack/Structure/releases/tag/v3.0.0)
 

@@ -253,4 +253,88 @@ class StructureTests: XCTestCase {
         
         XCTAssertEqual(finalRow["value"] as Int, 1000)
     }
+    
+    // MARK: - Custom Function Tests
+    
+    func testUpperFunctionWithStandardString() {
+        // Create a table that stores strings
+        try! structure.migrate(version: 1) { s in
+            try s.execute(query: "CREATE TABLE foo (id INTEGER PRIMARY KEY, value TEXT)")
+        }
+        
+        // Insert some test data
+        try! structure.execute(query: "INSERT INTO foo (value) VALUES ('Hello')")
+        let id = structure.lastInsertedId
+        
+        // Fetch the data back out, with upper case values
+        let fetchStatement = try! structure.prepare(query: "SELECT UPPER(value) AS value FROM foo WHERE id = :id")
+        fetchStatement.bind(value: id, for: "id")
+        
+        guard let row = try! structure.step(statement: fetchStatement) else {
+            XCTFail("Failed to get inserted data")
+            return
+        }
+        
+        guard let result: String = row["value"] else {
+            XCTFail("Failed to get string value")
+            return
+        }
+        
+        XCTAssertEqual(result, "HELLO")
+    }
+    
+    func testUpperFunctionWithComplexString() {
+        // Create a table that stores strings
+        try! structure.migrate(version: 1) { s in
+            try s.execute(query: "CREATE TABLE foo (id INTEGER PRIMARY KEY, value TEXT)")
+        }
+        
+        // Insert some test data
+        try! structure.execute(query: "INSERT INTO foo (value) VALUES ('👋🏻 Hello 👋🏼')")
+        let id = structure.lastInsertedId
+        
+        // Fetch the data back out, with upper case values
+        let fetchStatement = try! structure.prepare(query: "SELECT UPPER(value) AS value FROM foo WHERE id = :id")
+        fetchStatement.bind(value: id, for: "id")
+        
+        guard let row = try! structure.step(statement: fetchStatement) else {
+            XCTFail("Failed to get inserted data")
+            return
+        }
+        
+        guard let result: String = row["value"] else {
+            XCTFail("Failed to get string value")
+            return
+        }
+        
+        XCTAssertEqual(result, "👋🏻 HELLO 👋🏼")
+    }
+    
+    func testUpperFunctionWithUnicodeString() {
+        // Create a table that stores strings
+        try! structure.migrate(version: 1) { s in
+            try s.execute(query: "CREATE TABLE foo (id INTEGER PRIMARY KEY, value TEXT)")
+        }
+        
+        // Insert some test data
+        try! structure.execute(query: "INSERT INTO foo (value) VALUES ('exámple óóßChloë')")
+        let id = structure.lastInsertedId
+        
+        // Fetch the data back out, with upper case values
+        let fetchStatement = try! structure.prepare(query: "SELECT UPPER(value) AS value FROM foo WHERE id = :id")
+        fetchStatement.bind(value: id, for: "id")
+        
+        guard let row = try! structure.step(statement: fetchStatement) else {
+            XCTFail("Failed to get inserted data")
+            return
+        }
+        
+        guard let result: String = row["value"] else {
+            XCTFail("Failed to get string value")
+            return
+        }
+        
+        XCTAssertEqual(result, "EXÁMPLE ÓÓSSCHLOË")
+        
+    }
 }
