@@ -15,5 +15,4 @@ FOUNDATION_EXPORT double Structure_tvOSVersionNumber;
 FOUNDATION_EXPORT const unsigned char Structure_tvOSVersionString[];
 
 // In this header, you should import all the public headers of your framework using statements like #import <Structure_tvOS/PublicHeader.h>
-
-
+#include <sqlite3.h>

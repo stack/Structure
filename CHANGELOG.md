@@ -1,3 +1,9 @@
+### [4.0.0](https://github.com/stack/Structure/releases/tag/v4.0.0)
+
+### Updated
+
+`sqlite3` has been updated to 3.19.3
+
 ### [3.0.0](https://github.com/stack/Structure/releases/tag/v3.0.0)
 
 ### Updated
