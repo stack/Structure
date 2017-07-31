@@ -1,6 +1,6 @@
 language: objective-c
 
-osx_image: xcode8.2
+osx_image: xcode8.3
 
 xcode_project: Structure.xcodeproj
 
@@ -10,22 +10,22 @@ xcode_scheme:
     - Structure tvOS
 
 xcode_sdk:
-    - iphonesimulator10.2
+    - iphonesimulator10.3
     - macosx10.12
-    - appletvsimulator10.1
+    - appletvsimulator10.2
 
 matrix:
     exclude:
         - xcode_scheme: Structure iOS
           xcode_sdk: macosx10.12
         - xcode_scheme: Structure iOS
-          xcode_sdk: appletvsimulator10.1
+          xcode_sdk: appletvsimulator10.2
         - xcode_scheme: Structure Mac
-          xcode_sdk: iphonesimulator10.2
+          xcode_sdk: iphonesimulator10.3
         - xcode_scheme: Structure Mac
-          xcode_sdk: appletvsimulator10.1
+          xcode_sdk: appletvsimulator10.2
         - xcode_scheme: Structure tvOS
-          xcode_sdk: iphonesimulator10.2
+          xcode_sdk: iphonesimulator10.3
         - xcode_scheme: Structure tvOS
           xcode_sdk: macosx10.12
 
