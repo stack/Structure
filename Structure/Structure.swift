@@ -313,7 +313,7 @@ public class Structure {
  
         - Returns: A row from a single execution of the Statement, or nil if the query did not return a row.
     */
-    public func step(statement: Statement) throws -> Row? {
+    @discardableResult public func step(statement: Statement) throws -> Row? {
         var potentialError: StructureError? = nil
         var potentialRow: Row? = nil
         
