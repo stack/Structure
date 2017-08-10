@@ -50,8 +50,8 @@ class StatementTests: XCTestCase {
         do {
             _ = try structure.prepare(query: "SELECT FOO BAR BAZ")
             XCTFail("Preparation of invalid query succeeded")
-        } catch let e {
-            XCTSuccess("Preparation of invalid query failed: \(e)")
+        } catch {
+            XCTSuccess("Preparation of invalid query failed: \(error)")
         }
     }
     
@@ -59,8 +59,8 @@ class StatementTests: XCTestCase {
         do {
             _ = try structure.prepare(query: "SELECT a FROM foo WHERE b = ?")
             XCTFail("Preparation of query with unnamed parameters succeeded")
-        } catch let e {
-            XCTSuccess("Preparation of query with unnamed parameters failed: \(e)")
+        } catch {
+            XCTSuccess("Preparation of query with unnamed parameters failed: \(error)")
         }
         
     }
@@ -78,8 +78,8 @@ class StatementTests: XCTestCase {
             XCTAssertEqual(0, statement.columns["a"])
             XCTAssertEqual(1, statement.columns["b"])
             XCTAssertEqual(2, statement.columns["c"])
-        } catch let e {
-            XCTFail("Preparation of valid query failed: \(e)")
+        } catch {
+            XCTFail("Preparation of valid query failed: \(error)")
         }
     }
     
@@ -111,8 +111,8 @@ class StatementTests: XCTestCase {
             // Ensure we have 0 rows
             let deletedCount = countFoo()
             XCTAssertEqual(0, deletedCount)
-        } catch let e {
-            XCTFail("Failed testing delete statement: \(e)")
+        } catch {
+            XCTFail("Failed testing delete statement: \(error)")
         }
     }
     
@@ -167,8 +167,8 @@ class StatementTests: XCTestCase {
                 XCTAssertEqual(42, dInt)
                 XCTAssertEqual(data, eInt)
             }
-        } catch let e {
-            XCTFail("Failed testing insert statement: \(e)")
+        } catch {
+            XCTFail("Failed testing insert statement: \(error)")
         }
     }
     
@@ -226,8 +226,8 @@ class StatementTests: XCTestCase {
                 XCTAssertEqual(0, dInt)
                 XCTAssertNil(eInt)
             }
-        } catch let e {
-            XCTFail("Failed testing insert statement: \(e)")
+        } catch {
+            XCTFail("Failed testing insert statement: \(error)")
         }
     }
     
@@ -299,8 +299,8 @@ class StatementTests: XCTestCase {
                 XCTAssertEqual(2, dInt)
                 XCTAssertEqual(data2, eInt)
             }
-        } catch let e {
-            XCTFail("Failed testing update statement: \(e)")
+        } catch {
+            XCTFail("Failed testing update statement: \(error)")
         }
     }
     
@@ -332,8 +332,8 @@ class StatementTests: XCTestCase {
             // Ensure there are two rows
             let updatedCount = countFoo()
             XCTAssertEqual(2, updatedCount)
-        } catch let e {
-            XCTFail("Failed testing successful transaction: \(e)")
+        } catch {
+            XCTFail("Failed testing successful transaction: \(error)")
         }
     }
     
@@ -363,8 +363,8 @@ class StatementTests: XCTestCase {
             }
         } catch StructureError.error(let e) {
             XCTAssertEqual("Forced Error", e)
-        } catch let e {
-            XCTFail("Unknown error when forcing a bad transaction: \(e)")
+        } catch {
+            XCTFail("Unknown error when forcing a bad transaction: \(error)")
         }
         
         // Ensure there are still no rows

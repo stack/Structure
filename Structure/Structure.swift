@@ -53,16 +53,16 @@ public class Structure {
                 }
                 
                 return version
-            } catch let e {
-                fatalError("Failed to read user version: \(e)")
+            } catch {
+                fatalError("Failed to read user version: \(error)")
             }
         }
         
         set {
             do {
                 try execute(query: "PRAGMA user_version = \(newValue)")
-            } catch let e {
-                fatalError("Failed to write user version: \(e)")
+            } catch {
+                fatalError("Failed to write user version: \(error)")
             }
         }
     }
@@ -289,8 +289,8 @@ public class Structure {
                 case .row:
                     do {
                         try rowCallback(Row(statement: statement))
-                    } catch let e {
-                        potentialError = e
+                    } catch {
+                        potentialError = error
                     }
                 case .unhandled(let code):
                     fatalError("Unhandled result code from stepping a statement: \(code)")
@@ -365,8 +365,8 @@ public class Structure {
             do {
                 try block(self)
                 self.commitTransaction()
-            } catch let e {
-                potentialError = e
+            } catch {
+                potentialError = error
                 self.rollbackTransaction()
             }
         }
@@ -424,8 +424,8 @@ public class Structure {
                 try migration(self)
                 self.userVersion = version
                 self.commitTransaction()
-            } catch let e {
-                potentialError = e
+            } catch {
+                potentialError = error
                 self.rollbackTransaction()
             }
         }

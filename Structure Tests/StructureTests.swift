@@ -50,8 +50,8 @@ class StructureTests: XCTestCase {
         do {
             try structure.execute(query: "FOO!")
             XCTFail("Execution was successful for an invalid query")
-        } catch let e {
-            XCTSuccess("Exection of an invalid query failed properly: \(e)")
+        } catch {
+            XCTSuccess("Exection of an invalid query failed properly: \(error)")
         }
     }
     
@@ -59,8 +59,8 @@ class StructureTests: XCTestCase {
         do {
             try structure.execute(query: "CREATE TABLE foo (a INT)")
             XCTSuccess("Execution was successful for a valid query")
-        } catch let e {
-            XCTFail("Failed to execute a valid query: \(e)")
+        } catch {
+            XCTFail("Failed to execute a valid query: \(error)")
         }
     }
     
@@ -71,8 +71,8 @@ class StructureTests: XCTestCase {
             }
             
             XCTSuccess("Execution inside a transaction was successful")
-        } catch let e {
-            XCTFail("Failed to execute query inside of a transaction: \(e)")
+        } catch {
+            XCTFail("Failed to execute query inside of a transaction: \(error)")
         }
     }
     
@@ -91,8 +91,8 @@ class StructureTests: XCTestCase {
             } else {
                 XCTFail("Failed to step a successful query")
             }
-        } catch let e {
-            XCTFail("Unknown failure stepping a successful query: \(e)")
+        } catch {
+            XCTFail("Unknown failure stepping a successful query: \(error)")
         }
     }
     
@@ -103,8 +103,8 @@ class StructureTests: XCTestCase {
             let statement = try structure.prepare(query: "SELECT a FROM foo")
             
             XCTAssertNil(try structure.step(statement: statement))
-        } catch let e {
-            XCTFail("Unknown failure stepping an empty query: \(e)")
+        } catch {
+            XCTFail("Unknown failure stepping an empty query: \(error)")
         }
     }
     
@@ -117,8 +117,8 @@ class StructureTests: XCTestCase {
             try structure.migrate(version: 1) { s in
                 try s.execute(query: "CREATE TABLE foo (a INT)")
             }
-        } catch let e {
-            XCTFail("Migration should not have failed: \(e)")
+        } catch {
+            XCTFail("Migration should not have failed: \(error)")
         }
         
         XCTAssertEqual(1, structure.userVersion)
@@ -135,8 +135,8 @@ class StructureTests: XCTestCase {
             try structure.migrate(version: 2) { s in
                 try s.execute(query: "CREATE TABLE bar (a INT)")
             }
-        } catch let e {
-            XCTFail("Migration should not have failed: \(e)")
+        } catch {
+            XCTFail("Migration should not have failed: \(error)")
         }
         
         XCTAssertEqual(2, structure.userVersion)
@@ -150,8 +150,8 @@ class StructureTests: XCTestCase {
                 try s.execute(query: "CREATE TABLE foo (a INT)")
             }
             XCTFail("Migration should not have succeeded")
-        } catch let e {
-            XCTSuccess("Migration failed properly: \(e)")
+        } catch {
+            XCTSuccess("Migration failed properly: \(error)")
         }
         
         XCTAssertEqual(0, structure.userVersion)
@@ -168,8 +168,8 @@ class StructureTests: XCTestCase {
             try structure.migrate(version: 1) { s in
                 try s.execute(query: "INSERT INTO foo (a) VALUES (1)")
             }
-        } catch let e {
-            XCTFail("Migration should not have failed: \(e)")
+        } catch {
+            XCTFail("Migration should not have failed: \(error)")
         }
         
         XCTAssertEqual(1, structure.userVersion)
