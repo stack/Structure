@@ -7,10 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		D1862E1E1F2C2E1F00B0B398 /* sqlite3.c in Sources */ = {isa = PBXBuildFile; fileRef = D1862E1C1F2C2E1F00B0B398 /* sqlite3.c */; settings = {COMPILER_FLAGS = "-Wno-ambiguous-macro -Wno-shorten-64-to-32 -Wno-unreachable-code -Wno-#warnings"; }; };
+		D1862E1E1F2C2E1F00B0B398 /* sqlite3.c in Sources */ = {isa = PBXBuildFile; fileRef = D1862E1C1F2C2E1F00B0B398 /* sqlite3.c */; settings = {COMPILER_FLAGS = "-Wno-ambiguous-macro -Wno-shorten-64-to-32 -Wno-unreachable-code -Wno-#warnings -DSQLITE_ENABLE_JSON1"; }; };
 		D1862E1F1F2C2E1F00B0B398 /* sqlite3.h in Headers */ = {isa = PBXBuildFile; fileRef = D1862E1D1F2C2E1F00B0B398 /* sqlite3.h */; };
 		D1862E201F2C2E2300B0B398 /* sqlite3.c in Sources */ = {isa = PBXBuildFile; fileRef = D1862E1C1F2C2E1F00B0B398 /* sqlite3.c */; };
-		D1862E211F2C2E2400B0B398 /* sqlite3.c in Sources */ = {isa = PBXBuildFile; fileRef = D1862E1C1F2C2E1F00B0B398 /* sqlite3.c */; settings = {COMPILER_FLAGS = "-Wno-ambiguous-macro -Wno-shorten-64-to-32 -Wno-unreachable-code -Wno-#warnings"; }; };
+		D1862E211F2C2E2400B0B398 /* sqlite3.c in Sources */ = {isa = PBXBuildFile; fileRef = D1862E1C1F2C2E1F00B0B398 /* sqlite3.c */; settings = {COMPILER_FLAGS = "-Wno-ambiguous-macro -Wno-shorten-64-to-32 -Wno-unreachable-code -Wno-#warnings -DSQLITE_ENABLE_JSON1"; }; };
 		D1F822E61C27A4DF00B54B04 /* Structure.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D1F822DB1C27A4DF00B54B04 /* Structure.framework */; };
 		D1F822FC1C27AB7100B54B04 /* Structure.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F822FB1C27AB7100B54B04 /* Structure.swift */; };
 		D1F822FD1C27AB7100B54B04 /* Structure.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1F822FB1C27AB7100B54B04 /* Structure.swift */; };
