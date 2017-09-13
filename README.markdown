@@ -1,6 +1,6 @@
 # Structure 
 
-[![Travis CI](https://travis-ci.org/stack/Structure.svg?branch=2.0)](https://travis-ci.org/stack/Structure) ![platforms](https://img.shields.io/badge/platforms-iOS%20%7C%20OSX%20%7C%20tvOS-333333.svg) [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
+[![Travis CI](https://travis-ci.org/stack/Structure.svg?branch=5.0)](https://travis-ci.org/stack/Structure) ![platforms](https://img.shields.io/badge/platforms-iOS%20%7C%20OSX%20%7C%20tvOS-333333.svg) [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
 
 Structure is a [SQLite](https://sqlite.org "SQLite Home Page") wrapper, written in Swift. It is written specifically for the needs of the author, but any comments or criticisms are welcomed.
 
@@ -13,17 +13,17 @@ If you are familiar with the SQLite C API, you should be familiar with Structure
 ```swift
     let structure = try Structre("/tmp/structure.db")
     
-    let statement = try structure.prepare("INSERT INTO foo (b, c, d) VALUES (:B, :C, :D)")
+    let statement = try structure.prepare(query: "INSERT INTO foo (b, c, d) VALUES (:B, :C, :D)")
     
     defer {
         statement.finalize()
     }
     
-    statement.bind("B", value: "foo")
-    statement.bind("C", value: 42.1)
-    statement.bind("D", value: 42)
+    statement.bind(value: "foo", for: "B")
+    statement.bind(value: 42.1, for: "C")
+    statement.bind(value: 42, for: "D")
     
-    try structure.perform(statement)
+    try structure.perform(statement: statement)
 ```
 
 ## Database Lifecycle
@@ -66,10 +66,4 @@ Each transaction is wrapped in the SQLite `TRANSACTION` mechanism, allowing roll
 
 ## License
 
-Structure is copyright © 2016 Stephen H. Gerstacker. It is free software, and may be redistributed under the terms specified in the `LICENSE.md` file.
-
-# Installation
-
-Currently only Carthage is supported. For Xcode 8 / Swift 3.0, add the following to your Carfile:
-
-    github "stack/Structure" ~> 2.0
+Structure is copyright © 2017 Stephen H. Gerstacker. It is free software, and may be redistributed under the terms specified in the `LICENSE.md` file.

@@ -3,7 +3,7 @@
 //  Structure
 //
 //  Created by Stephen Gerstacker on 1/1/16.
-//  Copyright © 2016 Stephen H. Gerstacker. All rights reserved.
+//  Copyright © 2017 Stephen H. Gerstacker. All rights reserved.
 //
 
 import XCTest
@@ -26,8 +26,8 @@ class StructureInitializationTests: XCTestCase {
         do {
             let _ = try Structure()
             XCTAssertTrue(true, "Structure should be created successully")
-        } catch let e {
-            XCTFail("Structure creation should succeed: \(e)")
+        } catch {
+            XCTFail("Structure creation should succeed: \(error)")
         }
     }
     
@@ -37,8 +37,8 @@ class StructureInitializationTests: XCTestCase {
         do {
             let _ = try Structure(path: tempPath)
             try FileManager.default.removeItem(atPath: tempPath)
-        } catch let e {
-            XCTFail("Structure creation should succeed: \(e)")
+        } catch {
+            XCTFail("Structure creation should succeed: \(error)")
         }
     }
 }

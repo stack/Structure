@@ -3,7 +3,7 @@
 //  Structure
 //
 //  Created by Stephen Gerstacker on 12/20/15.
-//  Copyright © 2016 Stephen H. Gerstacker. All rights reserved.
+//  Copyright © 2017 Stephen H. Gerstacker. All rights reserved.
 //
 
 import XCTest
@@ -48,71 +48,63 @@ class StructureTests: XCTestCase {
     
     func testExecutingInvalidQuery() {
         do {
-            try structure.execute("FOO!")
+            try structure.execute(query: "FOO!")
             XCTFail("Execution was successful for an invalid query")
-        } catch let e {
-            XCTSuccess("Exection of an invalid query failed properly: \(e)")
+        } catch {
+            XCTSuccess("Exection of an invalid query failed properly: \(error)")
         }
     }
     
     func testExecutingValidQuery() {
         do {
-            try structure.execute("CREATE TABLE foo (a INT)")
+            try structure.execute(query: "CREATE TABLE foo (a INT)")
             XCTSuccess("Execution was successful for a valid query")
-        } catch let e {
-            XCTFail("Failed to execute a valid query: \(e)")
+        } catch {
+            XCTFail("Failed to execute a valid query: \(error)")
         }
     }
     
     func testExecutingInsideATransaction() {
         do {
             try structure.transaction { s in
-                try s.execute("CREATE TABLE foo (a INT)")
+                try s.execute(query: "CREATE TABLE foo (a INT)")
             }
             
             XCTSuccess("Execution inside a transaction was successful")
-        } catch let e {
-            XCTFail("Failed to execute query inside of a transaction: \(e)")
+        } catch {
+            XCTFail("Failed to execute query inside of a transaction: \(error)")
         }
     }
     
     // MARK: - Step Tests
     
     func testStepSuccessfully() {
-        try! structure.execute("CREATE TABLE foo (a INT)")
-        try! structure.execute("INSERT INTO foo (a) VALUES (1)")
+        try! structure.execute(query: "CREATE TABLE foo (a INT)")
+        try! structure.execute(query: "INSERT INTO foo (a) VALUES (1)")
         
         do {
-            let statement = try structure.prepare("SELECT a FROM foo")
+            let statement = try structure.prepare(query: "SELECT a FROM foo")
             
-            defer {
-                statement.finalize()
-            }
-            
-            if let row = try structure.step(statement) {
+            if let row = try structure.step(statement: statement) {
                 let a: Int = row["a"]
                 XCTAssertEqual(1, a)
             } else {
                 XCTFail("Failed to step a successful query")
             }
-        } catch let e {
-            XCTFail("Unknown failure stepping a successful query: \(e)")
+        } catch {
+            XCTFail("Unknown failure stepping a successful query: \(error)")
         }
     }
     
     func testStepEmpty() {
-        try! structure.execute("CREATE TABLE foo (a INT)")
+        try! structure.execute(query: "CREATE TABLE foo (a INT)")
         
         do {
-            let statement = try structure.prepare("SELECT a FROM foo")
+            let statement = try structure.prepare(query: "SELECT a FROM foo")
             
-            defer {
-                statement.finalize()
-            }
-            
-            XCTAssertNil(try structure.step(statement))
-        } catch let e {
-            XCTFail("Unknown failure stepping an empty query: \(e)")
+            XCTAssertNil(try structure.step(statement: statement))
+        } catch {
+            XCTFail("Unknown failure stepping an empty query: \(error)")
         }
     }
     
@@ -123,10 +115,10 @@ class StructureTests: XCTestCase {
         
         do {
             try structure.migrate(version: 1) { s in
-                try s.execute("CREATE TABLE foo (a INT)")
+                try s.execute(query: "CREATE TABLE foo (a INT)")
             }
-        } catch let e {
-            XCTFail("Migration should not have failed: \(e)")
+        } catch {
+            XCTFail("Migration should not have failed: \(error)")
         }
         
         XCTAssertEqual(1, structure.userVersion)
@@ -137,14 +129,14 @@ class StructureTests: XCTestCase {
         
         do {
             try structure.migrate(version: 1) { s in
-                try s.execute("CREATE TABLE foo (a INT)")
+                try s.execute(query: "CREATE TABLE foo (a INT)")
             }
             
             try structure.migrate(version: 2) { s in
-                try s.execute("CREATE TABLE bar (a INT)")
+                try s.execute(query: "CREATE TABLE bar (a INT)")
             }
-        } catch let e {
-            XCTFail("Migration should not have failed: \(e)")
+        } catch {
+            XCTFail("Migration should not have failed: \(error)")
         }
         
         XCTAssertEqual(2, structure.userVersion)
@@ -155,11 +147,11 @@ class StructureTests: XCTestCase {
         
         do {
             try structure.migrate(version: 2) { s in
-                try s.execute("CREATE TABLE foo (a INT)")
+                try s.execute(query: "CREATE TABLE foo (a INT)")
             }
             XCTFail("Migration should not have succeeded")
-        } catch let e {
-            XCTSuccess("Migration failed properly: \(e)")
+        } catch {
+            XCTSuccess("Migration failed properly: \(error)")
         }
         
         XCTAssertEqual(0, structure.userVersion)
@@ -170,26 +162,22 @@ class StructureTests: XCTestCase {
         
         do {
             try structure.migrate(version: 1) { s in
-                try s.execute("CREATE TABLE foo (a INT)")
+                try s.execute(query: "CREATE TABLE foo (a INT)")
             }
             
             try structure.migrate(version: 1) { s in
-                try s.execute("INSERT INTO foo (a) VALUES (1)")
+                try s.execute(query: "INSERT INTO foo (a) VALUES (1)")
             }
-        } catch let e {
-            XCTFail("Migration should not have failed: \(e)")
+        } catch {
+            XCTFail("Migration should not have failed: \(error)")
         }
         
         XCTAssertEqual(1, structure.userVersion)
         
-        let statement = try! structure.prepare("SELECT COUNT(a) as count FROM foo")
-        
-        defer {
-            statement.finalize()
-        }
+        let statement = try! structure.prepare(query: "SELECT COUNT(a) as count FROM foo")
         
         var count = -1
-        try! structure.perform(statement) { row in
+        try! structure.perform(statement: statement) { row in
             count = row["count"]
         }
         
@@ -201,21 +189,21 @@ class StructureTests: XCTestCase {
     func testMultipleModifications() {
         // Build a table with an integer value
         try! structure.migrate(version: 1) { s in
-            try s.execute("CREATE TABLE foo (id INTEGER PRIMARY KEY, value INTEGER)")
+            try s.execute(query: "CREATE TABLE foo (id INTEGER PRIMARY KEY, value INTEGER)")
         }
         
         // Inject initial data
-        try! structure.execute("INSERT INTO foo (value) VALUES (0)")
+        try! structure.execute(query: "INSERT INTO foo (value) VALUES (0)")
         let id = structure.lastInsertedId
         
         // Build statements for fetch and update
-        let fetchStatement = try! structure.prepare("SELECT value FROM foo WHERE id = :id")
-        let updateStatement = try! structure.prepare("UPDATE foo SET value = :value WHERE id = :id")
+        let fetchStatement = try! structure.prepare(query: "SELECT value FROM foo WHERE id = :id")
+        let updateStatement = try! structure.prepare(query: "UPDATE foo SET value = :value WHERE id = :id")
         
         // Ensure the default value is set properly
-        fetchStatement.bind("id", value: id)
+        fetchStatement.bind(value: id, for: "id")
         
-        guard let initialRow = try! structure.step(fetchStatement) else {
+        guard let initialRow = try! structure.step(statement: fetchStatement) else {
             XCTFail("Failed to get initial value")
             return
         }
@@ -231,9 +219,9 @@ class StructureTests: XCTestCase {
                 self.structure.transaction { (structure) in
                     // Fetch
                     fetchStatement.reset()
-                    fetchStatement.bind("id", value: id)
+                    fetchStatement.bind(value: id, for: "id")
                     
-                    guard let row = try! structure.step(fetchStatement) else {
+                    guard let row = try! structure.step(statement: fetchStatement) else {
                         XCTFail("Failed to get initial value")
                         return
                     }
@@ -243,10 +231,10 @@ class StructureTests: XCTestCase {
                     
                     // Update
                     updateStatement.reset()
-                    updateStatement.bind("value", value: newValue)
-                    updateStatement.bind("id", value: id)
+                    updateStatement.bind(value: newValue, for: "value")
+                    updateStatement.bind(value: id, for: "id")
                     
-                    try! structure.perform(updateStatement)
+                    try! structure.perform(statement: updateStatement)
                 }
             }
         }
@@ -256,17 +244,97 @@ class StructureTests: XCTestCase {
         
         // Ensure the value got incremented 100 times
         fetchStatement.reset()
-        fetchStatement.bind("id", value: id)
+        fetchStatement.bind(value: id, for: "id")
         
-        guard let finalRow = try! structure.step(fetchStatement) else {
+        guard let finalRow = try! structure.step(statement: fetchStatement) else {
             XCTFail("Failed to get final value")
             return
         }
         
         XCTAssertEqual(finalRow["value"] as Int, 1000)
+    }
+    
+    // MARK: - Custom Function Tests
+    
+    func testUpperFunctionWithStandardString() {
+        // Create a table that stores strings
+        try! structure.migrate(version: 1) { s in
+            try s.execute(query: "CREATE TABLE foo (id INTEGER PRIMARY KEY, value TEXT)")
+        }
         
-        // Cleanup
-        fetchStatement.finalize()
-        updateStatement.finalize()
+        // Insert some test data
+        try! structure.execute(query: "INSERT INTO foo (value) VALUES ('Hello')")
+        let id = structure.lastInsertedId
+        
+        // Fetch the data back out, with upper case values
+        let fetchStatement = try! structure.prepare(query: "SELECT UPPER(value) AS value FROM foo WHERE id = :id")
+        fetchStatement.bind(value: id, for: "id")
+        
+        guard let row = try! structure.step(statement: fetchStatement) else {
+            XCTFail("Failed to get inserted data")
+            return
+        }
+        
+        guard let result: String = row["value"] else {
+            XCTFail("Failed to get string value")
+            return
+        }
+        
+        XCTAssertEqual(result, "HELLO")
+    }
+    
+    func testUpperFunctionWithComplexString() {
+        // Create a table that stores strings
+        try! structure.migrate(version: 1) { s in
+            try s.execute(query: "CREATE TABLE foo (id INTEGER PRIMARY KEY, value TEXT)")
+        }
+        
+        // Insert some test data
+        try! structure.execute(query: "INSERT INTO foo (value) VALUES ('👋🏻 Hello 👋🏼')")
+        let id = structure.lastInsertedId
+        
+        // Fetch the data back out, with upper case values
+        let fetchStatement = try! structure.prepare(query: "SELECT UPPER(value) AS value FROM foo WHERE id = :id")
+        fetchStatement.bind(value: id, for: "id")
+        
+        guard let row = try! structure.step(statement: fetchStatement) else {
+            XCTFail("Failed to get inserted data")
+            return
+        }
+        
+        guard let result: String = row["value"] else {
+            XCTFail("Failed to get string value")
+            return
+        }
+        
+        XCTAssertEqual(result, "👋🏻 HELLO 👋🏼")
+    }
+    
+    func testUpperFunctionWithUnicodeString() {
+        // Create a table that stores strings
+        try! structure.migrate(version: 1) { s in
+            try s.execute(query: "CREATE TABLE foo (id INTEGER PRIMARY KEY, value TEXT)")
+        }
+        
+        // Insert some test data
+        try! structure.execute(query: "INSERT INTO foo (value) VALUES ('exámple óóßChloë')")
+        let id = structure.lastInsertedId
+        
+        // Fetch the data back out, with upper case values
+        let fetchStatement = try! structure.prepare(query: "SELECT UPPER(value) AS value FROM foo WHERE id = :id")
+        fetchStatement.bind(value: id, for: "id")
+        
+        guard let row = try! structure.step(statement: fetchStatement) else {
+            XCTFail("Failed to get inserted data")
+            return
+        }
+        
+        guard let result: String = row["value"] else {
+            XCTFail("Failed to get string value")
+            return
+        }
+        
+        XCTAssertEqual(result, "EXÁMPLE ÓÓSSCHLOË")
+        
     }
 }

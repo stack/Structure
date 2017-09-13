@@ -3,7 +3,7 @@
 //  Structure
 //
 //  Created by Stephen Gerstacker on 1/1/16.
-//  Copyright © 2016 Stephen H. Gerstacker. All rights reserved.
+//  Copyright © 2017 Stephen H. Gerstacker. All rights reserved.
 //
 
 import XCTest
@@ -19,7 +19,7 @@ class StatementTests: XCTestCase {
         super.setUp()
         
         structure = try! Structure()
-        try! structure.execute("CREATE TABLE foo (a INTEGER PRIMARY KEY AUTOINCREMENT, b TEXT, c REAL, d INT, e BLOB)")
+        try! structure.execute(query: "CREATE TABLE foo (a INTEGER PRIMARY KEY AUTOINCREMENT, b TEXT, c REAL, d INT, e BLOB)")
     }
     
     override func tearDown() {
@@ -32,49 +32,42 @@ class StatementTests: XCTestCase {
     // MARK: - Bind Tests
     
     func testBindEmoji() {
-        let insertStatement = try! structure.prepare("INSERT INTO foo (b) VALUES (:b)")
-        insertStatement.bind("b", value: "💩 Fletch 💩")
+        let insertStatement = try! structure.prepare(query: "INSERT INTO foo (b) VALUES (:b)")
+        insertStatement.bind(value: "💩 Fletch 💩", for: "b")
         
-        _ = try! structure.step(insertStatement)
-        insertStatement.finalize()
+        _ = try! structure.step(statement: insertStatement)
         
-        let selectStatement = try! structure.prepare("SELECT b FROM foo LIMIT 1")
-        let row = try! structure.step(selectStatement)
+        let selectStatement = try! structure.prepare(query: "SELECT b FROM foo LIMIT 1")
+        let row = try! structure.step(statement: selectStatement)
         
         let result: String = row!["b"]!
         XCTAssertEqual(result, "💩 Fletch 💩")
-        
-        selectStatement.finalize()
     }
     
     // MARK: - Prepare Tests
     
     func testPrepareInvalidStatement() {
         do {
-            _ = try structure.prepare("SELECT FOO BAR BAZ")
+            _ = try structure.prepare(query: "SELECT FOO BAR BAZ")
             XCTFail("Preparation of invalid query succeeded")
-        } catch let e {
-            XCTSuccess("Preparation of invalid query failed: \(e)")
+        } catch {
+            XCTSuccess("Preparation of invalid query failed: \(error)")
         }
     }
     
     func testPrepareRequiresNamedParameters() {
         do {
-            _ = try structure.prepare("SELECT a FROM foo WHERE b = ?")
+            _ = try structure.prepare(query: "SELECT a FROM foo WHERE b = ?")
             XCTFail("Preparation of query with unnamed parameters succeeded")
-        } catch let e {
-            XCTSuccess("Preparation of query with unnamed parameters failed: \(e)")
+        } catch {
+            XCTSuccess("Preparation of query with unnamed parameters failed: \(error)")
         }
         
     }
     
     func testPrepareValidStatement() {
         do {
-            let statement = try structure.prepare("SELECT a, b, c FROM foo WHERE b IS :ONE OR b IS $TWO OR c IS @THREE")
-            
-            defer {
-                statement.finalize()
-            }
+            let statement = try structure.prepare(query: "SELECT a, b, c FROM foo WHERE b IS :ONE OR b IS $TWO OR c IS @THREE")
             
             XCTAssertEqual(3, statement.bindParameters.count)
             XCTAssertEqual(1, statement.bindParameters["ONE"])
@@ -85,8 +78,8 @@ class StatementTests: XCTestCase {
             XCTAssertEqual(0, statement.columns["a"])
             XCTAssertEqual(1, statement.columns["b"])
             XCTAssertEqual(2, statement.columns["c"])
-        } catch let e {
-            XCTFail("Preparation of valid query failed: \(e)")
+        } catch {
+            XCTFail("Preparation of valid query failed: \(error)")
         }
     }
     
@@ -95,39 +88,31 @@ class StatementTests: XCTestCase {
     func testDeleteStatement() {
         do {
             // Insert a row
-            let insertStatement = try structure.prepare("INSERT INTO foo (b, c, d, e) VALUES (:B, :C, :D, :E)")
+            let insertStatement = try structure.prepare(query: "INSERT INTO foo (b, c, d, e) VALUES (:B, :C, :D, :E)")
             
-            defer {
-                insertStatement.finalize()
-            }
-            
-            insertStatement.bind("B", value: "foo")
-            insertStatement.bind("C", value: 42.1)
-            insertStatement.bind("D", value: 42)
+            insertStatement.bind(value: "foo", for: "B")
+            insertStatement.bind(value: 42.1, for: "C")
+            insertStatement.bind(value: 42, for: "D")
             
             let data = Data(bytes: UnsafePointer<UInt8>([ 0x41, 0x42, 0x43 ] as [UInt8]), count: 3)
-            insertStatement.bind("E", value: data)
+            insertStatement.bind(value: data, for: "E")
             
-            try structure.perform(insertStatement)
+            try structure.perform(statement: insertStatement)
             
             // Ensure we have 1 row
             let initialCount = countFoo()
             XCTAssertEqual(1, initialCount)
             
             // Delete all rows
-            let deleteStatement = try structure.prepare("DELETE FROM foo")
+            let deleteStatement = try structure.prepare(query: "DELETE FROM foo")
             
-            defer {
-                deleteStatement.finalize()
-            }
-            
-            try structure.perform(deleteStatement)
+            try structure.perform(statement: deleteStatement)
             
             // Ensure we have 0 rows
             let deletedCount = countFoo()
             XCTAssertEqual(0, deletedCount)
-        } catch let e {
-            XCTFail("Failed testing delete statement: \(e)")
+        } catch {
+            XCTFail("Failed testing delete statement: \(error)")
         }
     }
     
@@ -138,20 +123,16 @@ class StatementTests: XCTestCase {
             XCTAssertEqual(0, initialCount)
             
             // Insert a row
-            let insertStatement = try structure.prepare("INSERT INTO foo (b, c, d, e) VALUES (:B, :C, :D, :E)")
+            let insertStatement = try structure.prepare(query: "INSERT INTO foo (b, c, d, e) VALUES (:B, :C, :D, :E)")
             
-            defer {
-                insertStatement.finalize()
-            }
-            
-            insertStatement.bind("B", value: "foo")
-            insertStatement.bind("C", value: 42.1)
-            insertStatement.bind("D", value: 42)
+            insertStatement.bind(value: "foo", for: "B")
+            insertStatement.bind(value: 42.1, for: "C")
+            insertStatement.bind(value: 42, for: "D")
             
             let data = Data(bytes: UnsafePointer<UInt8>([ 0x41, 0x42, 0x43 ] as [UInt8]), count: 3)
-            insertStatement.bind("E", value: data)
+            insertStatement.bind(value: data, for: "E")
             
-            try structure.perform(insertStatement)
+            try structure.perform(statement: insertStatement)
             
             // Ensure we have 1 row
             let updatedCount = countFoo()
@@ -159,13 +140,9 @@ class StatementTests: XCTestCase {
             
             // Get the data that was inserted
             let lastId = structure.lastInsertedId
-            let selectStatement = try structure.prepare("SELECT a, b, c, d, e FROM foo")
+            let selectStatement = try structure.prepare(query: "SELECT a, b, c, d, e FROM foo")
             
-            defer {
-                selectStatement.finalize()
-            }
-            
-            try structure.perform(selectStatement) { row in
+            try structure.perform(statement: selectStatement) { row in
                 let aString: Int64 = row["a"]
                 let bString: String? = row["b"]
                 let cString: Double = row["c"]
@@ -190,8 +167,8 @@ class StatementTests: XCTestCase {
                 XCTAssertEqual(42, dInt)
                 XCTAssertEqual(data, eInt)
             }
-        } catch let e {
-            XCTFail("Failed testing insert statement: \(e)")
+        } catch {
+            XCTFail("Failed testing insert statement: \(error)")
         }
     }
     
@@ -202,23 +179,19 @@ class StatementTests: XCTestCase {
             XCTAssertEqual(0, initialCount)
             
             // Insert a row
-            let insertStatement = try structure.prepare("INSERT INTO foo (b, c, d, e) VALUES (:B, :C, :D, :E)")
-            
-            defer {
-                insertStatement.finalize()
-            }
+            let insertStatement = try structure.prepare(query: "INSERT INTO foo (b, c, d, e) VALUES (:B, :C, :D, :E)")
             
             let nullString: String? = nil
             let nullDouble: Double? = nil
             let nullInt: Int? = nil
             let nullData: Data? = nil
             
-            insertStatement.bind("B", value: nullString)
-            insertStatement.bind("C", value: nullDouble)
-            insertStatement.bind("D", value: nullInt)
-            insertStatement.bind("E", value: nullData)
+            insertStatement.bind(value: nullString, for: "B")
+            insertStatement.bind(value: nullDouble, for: "C")
+            insertStatement.bind(value: nullInt, for: "D")
+            insertStatement.bind(value: nullData, for: "E")
             
-            try structure.perform(insertStatement)
+            try structure.perform(statement: insertStatement)
             
             // Ensure we have 1 row
             let updatedCount = countFoo()
@@ -226,13 +199,9 @@ class StatementTests: XCTestCase {
             
             // Get the data that was inserted
             let lastId = structure.lastInsertedId
-            let selectStatement = try structure.prepare("SELECT a, b, c, d, e FROM foo")
+            let selectStatement = try structure.prepare(query: "SELECT a, b, c, d, e FROM foo")
             
-            defer {
-                selectStatement.finalize()
-            }
-            
-            try structure.perform(selectStatement) { row in
+            try structure.perform(statement: selectStatement) { row in
                 let aString: Int64 = row["a"]
                 let bString: String? = row["b"]
                 let cString: Double = row["c"]
@@ -257,28 +226,24 @@ class StatementTests: XCTestCase {
                 XCTAssertEqual(0, dInt)
                 XCTAssertNil(eInt)
             }
-        } catch let e {
-            XCTFail("Failed testing insert statement: \(e)")
+        } catch {
+            XCTFail("Failed testing insert statement: \(error)")
         }
     }
     
     func testUpdateStatement() {
         do {
             // Insert a row
-            let insertStatement = try structure.prepare("INSERT INTO foo (b, c, d, e) VALUES (:B, :C, :D, :E)")
+            let insertStatement = try structure.prepare(query: "INSERT INTO foo (b, c, d, e) VALUES (:B, :C, :D, :E)")
             
-            defer {
-                insertStatement.finalize()
-            }
-            
-            insertStatement.bind("B", value: "foo")
-            insertStatement.bind("C", value: 42.1)
-            insertStatement.bind("D", value: 42)
+            insertStatement.bind(value: "foo", for: "B")
+            insertStatement.bind(value: 42.1, for: "C")
+            insertStatement.bind(value: 42, for: "D")
             
             let data = Data(bytes: UnsafePointer<UInt8>([ 0x41, 0x42, 0x43 ] as [UInt8]), count: 3)
-            insertStatement.bind("E", value: data)
+            insertStatement.bind(value: data, for: "E")
             
-            try structure.perform(insertStatement)
+            try structure.perform(statement: insertStatement)
         
             // Ensure we have 1 row
             let initialCount = countFoo()
@@ -288,36 +253,28 @@ class StatementTests: XCTestCase {
             let lastId = structure.lastInsertedId
             
             // Update the row
-            let updateStatement = try structure.prepare("UPDATE foo SET b = :B, c = :C, d = :D, e = :E where a = :A")
+            let updateStatement = try structure.prepare(query: "UPDATE foo SET b = :B, c = :C, d = :D, e = :E where a = :A")
             
-            defer {
-                updateStatement.finalize()
-            }
-            
-            updateStatement.bind("B", value: "bar")
-            updateStatement.bind("C", value: 1.1)
-            updateStatement.bind("D", value: 2)
-            updateStatement.bind("A", value: lastId)
+            updateStatement.bind(value: "bar", for: "B")
+            updateStatement.bind(value: 1.1, for: "C")
+            updateStatement.bind(value: 2, for: "D")
+            updateStatement.bind(value: lastId, for: "A")
             
             let data2 = Data(bytes: UnsafePointer<UInt8>([ 0x44, 0x45, 0x46 ] as [UInt8]), count: 3)
-            updateStatement.bind("E", value: data2)
+            updateStatement.bind(value: data2, for: "E")
             
-            try structure.perform(updateStatement)
+            try structure.perform(statement: updateStatement)
             
             // Ensure there is still one row
             let updatedCount = countFoo()
             XCTAssertEqual(1, updatedCount)
             
             // Ensure the updated values are set
-            let selectStatement = try structure.prepare("SELECT a, b, c, d, e FROM foo WHERE a = :A")
+            let selectStatement = try structure.prepare(query: "SELECT a, b, c, d, e FROM foo WHERE a = :A")
             
-            defer {
-                selectStatement.finalize()
-            }
+            selectStatement.bind(value: lastId, for: "A")
             
-            selectStatement.bind("A", value: lastId)
-            
-            try structure.perform(selectStatement) { row in
+            try structure.perform(statement: selectStatement) { row in
                 let aString: Int64 = row["a"]
                 let bString: String? = row["b"]
                 let cString: Double = row["c"]
@@ -342,8 +299,8 @@ class StatementTests: XCTestCase {
                 XCTAssertEqual(2, dInt)
                 XCTAssertEqual(data2, eInt)
             }
-        } catch let e {
-            XCTFail("Failed testing update statement: \(e)")
+        } catch {
+            XCTFail("Failed testing update statement: \(error)")
         }
     }
     
@@ -357,30 +314,26 @@ class StatementTests: XCTestCase {
             
             // Insert a series of data in a transaction
             try structure.transaction { s in
-                let insertStatement = try s.prepare("INSERT INTO foo (b, c) VALUES (:B, :C)")
+                let insertStatement = try s.prepare(query: "INSERT INTO foo (b, c) VALUES (:B, :C)")
                 
-                defer {
-                    insertStatement.finalize()
-                }
+                insertStatement.bind(value: "foo", for: "B")
+                insertStatement.bind(value: 42.1, for: "C")
                 
-                insertStatement.bind("B", value: "foo")
-                insertStatement.bind("C", value: 42.1)
-                
-                try s.perform(insertStatement)
+                try s.perform(statement: insertStatement)
                 
                 insertStatement.reset()
                 
-                insertStatement.bind("B", value: "bar")
-                insertStatement.bind("C", value: 1.1)
+                insertStatement.bind(value: "bar", for: "B")
+                insertStatement.bind(value: 1.1, for: "C")
                 
-                try s.perform(insertStatement)
+                try s.perform(statement: insertStatement)
             }
             
             // Ensure there are two rows
             let updatedCount = countFoo()
             XCTAssertEqual(2, updatedCount)
-        } catch let e {
-            XCTFail("Failed testing successful transaction: \(e)")
+        } catch {
+            XCTFail("Failed testing successful transaction: \(error)")
         }
     }
     
@@ -392,30 +345,26 @@ class StatementTests: XCTestCase {
         do {
             // Insert a some data, but fail
             try structure.transaction { s in
-                let insertStatement = try s.prepare("INSERT INTO foo (b, c) VALUES (:B, :C)")
+                let insertStatement = try s.prepare(query: "INSERT INTO foo (b, c) VALUES (:B, :C)")
                 
-                defer {
-                    insertStatement.finalize()
-                }
+                insertStatement.bind(value: "foo", for: "B")
+                insertStatement.bind(value: 42.1, for: "C")
                 
-                insertStatement.bind("B", value: "foo")
-                insertStatement.bind("C", value: 42.1)
-                
-                try s.perform(insertStatement)
+                try s.perform(statement: insertStatement)
                 
                 insertStatement.reset()
                 
-                insertStatement.bind("B", value: "bar")
-                insertStatement.bind("C", value: 1.1)
+                insertStatement.bind(value: "bar", for: "B")
+                insertStatement.bind(value: 1.1, for: "C")
                 
-                try s.perform(insertStatement)
+                try s.perform(statement: insertStatement)
                 
                 throw StructureError.error("Forced Error")
             }
         } catch StructureError.error(let e) {
             XCTAssertEqual("Forced Error", e)
-        } catch let e {
-            XCTFail("Unknown error when forcing a bad transaction: \(e)")
+        } catch {
+            XCTFail("Unknown error when forcing a bad transaction: \(error)")
         }
         
         // Ensure there are still no rows
@@ -426,14 +375,10 @@ class StatementTests: XCTestCase {
     // MARK: - Utilities
     
     private func countFoo() -> Int {
-        let statement = try! structure.prepare("SELECT COUNT(a) as count FROM foo")
-        
-        defer {
-            statement.finalize()
-        }
+        let statement = try! structure.prepare(query: "SELECT COUNT(a) as count FROM foo")
         
         var count = -1
-        try! structure.perform(statement) { row in
+        try! structure.perform(statement: statement) { row in
             count = row["count"]
         }
         

@@ -3,7 +3,7 @@
 //  Structure tvOS
 //
 //  Created by Stephen Gerstacker on 1/14/16.
-//  Copyright © 2016 Stephen H. Gerstacker. All rights reserved.
+//  Copyright © 2017 Stephen H. Gerstacker. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
@@ -15,5 +15,4 @@ FOUNDATION_EXPORT double Structure_tvOSVersionNumber;
 FOUNDATION_EXPORT const unsigned char Structure_tvOSVersionString[];
 
 // In this header, you should import all the public headers of your framework using statements like #import <Structure_tvOS/PublicHeader.h>
-
-
+#include <sqlite3.h>
