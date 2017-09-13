@@ -1,3 +1,11 @@
+### [5.0.0](https://github.com/stack/Structure/releases/tag/v5.0.0)
+
+### Updated
+
+Switched to Swift 4.
+
+Fixed macOS build to compile without warnings.
+
 ### [4.0.0](https://github.com/stack/Structure/releases/tag/v4.0.0)
 
 ### Updated

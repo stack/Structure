@@ -71,14 +71,14 @@ public class Statement {
                 
                 // The name must start with a valid token
                 let nameIndex = name.index(after: name.startIndex)
-                let token = name.substring(to: nameIndex)
+                let token = name.prefix(upTo: nameIndex)
                 
                 if token != ":" && token != "$" && token != "@" {
                     throw StructureError.error("Bind parameter \(idx) has an invalid name of \(name)")
                 }
                 
                 // Valid, so get the name without the token
-                let finalName = name.substring(from: nameIndex)
+                let finalName = String(name.suffix(from: nameIndex))
                 bindParameters[finalName] = idx
             }
         }

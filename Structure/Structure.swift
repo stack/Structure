@@ -177,7 +177,7 @@ public class Structure {
     
     // MARK: - Thread Safety
     
-    internal func dispatchWithinQueue(block: (Void) -> ()) {
+    internal func dispatchWithinQueue(block: () -> ()) {
         if DispatchQueue.getSpecific(key: queueId) != nil {
             block()
         } else {
