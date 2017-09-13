@@ -67,9 +67,3 @@ Each transaction is wrapped in the SQLite `TRANSACTION` mechanism, allowing roll
 ## License
 
 Structure is copyright © 2017 Stephen H. Gerstacker. It is free software, and may be redistributed under the terms specified in the `LICENSE.md` file.
-
-# Installation
-
-Currently only Carthage is supported. For Xcode 8 / Swift 3.0, add the following to your Carfile:
-
-    github "stack/Structure" ~> 3.0
