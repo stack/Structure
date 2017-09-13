@@ -6,6 +6,8 @@ Switched to Swift 4.
 
 Fixed macOS build to compile without warnings.
 
+`sqlite3` has been updted to 3.20.1.
+
 ### [4.0.0](https://github.com/stack/Structure/releases/tag/v4.0.0)
 
 ### Updated
