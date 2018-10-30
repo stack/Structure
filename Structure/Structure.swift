@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import SQLite
+import SQLite3
 
 /// A common identifier for use with dispatch queues
 private let StructureQueueKey = DispatchSpecificKey<UnsafeMutableRawPointer>()

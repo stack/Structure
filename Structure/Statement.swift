@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import SQLite
+import SQLite3
 
 /// A wrapper around the SQLite statement
 public class Statement {
