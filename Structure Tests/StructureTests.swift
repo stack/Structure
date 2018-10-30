@@ -35,7 +35,7 @@ class StructureTests: XCTestCase {
     }
     
     func testSettingUserVersionWorks() {
-        let userVersion = Int(arc4random_uniform(255) + 1)
+        let userVersion = Int.random(in: 1 ... 255)
         
         structure.userVersion = userVersion
         
