@@ -1,6 +1,6 @@
 language: objective-c
 
-osx_image: xcode9
+osx_image: xcode10
 
 xcode_project: Structure.xcodeproj
 
@@ -10,24 +10,24 @@ xcode_scheme:
     - Structure tvOS
 
 xcode_sdk:
-    - iphonesimulator11.0
-    - macosx10.13
-    - appletvsimulator11.0
+    - iphonesimulator12.0
+    - macosx10.14
+    - appletvsimulator12.0
 
 matrix:
     exclude:
         - xcode_scheme: Structure iOS
-          xcode_sdk: macosx10.13
+          xcode_sdk: macosx10.14
         - xcode_scheme: Structure iOS
-          xcode_sdk: appletvsimulator11.0
+          xcode_sdk: appletvsimulator12.0
         - xcode_scheme: Structure Mac
-          xcode_sdk: iphonesimulator11.0
+          xcode_sdk: iphonesimulator12.0
         - xcode_scheme: Structure Mac
-          xcode_sdk: appletvsimulator11.0
+          xcode_sdk: appletvsimulator12.0
         - xcode_scheme: Structure tvOS
-          xcode_sdk: iphonesimulator11.0
+          xcode_sdk: iphonesimulator12.0
         - xcode_scheme: Structure tvOS
-          xcode_sdk: macosx10.13
+          xcode_sdk: macosx10.14
 
 script:
     - xcodebuild clean build -sdk "${TRAVIS_XCODE_SDK}" -project "${TRAVIS_XCODE_PROJECT}" -scheme "${TRAVIS_XCODE_SCHEME}" CODE_SIGNING_REQUIRED=NO
