@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import SQLite
+import SQLite3
 
 /**
     Errors specific to the Structure framework.

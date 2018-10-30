@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import SQLite
+import SQLite3
 
 /// A row represents a set of data returned from one iteration of Structure statement that returns data
 public class Row {

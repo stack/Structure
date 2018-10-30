@@ -6,7 +6,7 @@
 //  Copyright © 2017 Stephen H. Gerstacker. All rights reserved.
 //
 
-import SQLite
+import SQLite3
 
 /// Type aliases for common SQLite pointers
 typealias SQLiteDatabase = OpaquePointer
