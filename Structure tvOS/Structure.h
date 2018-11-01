@@ -3,7 +3,7 @@
 //  Structure tvOS
 //
 //  Created by Stephen Gerstacker on 1/14/16.
-//  Copyright © 2017 Stephen H. Gerstacker. All rights reserved.
+//  Copyright © 2018 Stephen H. Gerstacker. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
